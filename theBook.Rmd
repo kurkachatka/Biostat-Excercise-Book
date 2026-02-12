@@ -146,6 +146,156 @@ Nazwy zmiennych nie moga zaczynac sie od cyfr lub podkreslenia. Oprocz tego istn
 
 > TIP: Dlugie nazwy elementow w srodowisku mozna rozbijac (nie spacja!), aby zwiekszyc ich czytelnosc. Znane sposoby to: snake_case, leopard.case, CamelCase
 
+5.  Zmienna nie musi byc liczba
+
+```{r}
+
+h <- 'hello'
+
+print(h)
+
+imie.nazwisko <- 'Marta Witkowska'
+
+imie.nazwisko
+```
+
+## Skale pomiarowe i typy zmiennych
+
+Zmienne moga wystepowac w 4 roznych skalach pomiarowych, ktore mozna podzielicz na dwa typy:
+
+-   skala ciagle (ilościowe) - zmienne przyjmuja dowone, nieskonczenie podzielne wartosci liczbowe w okreslonym przedziale
+
+    -   skala interwałowa
+
+    -   skala ilorazowa
+
+-   skala dyskretne (jakościowe) - zmienne przyjmuja okreslone, odrebne wartosci
+
+    -   skala nominalna
+
+    -   porzadkowa
+
+Elementy srodowiska, w tym zmienne, maja okreslona klase. Definiuje ona jak sa przechowywane i jakie operacja mozna na nich wykonywac. Najwazniejsze klasy to:
+
+-   `numeric` - numeryczna
+
+-   `integer`- calkowita, okreslana za pomoca `L`
+
+-   `character` - tekstowa
+
+-   `factor` - czynnikowa, okresla kategorie
+
+Klasy obiektow i skale pomiarowe to zagadnienia, ktore sie ze soba lacza. Zmienne, ktore sa w skalach ciaglych powinny miec klase `numeric`. Zmienne w skalach dyskretnych powinny byc zakodowane jako klasy `character` lub `factor`. W zaleznosci od przypadku klasa `integer` moze byc odpowednia dla zmiennych w obu typach skali.
+
+1.  Sprawdz klase danej zmiennej uzywajac funckji `class()`
+
+```{r}
+
+nr <- 365
+
+class(nr)
+
+gat <- 'Calidris pugnax'
+
+class(gat)
+```
+
+2.  Sprawdz klase danej zmiennej uzywajac funckji `is.XXX()`
+
+```{r}
+
+is.numeric(nr)
+
+is.factor(nr)
+
+is.integer(gat)
+
+is.character(gat)
+
+```
+
+3.  Zmien klase obieku uzywajac funckji `as.XXX()`. Zwroc uwage, ze obiekt musi byc nadpisany w srodowisku
+
+```{r}
+
+as.integer(nr)
+
+class(nr) # nie ma zmiany, poniewaz nr nie zostal nadpisany w srodowisku
+
+nr <- as.integer(nr)
+
+class(nr) # dziala! Zwroc uwage, ze w srodowisku przy liczbie w nr pojawilo sie L
+
+# ____________________________________________________________________
+
+nr <- as.character(nr)
+
+print(nr)
+
+nr + 2 # niemozliwe do wykonania
+```
+
+4.  Zmiany klasy nie dzialaja we wszystkie strony
+
+```{r}
+
+ulamek <- 0.6
+
+ulamek <- as.integer(ulamek)
+
+print(ulamek) # utrata informacji poprzez zaokraglenie
+
+# ____________________________________________________________________
+
+gat <- as.numeric(gat)
+
+print(gat) # utrata informacji
+
+
+```
+
+> TIP: Nieodpowiednia klasa obieku w srodowisku to jeden z najczestrzych powodow, dla ktorych studenci nie sa w stanie wykonac dane zadanie!
+
+## Pomocy!
+
+1.  Nie ignoruj tego co dzieje sie w srodowisku. Jezeli R cos nie pasuje, to R to komunikuje.
+
+```{r}
+
+h + x 
+
+```
+
+> TIP: Bledy i komunikaty ostrzegawcze czesto sa niezrozumiale, zwlaszcza na poczatkowym etapie nauki. W tych wypadkach internet jest Twoim przyjacielem.
+
+2.  Blad ≠ Komunikat ostrzegawczy
+
+Blad - egzekwowanie kodu jest zatrzymana
+
+Komunikat otrzegawczy - kod jest egzekwowany ale cos jest nie tak
+
+3.  Komunikat +
+
+```{r}
+
+galmed <- 'Gallinago media
+
+```
+
+W konsoli pojawia sie `+`. Informuje nas o tym, ze formula nie jest skonczona. Np. brakuje zamknietego nazwiasu, albo jak w tym przypadku cudzyslowa. Probowanie wyzwalania kolejnych funckji bedzie kumulowalo skutki tego bledu. Zeby to rozwiazac wejdz w konsole i albo dopisz brakujacy znak (tutaj ') i wyzwol. Albo wejdz w konsole, klikjni ESC, aby zakonczyc zadanie, popraw formule kodu i pusc jeszcze raz.
+
+Help
+
+Każda pakiet i zawarte w nich fukcje sa dokladnie opisane w ich dokumentacji. Mozna ja wywolac uzywajac `?` przed nazwa danej funckji
+
+```{r}
+
+?rm()
+
+?print()
+
+```
+
 ## Cofnij?
 
 1.  W kodowaniu komenda cofinij nie istnieje, a CTRL + Z tylko usunie ostatnio napisany kod (jak Backspace). Robienie wszelkich poprawek polega na nadpisywaniu.
@@ -188,11 +338,11 @@ rm(list = ls())
 
 ```
 
-Czy taki zabieg zniweczyl czasa dotychczasowa prace? Jezeli korzystasz ze skryptu i od czasu do czasu go zapisujesz, to abolutnie NIE! Aby otworzyc dane elementy srodowiska wystarczy puscic kod od poczatku, oczywiscie w odpowiedniej kolejnosci.
+Czy taki zabieg zniweczyl caladotychczasowa prace? Jezeli korzystasz ze skryptu i od czasu do czasu go zapisujesz, to abolutnie NIE! Aby otworzyc dane elementy srodowiska wystarczy puscic kod od poczatku, oczywiscie w odpowiedniej kolejnosci.
 
 4.  A co jezeli nie pracujesz w skrypcie, tylko w konsoli?
 
-Po pierwsze - nie polecam. Po drugie - w trakcie dzialania danej sesji mozesz zawsze odniesc sie do historii. Postaw kursor w konsoli i kilknij strzelke w gore (nawet pare razy). Mozesz spobowac tez uzyc skrotu klawiszowego CTRL + arrow up aby zobaczyc wiekszy przeglad. Ostatecznie calosc historii znajdziesz w zakladce 'History' w tym samym panelu, w ktorym znajduje sie srodowisko
+Po pierwsze - nie polecam. Po drugie - w trakcie dzialania danej sesji mozesz zawsze odniesc sie do historii. Postaw kursor w konsoli i kilknij strzelke w gore (nawet pare razy). Mozesz spobowac tez uzyc skrotu klawiszowego CTRL + arrow up aby zobaczyc wiekszy przeglad. Ostatecznie calosc historii znajdziesz w zakladce 'History' w tym samym panelu, w ktorym znajduje sie srodowisko. Kliknij dwa razy aby przywolac dana komende do konsoli.
 
 ## Cwiczenia
 
@@ -281,3 +431,27 @@ Wklej ponizszy kod do swojego skryptu. Podazaj za tekstem i poleceniami opisanym
 # Do zwiniecia i rozwiniecia wszystkich sekcji mozna uzyc ALT + O i SHIFT + ALT + O
 
 ```
+
+### CW 4
+
+Dlaczego nie mozna wykonac ponizszego dzialania?
+
+```{r}
+
+N <- '15'
+
+N*2
+
+```
+
+<details>
+
+<summary>ODP 3</summary>
+
+Przez uzycie `''` zmienna N jest w skali dyskretnej (klasa `character`).
+
+</details>
+
+### CW 3
+
+# Lab 2
