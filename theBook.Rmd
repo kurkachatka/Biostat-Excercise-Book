@@ -1,0 +1,167 @@
+---
+title: "theBook"
+author: "M. Witkowska M. Szewczyk P. Bodson. K.Piening"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 1
+
+## Instalacja R i RStudio
+
+R Studio to IDE (zintegrowane srodowisko programistyczne) dla jezyka programowania R. Mozna myslec o nim jak o nakladce, ktora ulatwia prace, R natomiast jest 'silnikiem' wszystkich operacji. Instrukcje instalacji **obu** mozna znalezc [pod tym linkiem](https://posit.co/download/rstudio-desktop/){.uri}.
+
+R jest i bedzie darmowy
+
+```{r}
+licence()
+
+```
+
+Jak cytowac R?
+
+```{r}
+citation()
+
+```
+
+Jak cytowac uzywane pakiety?
+
+```{r}
+citation(package ='tidyverse')
+
+```
+
+## Skroty klawiszowe (dla Windowsa)
+
+-   'Pusc' kod : CTRL + ENTER
+
+-   Wstaw operator przypisania `<-` : ALT + -
+
+-   Wstaw operator potokowy (pipe) `%>%` : CTRL + SHIFT + M
+
+-   Zaznacz : SHIFT + STRZALKA
+
+-   Zaznacz cale slowo: SHIFT + CTRL + STRZALKA
+
+## Podstawy kodowania
+
+1.  Uzyj R jak kalkulatora.
+
+```{r}
+1+1
+
+2*3 + 5
+
+6/3
+
+4*(5+5)
+```
+
+2.  Transformuj liczby
+
+```{r}
+
+log10(100)
+
+6^2
+
+sqrt(4/2)
+
+
+```
+
+3.  Tworz notatki do kodu uzywajac `#`
+
+```{r}
+
+# Tu obliczam swoje BMI
+
+60/(1.73^2)
+
+
+```
+
+> TIP: Dodawanie komentarzy do kodu jest niesamowicie waznym elementem!
+
+## Przypisywanie zmiennych
+
+Uzywajac znaku przypisania mozesz stowrzyc element w srodowisku o konretnej wartosci
+
+```{r}
+
+x <- 2
+
+y <- 10
+
+```
+
+Elementy ze srodowiska mozna wywolywac, najprosciej uzywajac ich nazw, lub uwyzwajac funkcji `print()`
+
+```{r}
+x
+
+print(y)
+
+```
+
+Na elementach ze srodowiska mozna przeprowadzac rozne czynnosci
+
+```{r}
+
+x + y
+
+y/5
+
+x * pi # zwroc uwage, ze pi jest zmienna zakodowana na stale w R
+
+```
+
+### CW 1
+
+Jaka jest roznica?
+
+```{r}
+#a
+2+2
+
+#b
+2 + 2
+```
+
+<details>
+
+<summary>ODP 1</summary>
+
+Nie ma zadnej w znaczeniu kodu. Znaki takie jak spacja i enter wiekszosci przypadkow sa 'pomijane' przy egzekwowaniu kodu. Wstawianie tych znakow sprawia, ze kod jest bardziej czytelny. Dobra praktyka jest 'pozwolic kodowi oddychac'.
+
+</details>
+
+### CW 2
+
+Jaka jest roznica?
+
+```{r}
+
+#a
+x <- 2
+
+#b
+x < - 2
+
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+Nie wszystkie znaki mozna rozdzilic spacja. Np. rozdzielane spacja operatory przypisania `<-` i potokowy `%>%` (o ktorym bedzie pozniej) sprawi, ze nie beda one dzialaly poprawnie
+
+</details>
