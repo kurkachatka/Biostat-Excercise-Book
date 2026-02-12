@@ -584,4 +584,113 @@ w1[c(1:3, 5)]
 
 ```
 
-## `NA`
+## `NA` - Braki danych
+
+`NA` - Not Available. To wartosc logiczna, ktora reprezentuje brak danych
+
+1.  Porownaj wektor zawierajacy `NA` z takim, ktory nie ma brakujacych danych. Uzyj funckji `is.na()` i `mean()`
+
+```{r}
+
+masa <- c(57.3, 78.4, 50.1, NA, 80.9)
+
+# sprawdz czy wystepuje wartosc NA
+
+is.na(masa)
+
+is.na(pory)
+
+# _________________________________________________________________
+
+
+# oblicz srednia
+
+mean(masa)
+
+mean(wektor)
+
+# ALE mozna tez:
+
+mean(masa, na.rm = TRUE) # ominac wartosci NA w obliczeniu sredniej
+
+
+
+```
+
+## Ramki danych
+
+Ramki danych to podstawowa forma przechowywania danych. To inaczej tabela zlozona z kolumn (zmiennych) i wierszy (przypadkow). Wszystkie zmienne dzialaja jak wektory o tej samej dlugosci
+
+Stworz ramke danych z wektorow uzywajac funkcji `data.frame()`
+
+```{r}
+
+temp <- c(-5, 7, 20, 12)
+
+seq <- 1:4
+
+data.frame(seq, pory, temp) # wyswietla sie w konsoli, ale nie pojawia sie w srodowisku... czemu? BO TRZEBA PRZYPISAC TO DO ELEMENTU
+
+rok <- data.frame(seq, pory, temp)
+
+
+# _________________________________________________________________
+
+
+#obejrzyj ramke danych
+
+print(rok)
+
+View(rok)
+```
+
+Dostan sie do konrentych elementow ramki danych za pomoca `[,]`
+
+```{r}
+
+#[row , col]
+
+rok[1,2]
+
+rok[c(2,4),]
+
+rok[ , 2:3]
+```
+
+Dostan sie do konkretnych wektorow w ramce danych za pomoca operatora `$`
+
+```{r}
+
+rok$temp
+
+```
+
+Sprawdz klase ramki danych i konkretnych wektorow
+
+```{r}
+
+class(rok)
+
+class(rok[,2])
+
+class(rok$seq)
+```
+
+Zmien klasy zmiennych w ramce danych
+
+```{r}
+
+is.numeric(rok$temp)
+
+rok$temp <- as.integer(rok$temp)
+
+class(rok$temp)
+
+# _________________________________________________________________
+
+rok$pory <- as.factor(rok[,2])
+
+class(rok$pory)
+
+
+```
