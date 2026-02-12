@@ -621,7 +621,7 @@ mean(masa, na.rm = TRUE) # ominac wartosci NA w obliczeniu sredniej
 
 Ramki danych to podstawowa forma przechowywania danych. To inaczej tabela zlozona z kolumn (zmiennych) i wierszy (przypadkow). Wszystkie zmienne dzialaja jak wektory o tej samej dlugosci
 
-Stworz ramke danych z wektorow uzywajac funkcji `data.frame()`
+1.  Stworz ramke danych z wektorow uzywajac funkcji `data.frame()`
 
 ```{r}
 
@@ -644,7 +644,29 @@ print(rok)
 View(rok)
 ```
 
-Dostan sie do konrentych elementow ramki danych za pomoca `[,]`
+2.  Poznaj elementy i wymiary ramki danych
+
+```{r}
+
+head(rok, n = 2)
+
+tail(rok, n = 3)
+
+names(rok)
+
+ncol(rok)
+
+nrow(rok)
+
+str(rok)
+
+summary(rok)
+
+```
+
+> TIP: `str()` moze byc jedna z najbardziej przydatnych fukcji na poczatkowych etapach eksploracji danych.
+
+3.  Dostan sie do konrentych elementow ramki danych za pomoca `[,]`
 
 ```{r}
 
@@ -657,7 +679,7 @@ rok[c(2,4),]
 rok[ , 2:3]
 ```
 
-Dostan sie do konkretnych wektorow w ramce danych za pomoca operatora `$`
+4.  Dostan sie do konkretnych wektorow w ramce danych za pomoca operatora `$`
 
 ```{r}
 
@@ -665,7 +687,7 @@ rok$temp
 
 ```
 
-Sprawdz klase ramki danych i konkretnych wektorow
+5.  Sprawdz klase ramki danych i konkretnych wektorow
 
 ```{r}
 
@@ -676,7 +698,7 @@ class(rok[,2])
 class(rok$seq)
 ```
 
-Zmien klasy zmiennych w ramce danych
+6.  Zmien klasy zmiennych w ramce danych
 
 ```{r}
 
@@ -691,6 +713,12 @@ class(rok$temp)
 rok$pory <- as.factor(rok[,2])
 
 class(rok$pory)
+
+# _________________________________________________________________
+
+str(rok)
+
+summary(rok)
 
 
 ```
