@@ -1,6 +1,6 @@
 ---
 title: "theBook"
-author: "M. Witkowska M. Szewczyk P. Bodson. K.Piening"
+author: "M. Witkowska, M. Szewczyk, P. Bodson, K.Piening"
 output:
   html_document:
     toc: true
@@ -446,12 +446,142 @@ N*2
 
 <details>
 
-<summary>ODP 3</summary>
+<summary>ODP 4</summary>
 
 Przez uzycie `''` zmienna N jest w skali dyskretnej (klasa `character`).
 
 </details>
 
-### CW 3
+### CW 5
+
+Czemu ten kod nie dziala?
+
+```{r}
+
+my_variable <- 10
+my_varıable
+
+```
+
+<details>
+
+<summary>ODP 5</summary>
+
+Jedna literka roznicy sprawia, ze R nie jest w stanie znalezc takiej zmiennej. Nie istnieje ona w srodowisku
+
+</details>
 
 # Lab 2
+
+## Wektory
+
+To podstawowa, wieloelementowa struktura danych tej samej klasy.
+
+1.  Stowrz wektor uzywajac funckji `c()`
+
+```{r}
+
+wektor <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+
+print(wektor)
+
+```
+
+2.  Wykonaj proste operacje na wektorze
+
+```{r}
+
+wektor.r.2 <- wektor * 2
+
+print(wektor.r.2)
+
+wektor.minus <- wektor.r.2 - 3
+
+print(wektor.minus)
+```
+
+> TIP: Czy zauwazyles mozliwosc autouzupelniania? Kiedy R pokazuje podpowada nam obiekt ze srodowiska / funkcje mozesz uzyc strzalek do ich wyboru i TAB do zaakceptowania.
+
+3.  Stworz wektory za pomoca operatora `:`, ktory sluzy do generowania sekwencji. Sprawdz dlugosc wektora, tzn. liczbe jego elementow, uzywajac funckji `length()`
+
+```{r}
+
+# operator : generuje z zakresu start:end
+
+w1 <- 1:5
+
+w2 <- 1.1:5.5
+
+w3 <- -7.5:0.5
+
+length(w1)
+
+length(w2)
+
+length(w3)
+
+```
+
+4.  Wykonaj operacje na dwoch wektorach o tej samej dlugosci
+
+```{r}
+
+w1 - w2
+
+
+```
+
+5.  Wykonanie operacji na dwoch wektorach roznej dlugosc
+
+W takim wypadku, krotszy wektor zostaje uzyty cyklicznie. Jezeli dlugosc krotszego nie jest wielokrotnoscia dlugosci dluzszego, wyswietlany jest komunikat ostrzegawczy
+
+```{r}
+
+w1 * w3
+
+```
+
+6.  Stworz wektor tesktowy
+
+```{r}
+
+pory <- c('zima', 'wiosna', 'lato', 'jesien')
+
+print(pory)
+
+```
+
+## Dostep do elementow wektora
+
+Aby dostac sie do danych elementow wektora na konretnej pozycji uzywa sie operatora indeksowani/podzbioru `[]`
+
+1.  Dostan sie do elementu na danej pozycji wektora
+
+```{r}
+
+w1[1]
+
+pory[3]
+
+wektor.minus[5]
+```
+
+2.  Dostan sie do kilku elementow w wektorze
+
+```{r}
+
+# z zakresu
+
+w3[2:4]
+
+# na kilku wybranych pozycjach
+
+wektor.r.2[c(1, 5)]
+
+# combo
+
+w1[c(1:3, 5)]
+
+```
+
+## `NA`
