@@ -49,7 +49,9 @@ citation(package ='tidyverse')
 
 -   Zaznacz : SHIFT + STRZALKA
 
--   Zaznacz cale slowo: SHIFT + CTRL + STRZALKA
+-   Zaznacz cale slowo: CTRL + SHIFT + STRZALKA
+
+-   Zamien kod na komentarz (lub odwortnie) CTRL + SHIFT + C
 
 ## Podstawy kodowania
 
@@ -84,16 +86,16 @@ sqrt(4/2)
 
 # Tu obliczam swoje BMI
 
-60/(1.73^2)
+60/(1.73^2) # zauwaz ze w R separator dziesietny to kropka, nie przecinek
 
 
 ```
 
-> TIP: Dodawanie komentarzy do kodu jest niesamowicie waznym elementem!
+> TIP: Dodawanie komentarzy do kodu jest niesamowicie wazne! Nie ma nic gorszego, niz wrocic do swojego kodu po miesiacu i nie byc w stanie go zrozumiec
 
 ## Przypisywanie zmiennych
 
-Uzywajac znaku przypisania mozesz stowrzyc element w srodowisku o konretnej wartosci
+1.  Uzywajac znaku przypisania mozesz stowrzyc element w srodowisku o konretnej wartosci
 
 ```{r}
 
@@ -103,7 +105,7 @@ y <- 10
 
 ```
 
-Elementy ze srodowiska mozna wywolywac, najprosciej uzywajac ich nazw, lub uwyzwajac funkcji `print()`
+2.  Elementy ze srodowiska mozna wywolywac, najprosciej uzywajac ich nazw, lub uwyzwajac funkcji `print()`
 
 ```{r}
 x
@@ -112,7 +114,9 @@ print(y)
 
 ```
 
-Na elementach ze srodowiska mozna przeprowadzac rozne czynnosci
+> TIP: Funkcje w R maja format **nazwa_funckji(arg1 = wartosc1, arg2 = wartosc2)**. Fukcje sa zawarte w pakietach, ale mozna je tez tworzyc samemu!
+
+3.  Na elementach ze srodowiska mozna przeprowadzac rozne czynnosci
 
 ```{r}
 
@@ -120,9 +124,77 @@ x + y
 
 y/5
 
-x * pi # zwroc uwage, ze pi jest zmienna zakodowana na stale w R
+x * pi # zwroc uwage, ze pi jest zmienna zakodowana na stale w R, mimo ze nie istnieje w srodowisku
 
 ```
+
+4.  Nazywanie elementow
+
+Wielkosc liter ma znaczenie
+
+```{r}
+
+zmienna <- x/y
+
+print(Zmienna)
+
+print(zmienna)
+
+```
+
+Nazwy zmiennych nie moga zaczynac sie od cyfr lub podkreslenia. Oprocz tego istnieje dowolnosc w nazywaniu elementow srodowiska, z wyjatkiem: FALSE/TRUE, Inf (infinity), NaN (not a number), NA (not avaiable), NULL
+
+> TIP: Dlugie nazwy elementow w srodowisku mozna rozbijac (nie spacja!), aby zwiekszyc ich czytelnosc. Znane sposoby to: snake_case, leopard.case, CamelCase
+
+## Cofnij?
+
+1.  W kodowaniu komenda cofinij nie istnieje, a CTRL + Z tylko usunie ostatnio napisany kod (jak Backspace). Robienie wszelkich poprawek polega na nadpisywaniu.
+
+```{r}
+
+# wydaje mi sie, ze z to 4 * 6
+
+z <- 4 * 6
+
+z
+
+# oops, jednak to 4 * 5
+
+z <- 4 * 5 # lub zmien na odpowiednia wartosc w kodzie wyzej i pusc dana linijke jeszcze raz
+
+z
+
+```
+
+2.  Jezeli potrzebujesz, mozesz usunac dany element ze srodowiska
+
+```{r}
+
+a <- 'niepotrzebna'
+
+print(a)
+
+rm(a)
+
+print(a)
+
+```
+
+3.  Mozesz tez wyczyszczyc cale srodowisko
+
+```{r}
+
+rm(list = ls())
+
+```
+
+Czy taki zabieg zniweczyl czasa dotychczasowa prace? Jezeli korzystasz ze skryptu i od czasu do czasu go zapisujesz, to abolutnie NIE! Aby otworzyc dane elementy srodowiska wystarczy puscic kod od poczatku, oczywiscie w odpowiedniej kolejnosci.
+
+4.  A co jezeli nie pracujesz w skrypcie, tylko w konsoli?
+
+Po pierwsze - nie polecam. Po drugie - w trakcie dzialania danej sesji mozesz zawsze odniesc sie do historii. Postaw kursor w konsoli i kilknij strzelke w gore (nawet pare razy). Mozesz spobowac tez uzyc skrotu klawiszowego CTRL + arrow up aby zobaczyc wiekszy przeglad. Ostatecznie calosc historii znajdziesz w zakladce 'History' w tym samym panelu, w ktorym znajduje sie srodowisko
+
+## Cwiczenia
 
 ### CW 1
 
@@ -165,3 +237,47 @@ x < - 2
 Nie wszystkie znaki mozna rozdzilic spacja. Np. rozdzielane spacja operatory przypisania `<-` i potokowy `%>%` (o ktorym bedzie pozniej) sprawi, ze nie beda one dzialaly poprawnie
 
 </details>
+
+### CW 3
+
+Wklej ponizszy kod do swojego skryptu. Podazaj za tekstem i poleceniami opisanymi komentarzami
+
+```{r}
+# ----- LAB 1 --------
+## ------ PROBLEM 1 ------------
+
+# Czy warto stosowac komentarze podczas kodowania?
+
+### ================= Rozwiazanie 1 =======================
+
+# Oprocz dodawania kometnarzy opisowych, # pozwala rowniez tworzyc sekcje w kodzie
+# Uzyj skrotu klawiszowego SHIFT + CTRL + O aby otowrzyc 'Outline' dokumentu ('zarys')
+# alternatywnie mozesz kliknac przycisk w prawym gornym rogu skryptu, po prawej od 'Source'
+
+
+# Zwroc uwage, ze liczba hasztagow na poczatku lini wskazuja, jakiego rzedu
+# jest dany naglowek.
+# Tutaj LAB1 Zawiera w sobie PROBLEM 1 i PROBLEM 2.
+# PROBLEM 1 zawiera w sobie Rozwiazanie 1 i Rozwiazanie 2. 
+# ITD.
+
+
+### ================= Rozwiazanie 2 =======================
+
+# Aby wydzielic sekcje uzywa sie przynajmniej 4 - lub = w ciagu.
+# Jezeli dodasz spacje, np. aby wstawic nazwe sekcji, po tym elemencie rowniez 
+# musza sie pojawic 4 - lub =
+
+## ------- PROBLEM 2 -----------
+
+# Samodzielnie swtorz sekcje Rozwiazanie 1 w obrebie PROBLEMU 2
+
+# Zwroc uwage na to co stanie sie z kursorem, jezeli klikniesz na dana sekcje w 'Outline' dokumentu
+
+# Co stanie sie jezeli klikniesz na male strzalki przy numerze wiersza obok danego naglowka sekcji?
+
+# Do zwiajania i rozwijania poszczegolnych sekcji mozna tez uzywac ALT + L i SHIFT + ALFT + L 
+
+# Do zwiniecia i rozwiniecia wszystkich sekcji mozna uzyc ALT + O i SHIFT + ALT + O
+
+```
