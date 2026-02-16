@@ -1,0 +1,152 @@
+---
+author: "Kristin"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab xxx
+
+## Cwiczenia - histograms in ggplot
+
+### CW 1
+
+We will now import a data set that contains the data for the following exercises.
+Can you import the data called 'birth_places_uni.csv'?
+
+<details>
+
+<summary>ODP 1</summary>
+
+You can use the following command but will need to replace the working directory with your folder names of where you are saving your files:
+
+```{r}
+birth_places_uni <- read.csv("C:/Users/krist/Desktop/birth_places_uni.csv")
+```
+
+Another way to do it is using the button 'session', selecting the working directory, going to the tab files, and uploading it from there.
+
+</details>
+
+### CW 2
+
+Can you look at the structure of the data?
+What is wrong? Does something need to be changed/adjusted?
+
+```{r}
+str(birth_places_uni)
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+We will need to change 'Sex' and 'Distance' to a factor and numerical, respectively.
+
+<details>
+
+### CW 3
+
+Let's change 'Sex' and 'Distance' to what we need to continue.
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+birth_places_uni$Sex <- as.factor(birth_places_uni$Sex)
+
+birth_places_uni$Distance.to.University..km. <- as.numeric(birth_places_uni$Distance.to.University..km.)
+
+```
+
+<details>
+
+### CW 4
+
+Can you create a histogram using ggplot that we got to know during class?
+
+<details>
+
+<summary>ODP 4</summary>
+
+```{r}
+library(ggplot2)
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +  # Set bin width
+  theme_minimal()
+
+```
+As you can see, we can change the colors.
+
+<details>
+
+### CW 5
+
+Now, we do not have very nice axis descriptions. Can you change them to make it a better plot?
+
+<details>
+
+<summary>ODP 5</summary>
+
+```{r}
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
+labs(title = "Histogram of Distances to University", 
+       x = "Distance to University (km)", 
+       y = "Frequency") +
+  theme_minimal()
+```
+
+<details>
+
+### CW 6
+
+Do you know what this plot shows? What is different in the code from the previous code?
+
+```{r}
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
+labs(title = "Histogram of Distances to University", 
+       x = "Distance to University (km)", 
+       y = "Frequency") +
+  facet_wrap(~Sex) +
+  theme_minimal()
+```
+
+<details>
+
+<summary>ODP 6</summary>
+
+We firstly added a part of the code that creates two separate plots for male and female students and their respective distances between their place of birth and university. 
+
+<details>
+
+### CW 7
+
+Play with the 'binwidth'. What changes in your plot?
+
+<details>
+
+<summary>ODP 7</summary>
+
+Here, we changed the binwidth for better visualization. Now we can better see the differences between the distances of males and females.
+
+```{r}
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 2, fill = "skyblue", color = "black") +
+labs(title = "Histogram of Distances to University", 
+       x = "Distance to University (km)", 
+       y = "Frequency") +
+  facet_wrap(~Sex) +
+  theme_minimal()
+```
+
+<details>
+
