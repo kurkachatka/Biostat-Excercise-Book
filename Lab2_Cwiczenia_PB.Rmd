@@ -1,0 +1,136 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 2 - Wektory i ramki danych
+
+## Cwiczenia
+
+### CW 1
+
+Teraz utworzymy trzy wektory:
+
+<ul>
+
+<li>w1, ktory zawiera nastepujaca sekwencje: 7,0,8,NA,5,5</li>
+
+<li>w2, ktory zawiera sekwencje liczb od 1 do 6</li>
+
+<li>w3, ktory zawiera nastepujacy
+tekst:'blue','pink','blue','red','yellow'</li>
+
+</ul>
+
+<details>
+
+<summary>ODP 1</summary>
+
+```{r}
+w1 <- c(7,0,8,NA,5,5)
+w2 <- 1:6
+w3 <- c('blue','pink','blue','red','yellow')
+```
+
+</details>
+
+### CW 2
+
+Swietnie! Polaczmy te trzy wektory w ramke danych. Jak to zrobic?
+
+<details>
+
+<summary>ODP 2</summary>
+
+```{r}
+df1 <- data.frame(w1,w2,w3)
+```
+
+</details>
+
+### CW 3
+
+Otrzymujemy nastepujacy komunikat o bledzie: 'Blad w data.frame(w1,w2,w3):
+argumenty sugeruja rozna liczbe wierszy: 6, 5'. Jakiej funkcji mozna uzyc,
+aby okreslic dlugosc kazdego wektora?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+# w1
+length(w1)
+# w2
+length(w2)
+# w3
+length(w3)
+
+```
+
+Widzimy, ze wektor w3 jest krotszy niz wektory w1 i w2. Jesli chcesz polaczyc je w jedna ramke danych, wszystkie wektory musza miec te sama dlugosc podczas tworzenia tabeli na podstawie wektorow.
+
+</details>
+
+### CW 4
+
+Dodajmy kolor zielony do wektora w3 i nazwijmy ten wektor w3new. Jak to zrobic?
+
+<details>
+
+<summary>ODP 4</summary>
+
+```{r}
+# w3
+w3new <- c('blue','pink','blue','red','yellow','green')
+
+```
+
+Pamietaj, aby umiescic slowo 'green' w nawiasach, poniewaz jest to znak. Jesli o tym zapomnisz, pojawi sie komunikat o bledzie. R bedzie szukac obiektu w Twoim srodowisku, ale poniewaz nie ma obiektu 'green', wyswietli komunikat o bledzie.
+
+</details>
+
+### CW 5
+
+Sprobujmy ponownie utworzyc ramke danych, ale tym razem z wektorem w3new z dodanym kolorem zielonym.
+
+<details>
+
+<summary>ODP 5</summary>
+
+```{r}
+df1 <- data.frame(w1,w2,w3new)
+```
+
+Great! You made it.
+
+</details>
+
+### CW 6
+
+<p>Teraz, gdy mamy juz naszą ramke danych, mozemy ja obejrzec. Mozna to zrobic za pomoca nastepujacej funkcji: head(df1) lub klikajac nazwy tabel w panelu Srodowisko po prawej stronie.</p>
+
+<p>Jak widac, w tabeli znajduje sie wartosc NA. Jak uzyskac dostep do tej wartosci NA??</p>
+
+<details>
+
+<summary>ODP 6</summary>
+
+```{r}
+df1[4,1]
+```
+
+Aby uzyskac dostep do pozycji NA w ramce danych, nalezy sprawdzic jej pozycje w wierszu [4,], a nastepnie pozycje w kolumnie [,1], poniewaz ramki danych w porownaniu z wektorami sa dwuwymiarowe. Po uzyskaniu tych informacji mozna je polaczyc [4, 1]..
+
+</details>
