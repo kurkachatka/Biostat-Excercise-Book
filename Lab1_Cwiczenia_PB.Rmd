@@ -1,0 +1,172 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 1 - Pierwszy krok w Rstudio
+
+## Cwiczenia
+
+
+
+### CW 1
+
+Jakiego symbolu uzylbys, aby dodac komentarz w swoim kodzie?
+
+</ul>
+
+<details>
+
+<summary>ODP 1</summary>
+
+Aby skomentowac swoj kod bez naruszania pozostalej jego czesci, nalezy uzyc hashtagu #.
+
+</details>
+
+
+
+### CW 2
+
+Tworze zmienna o nazwie: g <- 'Gdansk'
+
+Jaka jest roznica miedzy bieganiem g and print(g)?
+
+```{r}
+g <- 'Gdansk'
+
+g
+
+print(g)
+
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+Nie ma zadnej roznicy; oba wywolaja obiekt.
+
+</details>
+
+
+
+### CW 3
+
+Do jakich czterech typow klas moga nalezec zmienne?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+# numeric: 
+nb3.6 <- 3.6
+
+# integer:
+nb4 <- 4
+
+# text
+text <- 'Gdansk'
+
+# factor:
+color <- 'blue'
+
+```
+
+Cztery rodzaje zajec to:
+<ul>
+
+<li>numeric: moze to byc liczba calkowita lub dziesietna</li>
+
+<li>integer: moze to byc tylko liczba calkowita</li>
+
+<li>text: moze to byc dowolna litera, ale zazwyczaj bardziej intuicyjne jest laczenie liter w celu utworzenia tej zmiennej</li>
+
+<li>factor: moze to byc cokolwiek, zapewni kategorie</li>
+
+</ul>
+
+
+</details>
+
+### CW 4
+
+Jak ocenilbys klase danej zmiennej? Czy potrafisz zidentyfikowac klase poniższych zmiennych?
+
+```{r}
+
+nb3.6 <- 3.6
+
+nb4 <- 4
+
+text <- 'Gdansk'
+
+color <- 'blue'
+
+```
+
+<details>
+
+<summary>ODP 4</summary>
+
+```{r}
+ 
+is.numeric(nb3.6)
+
+is.numeric(nb4)
+
+is.character(text)
+
+is.character(color)
+
+```
+
+is.XXXX zwraca odpowiedz TRUE lub FALSE. Jesli odpowiedz jest TRUE, oznacza to, ze zmienna rzeczywiscie pochodzi z klasy reprezentowanej przez XXXX, w przeciwnym razie nie pochodzi.
+
+</details>
+
+### CW 5
+
+W poprzednim cwiczeniu nb4 zostalo sklasyfikowane jako zmienna numeryczna, a kolor jako zmienna tekstowa. Chcielibysmy jednak, aby nb4 bylo traktowane jako liczba calkowita, a „kolor” jako czynnik. Mozna to osiagnac poprzez zmiane klasy naszego obiektu. Jak to zrobic?
+
+<details>
+
+<summary>ODP 5</summary>
+
+```{r}
+# zmien klase wartosci 4 z numerycznej na calkowita
+nb4new <- as.integer(nb4)
+is.integer(nb4new)
+
+# zmien klase wartosci 'blue' z numerycznej na czynnikowa
+colornew <- as.factor(color)
+is.factor(colornew)
+
+```
+
+</details>
+
+
+### CW 6
+
+W pytaniu 5 zdecydowalismy sie nadac przeksztalconym zmiennym inne nazwy: nb4 stalo sie nb4new, a color stalo sie colornew. Jakie bylyby konsekwencje, gdybysmy zdecydowali sie zachowac te same nazwy dla przeksztalconych zmiennych?
+
+<details>
+
+<summary>ODP 5</summary>
+
+W jezyku R nie ma funkcji 'cofnij', wiec jesli uzyjemy tej samej nazwy zmiennej, poprzednia zmienna zostanie nadpisana.
+
+</details>
+
