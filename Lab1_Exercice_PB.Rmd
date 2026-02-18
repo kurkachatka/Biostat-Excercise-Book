@@ -1,0 +1,172 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 1 - First step in Rstudio
+
+## Cwiczenia
+
+
+
+### CW 1
+
+Which symbol would you use to make a comment in your code?
+
+</ul>
+
+<details>
+
+<summary>ODP 1</summary>
+
+In order to comment on your code without disturbing the rest of it, you need to use the hashtag #
+
+</details>
+
+
+
+### CW 2
+
+I am creating a variable called: g <- 'Gdansk'
+
+What is the difference between running g and print(g)?
+
+```{r}
+g <- 'Gdansk'
+
+g
+
+print(g)
+
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+There is no difference; both will invoke the object.
+
+</details>
+
+
+
+### CW 3
+
+What are the four types of class that variables can belong to?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+# numeric: 
+nb3.6 <- 3.6
+
+# integer:
+nb4 <- 4
+
+# text
+text <- 'Gdansk'
+
+# factor:
+color <- 'blue'
+
+```
+
+The four type of classes are: 
+<ul>
+
+<li>numeric: it can be an integer or a decimal number</li>
+
+<li>integer: it can only be an integer</li>
+
+<li>text: it can be anything, but it is usually more intuitive to combine letters to create this variable</li>
+
+<li>factor: it can be anything, it will provide categories </li>
+
+</ul>
+
+
+</details>
+
+### CW 4
+
+How would you assess the class of a given variable? Can you identify the class of the following variables?
+
+```{r}
+
+nb3.6 <- 3.6
+
+nb4 <- 4
+
+text <- 'Gdansk'
+
+color <- 'blue'
+
+```
+
+<details>
+
+<summary>ODP 4</summary>
+
+```{r}
+ 
+is.numeric(nb3.6)
+
+is.numeric(nb4)
+
+is.character(text)
+
+is.character(color)
+
+```
+
+The is.XXXX is returning a TRUE or FALSE response. If the response is TRUE it means that indeed the variable is from the class represented by the XXXX, otherwise it is not.
+
+</details>
+
+### CW 5
+
+In the previous exercise, nb4 was classified as a numeric variable and colour as a text variable. However, we would like nb4 to be considered an integer and 'color' to be considered a factor. This can be achieved by changing the class of our object. How would you do this?
+
+<details>
+
+<summary>ODP 5</summary>
+
+```{r}
+# change the class of the value 4 from numeric to integer
+nb4new <- as.integer(nb4)
+is.integer(nb4new)
+
+# change the class of the value 'blue' from numeric to factor
+colornew <- as.factor(color)
+is.factor(colornew)
+
+```
+
+</details>
+
+
+### CW 6
+
+In question 5, we decided to give the transformed variables different names: nb4 became nb4new, and color became colornew. What would be the consequences if we decided to keep the same names for the transformed variables?
+
+<details>
+
+<summary>ODP 5</summary>
+
+In R, there is no 'undo', so if we use the same variable name, the previous variable is overwritten.
+
+</details>
+
