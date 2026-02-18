@@ -836,6 +836,91 @@ str(sparrows)
 
 ```
 
+## Filtrowanie
+
+Polega na wybieraniu wierszy spelniajacych pewne cechy. Sluzy do tego np. funkcja `filter()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+### Operatory porownawcze
+
+`==` - rowna sie; `!=` - nie rowna sie, `<` - mniejsze od, `<=` - mniejsze rowne od, `>` wieksze od, `>=` wieksze rowne od.
+
+1.  Stowrz ramke danych, ktora bedzie zawierala dane tylko o samicach wrobli.
+
+```{r}
+
+wrbl_F <- filter(wroble, sex == 'F') # zwroc uwage na roznice miedzy == a =
+
+# jak sprawdzic, czy sie udalo? np. uzywajac funkcji unique()
+
+unique(wroble$sex) # F i M dostepne w pierwotnej bazie
+unique(wrbl_F$sex) # tu pozostalo tylko F
+
+
+```
+
+2.  Stworz ramke danych, ktora bedzie zbierala dane tylko o wroblach o skrzydla (`wing`) dlugosci 60 mm.
+
+```{r}
+
+wrbl_60 <- filter(wroble, wing == 60)
+
+# czy sie udalo?
+
+
+summary(wroble$wing)
+
+summary(wrbl_60$wing)
+
+# jak wiele jest takich wrobli?
+
+nrow(wrbl_60) # zlicza wiersze
+
+
+```
+
+3.  Stworz ramke danych, ktora bedzie zawierala wroble o masie (`mass`) ponizej sredniej.
+
+```{r}
+
+# sprawdzenie ile wynosi srednia masa
+
+summary(wroble$mass)
+
+
+wrbl_lekkie <- filter(wroble, mass < 21.02)
+
+# sprawdzenie czy sie udalo?
+
+max(wrbl_lekkie$mass) # podaje najwyzsza wartosc ze zbioru
+
+
+
+```
+
+4.  Stworz ramke danych, ktora nie bedzie zawierala ptakow o minimalnej wartosci dlugosci dziolba (`bill)`
+
+```{r}
+
+#sprawdz minimalna wartosc
+
+min(wroble$bill)
+
+# filtruj
+
+wrbl_duze <- filter(wroble, bill != 11.4)
+
+# sprawdz czy zadzialalo
+
+min(wrbl_duze$bill)
+
+```
+
+### Operatory logiczne
+
+`|` - lub, `&` - i / oraz, `!` - nie
+
+![Complete set of boolean operations. x is the left-hand circle, y is the right-hand circle, and the shaded region show which parts each operator selects.](https://r4ds.had.co.nz/diagrams/transform-logical.png){width="563"}
+
 ## Cwiczenia
 
 ### CW1
