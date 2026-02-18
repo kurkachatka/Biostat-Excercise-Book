@@ -744,7 +744,7 @@ library(tidyverse)
 
 ```
 
-## Wczytywanie danych do srodowiska
+## Wczytywanie danych
 
 Do R mozemy wgrac dane w wielu roznych formatach, stowrzac z nich np. ramki danych/ tabele / wektory dostepne w srodowisku. Aby to zrobic trzeba wskazac, gdzie 'mieszkaja' nasze dane, czyli podac sciezke.
 
@@ -755,7 +755,7 @@ Do R mozemy wgrac dane w wielu roznych formatach, stowrzac z nich np. ramki dany
 wroble <- read_excel("C:/Users/marta/OneDrive - University of Gdansk/Dydaktyka/Biostatystyka/cw_3/Sparrows.xlsx")
 
 # zwroc uwage na: a) uzycie '', b) uzycie / zamiast \ (Windows domyslnie kopiuje \)
-# c) plik nie skada sie z samej nazwy, ale tez z info o formacie, w typ wypadku .xlsx
+# c) plik nie sklada sie z samej nazwy, ale tez z info o formacie, w typ wypadku .xlsx
 
 ```
 
@@ -771,6 +771,70 @@ wrbl <- read_excel('Sparrows.xlsx') # wskazanie samego pliku znajdujacego sie w 
 ```
 
 > TIP: Ustawianie WD jest bardzo dobrym zwyczajem, zwlaszcza przy pracy na wiecej niz jednym pliku. Ponadto, nie musi to byc tylko zrodlo plikow dla R, ale tez miejsce zapisywania elementow wygenerowanych w R (np. wykresow).
+
+3.  Dane cwiczeniowe czesto sa zawarte w pakietach. Obejrzyj
+
+```{r}
+
+library(tidyverse)
+
+View(starwars) # dane dostepne w ramach pakietu, zwroc uwage, ze nie znajduja sie w srodowiku.
+
+```
+
+## Selekcjonowanie
+
+Polega na wybieraniu poszczegolnych kolumn w ramce danych. Sluzy do tego np. funkcja `select()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+W ramce danych `wroble` zostaw tylko kolumne `species`
+
+```{r}
+
+select(wroble, species)
+
+str(wroble) # nadal zawiera wszystkie kolumny, poniewaz zmiana nie zostala w zaden sposob zapisana w srodowisku
+
+ncol(wroble) # sprawdzenie liczby kolumn w ramce danych
+
+wrbl1 <- select(wroble, species) # stworzy oddzielny element w srodowisku zawierajacy wybrana kolumne
+
+# LUB
+
+wroble <- select(wroble, species) # nadpisze istniejaca baze danych, ale wtedy staracisz wszystkie inne informacje. Aby je otworzyc musisz ponownie wczytac dane do srodowiska
+
+```
+
+W ramce danych `wroble` zostaw kolumny `species` i `age`.
+
+```{r}
+
+wrbl2 <- select(wroble, species, age)
+
+#LUB
+
+wrbl2 <- select(wroble, species:age) # wskazuje na zakres
+
+
+```
+
+W ramce danych `wroble` zostaw wszystkie kolumny, z wyjatkiem `bill`.
+
+```{r}
+
+wrbl3 <- select(wroble, -bill)
+
+```
+
+Stworz ramke danych `sprrows`, ktora bedzie zawierala kolumny `species` , `sex`, `wing` i `mass` pochodzace z ramki danych `wroble`.
+
+```{r}
+
+sparrows <- select(wroble, species:wing, mass)
+
+str(sparrows)
+
+
+```
 
 ## Cwiczenia
 
