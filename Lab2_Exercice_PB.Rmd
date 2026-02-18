@@ -1,0 +1,137 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 2 - Vectors and data frames
+
+## Cwiczenia
+
+### CW 1
+
+We will now create three vectors:
+
+<ul>
+
+<li>w1 which contains the following sequence: 7,0,8,NA,5,5</li>
+
+<li>w2 which contains a sequence of number from 1 to 6</li>
+
+<li>w3 which contains the following
+text:'blue','pink','blue','red','yellow'</li>
+
+</ul>
+
+<details>
+
+<summary>ODP 1</summary>
+
+```{r}
+w1 <- c(7,0,8,NA,5,5)
+w2 <- 1:6
+w3 <- c('blue','pink','blue','red','yellow')
+```
+
+</details>
+
+### CW 2
+
+Great! Let's combine those three vectors into a data frame. How would you
+do that?
+
+<details>
+
+<summary>ODP 2</summary>
+
+```{r}
+df1 <- data.frame(w1,w2,w3)
+```
+
+</details>
+
+### CW 3
+
+We are getting the following error message: "Error in data.frame(w1,w2,w3):
+arguments imply differing number of rows: 6, 5" Which function can you
+use to determine the length of each of each vector?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+# w1
+length(w1)
+# w2
+length(w2)
+# w3
+length(w3)
+
+```
+
+We can see that vector w3 is shorter than vectors w1 and w2. If you want to combine them into one data frame, all your vectors need to be the same length when creating a table based on vectors.
+
+</details>
+
+### CW 4
+
+Let's add the color green to the vector w3 and name the vector w3new. How would you do that?
+
+<details>
+
+<summary>ODP 4</summary>
+
+```{r}
+# w3
+w3new <- c('blue','pink','blue','red','yellow','green')
+
+```
+
+Make sure you put parentheses around the word 'green' as it is a character. If you forget, you will get an error message. R will look for an object in your environment, but as there is no 'green' object, it will give you an error message.
+
+</details>
+
+### CW 5
+
+Let's try creating the data frame again, but this time with the w3new vector with the added green color
+
+<details>
+
+<summary>ODP 5</summary>
+
+```{r}
+df1 <- data.frame(w1,w2,w3new)
+```
+
+Great! You made it.
+
+</details>
+
+### CW 6
+
+<p>Now that we have our data frame, we can take a look at it. You can do this by using the following function: head(df1), or by clicking on your table names in the Environment panel on the right.</p>
+
+<p>As you can see, there is an NA in the table. How would you access this NA?</p>
+
+<details>
+
+<summary>ODP 6</summary>
+
+```{r}
+df1[4,1]
+```
+
+To access the position of the NA in your data frame, you need to look at its row position [4,] and then its column position [,1], as data frames compared to vectors are two-dimensional. Once you have this information, you can combine it [4, 1].
+
+</details>
