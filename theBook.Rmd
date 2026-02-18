@@ -722,3 +722,84 @@ summary(rok)
 
 
 ```
+
+# Lab 3
+
+## Pakiety
+
+Pakiety rozszerzają podstawowe możliwości w R. Zawierają funkcje, dane, dokumentacje ...
+
+Znaczna wiekszosc pakietow mozna zanalezc na repozytrium [CRAN](https://cran.r-project.org/).
+
+Jezeli dany pakiet nie byl nigdy uzywany na danym komputerze, nalezy go najpierw zainstalowac uzywajac funkcji `install.packages()`. **Wystarczy to zrobic jeden raz!** Pozniej, kazdorazowo przy rozpoczeciu sesji w R nalezy wywolac wszystkie pakiety, ktorych chcemy uzyc. Sluzy do tego funkcja `library()`
+
+```{r}
+
+install.packages('readxl') # sluzy do wczytywania danych zapisanych w formacie .xlsx
+install.packages('tidyverse') # podstawowy pakiet do 'data science'
+
+library(readxl)
+library(tidyverse)
+
+
+```
+
+## Wczytywanie danych do srodowiska
+
+Do R mozemy wgrac dane w wielu roznych formatach, stowrzac z nich np. ramki danych/ tabele / wektory dostepne w srodowisku. Aby to zrobic trzeba wskazac, gdzie 'mieszkaja' nasze dane, czyli podac sciezke.
+
+1.  Wskazanie konkretnego pliku
+
+```{r}
+
+wroble <- read_excel("C:/Users/marta/OneDrive - University of Gdansk/Dydaktyka/Biostatystyka/cw_3/Sparrows.xlsx")
+
+# zwroc uwage na: a) uzycie '', b) uzycie / zamiast \ (Windows domyslnie kopiuje \)
+# c) plik nie skada sie z samej nazwy, ale tez z info o formacie, w typ wypadku .xlsx
+
+```
+
+2.  Wskazanie folderu roboczego (ang. working directory) i pozniejsze wskazanie pliku w jego obrebie
+
+```{r}
+
+setwd("C:/Users/marta/OneDrive - University of Gdansk/Dydaktyka/Biostatystyka/cw_3") # wskazuje na filder 'cw_3' i wszystkie elementy, ktore sie w nim znajduja
+
+wrbl <- read_excel('Sparrows.xlsx') # wskazanie samego pliku znajdujacego sie w WD
+
+
+```
+
+> TIP: Ustawianie WD jest bardzo dobrym zwyczajem, zwlaszcza przy pracy na wiecej niz jednym pliku. Ponadto, nie musi to byc tylko zrodlo plikow dla R, ale tez miejsce zapisywania elementow wygenerowanych w R (np. wykresow).
+
+## Cwiczenia
+
+### CW1
+
+Czemu ten kod nie dziala?
+
+```{r}
+
+install.packages(palmerpenguins)
+
+library('palmerpenguins')
+
+
+```
+
+<details>
+
+<summary>ODP 1</summary>
+
+' - mala rzecz o wielkim znaczeniu. Dzialajacy kod wyglada tak:
+
+```{r}
+
+install.packages('palmerpenguins')
+
+library(palmerpenguins)
+
+
+```
+
+</details>
