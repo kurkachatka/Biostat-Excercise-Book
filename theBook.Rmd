@@ -1062,6 +1062,34 @@ wrbl.ar.spec.tar <- arrange(wroble, desc(species), tarsus)
 
 ```
 
+## Operator potokowy `%>%`
+
+`%>%` rowniez jest czescia pakietu `dyplr`. Doslownie oznacza 'i potem'. Sluzy to tworzenia ciagow nastepujacych po sobie akcji.
+
+Stworz ramke danych, gdzie bedzie zawierala dane tylko o samicach o dlugosci skoku pomiedzy 21 a 23 mm, bez kolumny okreslajacej ich gatunek i z danymi posortowanymi rosnaco wg ich masy.
+
+```{r}
+
+wrbl.potok1 <- wroble %>%  # oznacza: wez obiekt wroble i potem
+  filter(sex == 'F' & between(tarsus, 21, 23)) %>% #przefiltruj i potem
+  select(-species) %>% #wyselekcjonuj i potem
+  arrange(mass) #posortuj
+
+
+```
+
+Stowrz ramke danych, ktora nie bedzie miala ptakow o masie wiekszej niz 21 g i bedzie zawierala tylko informacje o biometrii.
+
+```{r}
+
+wrbl.potok2 <- wroble %>% 
+  filter(!mass > 21) %>% 
+  select(wing:mass)
+
+```
+
+> TIP: `%>%` jest jednym z najczesniej uzywanych operatorow w R.
+
 ## Cwiczenia
 
 ### CW1
