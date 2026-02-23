@@ -921,7 +921,7 @@ min(wrbl_duze$bill)
 
 ![Complete set of boolean operations. x is the left-hand circle, y is the right-hand circle, and the shaded region show which parts each operator selects.](https://r4ds.had.co.nz/diagrams/transform-logical.png){width="563"}
 
-Stworz ramke danych, ktora bedzie zawierala tylko osobniki o minimalnej i maksymalnej masie.
+1.  Stworz ramke danych, ktora bedzie zawierala tylko osobniki o minimalnej i maksymalnej masie.
 
 ```{r}
 
@@ -935,7 +935,7 @@ wrbl_skrajne <- filter(wroble, mass == 16.5 | mass == 26.5)
 
 ```
 
-Stworz ramke danych, ktora bedzie zabierala osobniki o minimalnej masie i bedzie w wieku juv.
+2.   Stworz ramke danych, ktora bedzie zabierala osobniki o minimalnej masie i bedzie w wieku juv.
 
 ```{r}
 
@@ -946,7 +946,7 @@ wrbl4 <- filter(wroble, mass == 16.5 & age == 'juv')
 
 ```
 
-Stworz ramke danych, w ktorej ptaki nie beda ciezsze niz 20 g i nie beda mialy samcami.
+3.  Stworz ramke danych, w ktorej ptaki nie beda ciezsze niz 20 g i nie beda mialy samcami.
 
 ```{r}
 
@@ -960,7 +960,7 @@ wrbl6 <- filter(wroble, mass <= 20 & sex == 'F')
 
 ```
 
-Stworz ramke danych, w ktorej beda znajodwac sie ptaki o masie 20 i 25 g. Uzyj operatora dopasowania `%in%` .
+4.  Stworz ramke danych, w ktorej beda znajodwac sie ptaki o masie 20 i 25 g. Uzyj operatora dopasowania `%in%` .
 
 ```{r}
 
@@ -970,7 +970,15 @@ wrbl7 <- filter(wroble, mass %in% c(20, 25))
 
 ```
 
-Stworz ramke danych, w ktorej nie bedzie samcow i osobnikow z gatunku P. montanus
+5.  Stworz ramke danych, w ktorej ptaki beda mialy mase wieksza niz 18.2 i mniejsza niz 19.2. Uzyj funckji `between()` .
+
+```{r}
+
+wrbl.between <- filter(wroble, between(mass, 18.2, 19.2))
+
+```
+
+6.  Stworz ramke danych, w ktorej nie bedzie samcow i osobnikow z gatunku P. montanus
 
 ```{r}
 
@@ -988,7 +996,7 @@ wrbl8 <- filter(wroble, sex != 'M' & species != 'montanus')
 >
 > W skrocie przy pojedynczych wykluczeniach, operatory & i \| dzialaja inaczej niz przy wlaczeniach.
 
-Stworz ramke danych, gdzie nie bedzie mlodych samic.
+7.  Stworz ramke danych, gdzie nie bedzie mlodych samic.
 
 ```{r}
 
@@ -1001,7 +1009,7 @@ wrbl9.1 <- filter(wroble, !(sex == 'F' & age == 'juv'))
 
 ```
 
-Stworz ramke danych, gdzie nie bedzie mlodych ptakow i samic.
+8.  Stworz ramke danych, gdzie nie bedzie mlodych ptakow i samic.
 
 ```{r}
 
@@ -1011,6 +1019,46 @@ wrbl10 <- filter(wroble, sex != 'F' & age != 'juv')
 
 wrbl.10.1 <- filter(wroble, !(sex == 'F' | age == 'juv'))
 
+
+
+
+
+```
+
+## Sortowanie
+
+Zmienianie kolejnosci przypadkow wg. wybranej zasady. Sluzy do tego np. funkcja `arrange()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+1.  Posortuj dane od najlzejszego do najciezszego ptaka.
+
+```{r}
+
+wrbl.ar.mass <- arrange(wroble, mass)
+
+
+```
+
+2.  Posortuj dane od najciezszego do najlzejszego ptaka
+
+```{r}
+
+wrbl.ar.des.mass <- arrange(wroble, desc(mass))
+
+```
+
+3.  Posortuj dane rosnaco pod wzgledem dlugosci skoku i w odwrotnej kolejnosci alfabetycznej gatunku.
+
+```{r}
+
+wrb.ar.tar.spec <- arrange(wroble, tarsus, desc(species))
+
+```
+
+4.  Posortuj dane w odwrotnej kolejnosci alfabetycznej gatunku i rosnaco pod wzgledem skoku
+
+```{r}
+
+wrbl.ar.spec.tar <- arrange(wroble, desc(species), tarsus)
 
 ```
 
