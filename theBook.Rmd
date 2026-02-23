@@ -921,6 +921,99 @@ min(wrbl_duze$bill)
 
 ![Complete set of boolean operations. x is the left-hand circle, y is the right-hand circle, and the shaded region show which parts each operator selects.](https://r4ds.had.co.nz/diagrams/transform-logical.png){width="563"}
 
+Stworz ramke danych, ktora bedzie zawierala tylko osobniki o minimalnej i maksymalnej masie.
+
+```{r}
+
+min(wroble$mass)
+max(wroble$mass)
+
+
+wrbl_skrajne <- filter(wroble, mass == 16.5 | mass == 26.5)
+
+# jaki efekt daje uzycie & zamiast |?
+
+```
+
+Stworz ramke danych, ktora bedzie zabierala osobniki o minimalnej masie i bedzie w wieku juv.
+
+```{r}
+
+wrbl4 <- filter(wroble, mass == 16.5 & age == 'juv')
+
+# jaki efekt daje uzycie | zamiast &?
+
+
+```
+
+Stworz ramke danych, w ktorej ptaki nie beda ciezsze niz 20 g i nie beda mialy samcami.
+
+```{r}
+
+wrbl5 <- filter(wroble, !mass > 20 & sex != 'M')
+
+# lub
+
+wrbl6 <- filter(wroble, mass <= 20 & sex == 'F')
+
+# as they say there is more than one way to skin a cat ;)
+
+```
+
+Stworz ramke danych, w ktorej beda znajodwac sie ptaki o masie 20 i 25 g. Uzyj operatora dopasowania `%in%` .
+
+```{r}
+
+wrbl7 <- filter(wroble, mass %in% c(20, 25))
+
+# przydatna alternatywna dla uzywania wielu | przy filtorowaniu na podstawie cechy zapisanej w obrebie jednej zmiennej (kolumny)
+
+```
+
+Stworz ramke danych, w ktorej nie bedzie samcow i osobnikow z gatunku P. montanus
+
+```{r}
+
+wrbl8 <- filter(wroble, sex != 'M' & species != 'montanus')
+
+
+
+```
+
+> TIP: Zauwaz, ze mimo tego, ze filtorwanie zbiory odbylo sie z uzyciem warunkow z dwoch roznych kolumn, uzyto operatora & nie \|. Jest to zwiazane z prawami De Morgana, ktore stanowia, ze:
+>
+> -   `!(A & B)` to samo co `!A | !B`
+>
+> -   `!(A | B)` to samo co `!A & !B`
+>
+> W skrocie przy pojedynczych wykluczeniach, operatory & i \| dzialaja inaczej niz przy wlaczeniach.
+
+Stworz ramke danych, gdzie nie bedzie mlodych samic.
+
+```{r}
+
+wrbl9 <- filter(wroble, sex != 'F' | age != 'juv')
+
+# LUB
+
+wrbl9.1 <- filter(wroble, !(sex == 'F' & age == 'juv'))
+
+
+```
+
+Stworz ramke danych, gdzie nie bedzie mlodych ptakow i samic.
+
+```{r}
+
+wrbl10 <- filter(wroble, sex != 'F' & age != 'juv')
+
+# LUB
+
+wrbl.10.1 <- filter(wroble, !(sex == 'F' | age == 'juv'))
+
+
+```
+
 ## Cwiczenia
 
 ### CW1
