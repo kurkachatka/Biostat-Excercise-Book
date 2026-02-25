@@ -1930,3 +1930,68 @@ iris %>%
 ```
 
 </details>
+
+# Lab 5
+
+## Palmer Penguins - ramka danych
+
+Do zadan uzyta zostanie cwiczeniowa baza danych dostepna w pakiecie `palmerpenguins`. Metadane sa dostepne pod `?penguins` lub `?penguins_raw` .
+
+![Meet the Plamer penguins! Artwork by \@allison_horst”](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
+
+1.  Wczytaj pakiet i zapisz dane w srodowisku.
+
+```{r}
+
+library(palmerpenguins) # jezeli robisz to pierwszy raz, nalezy poprzedzic to instalacja tego pakietu
+
+pingwiny <- penguins
+
+#objerzyj ramke danych
+
+View(pingwiny)
+
+# sprawdz strukture danych
+
+str(pingwiny)
+```
+
+## Tworzenie nowych zmiennych
+
+Słuzy do tego np. funckja `mutate()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+1.  Stworz nowa zmiena 'kondycja', ktora bedzie masa ciala pingiwnow podzielona przez dlugosc skrzydla.
+
+```{r}
+
+ping.kond <- pingwiny %>% 
+  mutate(kondycja = body_mass_g/flipper_length_mm)
+
+
+```
+
+2.  Stworz trzy nowe zmienne 'bill.vol', ktora bedzie ilorazem dlugosci dzioba i grubosci dzioba, 'body_mass_kg', ktora bedzie masa ptakow wyrazona w kilogramach i residual.cond, ktora bedzie roznica miedzy srednia kondycja wszystkich pingiwnow a kondycja danego osobnika.
+
+```{r}
+
+pingw2 <- ping.kond %>% 
+  mutate(bill.vol = bill_length_mm * bill_depth_mm,
+         body_mass_kg = body_mass_g/1000,
+         residual.cond = mean(kondycja, na.rm = T) - kondycja)
+
+```
+
+## Jeżeli...
+
+Do warunkowania loginczego w R moze sluzyc funkcja `ifelse()`. Ta funkcja ma trzy argumenty: 1) test logiczny, ktory daje odpowiedz TRUE/FALSE; 2) wartosci zwracane jezeli odpowiedz jest TRUE; 3) wartosci zwracane jezeli odpowiedz jest FALSE.
+
+Stworz nowa ramke danych zawierajaca tylko pingwiny Adelie. W obrebie tej ramki danych stworz nowa zmienna 'size', gdzie pojawi sie wartosc 'small' jezeli dlugosc skrzydla jest mniejsza niz srednia lub wartosc 'large' dla pozostalych przypadkow.
+
+```{r}
+
+adelie <- pingwiny %>% filter(species == 'Adelie') %>% 
+  mutate(size = ifelse(flipper_length_mm < median(flipper_length_mm, na.rm = T),
+                       'small', 'large'))
+
+
+```
