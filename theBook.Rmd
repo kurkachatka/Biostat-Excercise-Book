@@ -258,7 +258,7 @@ print(gat) # utrata informacji
 
 ## Pomocy!
 
-1.  Nie ignoruj tego co dzieje sie w srodowisku. Jezeli R cos nie pasuje, to R to komunikuje.
+1.  Nie ignoruj tego co dzieje sie w konsoli. Jezeli R cos nie pasuje, to R to komunikuje.
 
 ```{r}
 
@@ -284,7 +284,7 @@ galmed <- 'Gallinago media
 
 W konsoli pojawia sie `+`. Informuje nas o tym, ze formula nie jest skonczona. Np. brakuje zamknietego nazwiasu, albo jak w tym przypadku cudzyslowa. Probowanie wyzwalania kolejnych funckji bedzie kumulowalo skutki tego bledu. Zeby to rozwiazac wejdz w konsole i albo dopisz brakujacy znak (tutaj ') i wyzwol. Albo wejdz w konsole, klikjni ESC, aby zakonczyc zadanie, popraw formule kodu i pusc jeszcze raz.
 
-Help
+4.  Help
 
 Każda pakiet i zawarte w nich fukcje sa dokladnie opisane w ich dokumentacji. Mozna ja wywolac uzywajac `?` przed nazwa danej funckji
 
@@ -1655,7 +1655,29 @@ height_median <- median(cleaned_starwars$height, na.rm = TRUE)
 
 # Lab 4
 
-Wycztaj dane `BobryR.xlsx`
+## Statystyki opisowe
+
+Celem statystyk opisowych jest podsumowanie i przedstawianie infomracji ze zbioru danych. Dwie glowne kategorie to miary polozenia (wsrod nich przedewszystkim miary tendencji centralnej) i miary rozrzutu. Kilka przykladow:
+
+-   Miary tendencji centralnej
+
+    -   srednia (np. arytmetyczna, wazona)
+
+    -   mediana - dzieli obserwacje na dwie rowne polowy i wskazuje wartosc od ktorej 50% obserwacji jest mniejsze, a drugie 50% wieksze
+
+    -   dominanta/moda - najczesciej wystepujaca wartosc w zbiorze
+
+-   Miary rozrzutu
+
+    -   odchylenie standardowe - mowi o tym o ile srednio rozni sie wynik od sredniej arytmetycznej
+
+    -   rozstep kwartlowy - roznica miedzy trzecim (75%) a pierwszym kwartylem (25%). Kwartle dzialaja tak jak mediana, w zasadzie mediana jest rowniez rodzajem kwartyla, tzw. srodowym (50%)
+
+    -   zakres - roznica miedzy wartoscia minimalna a maksymalna
+
+## BobryR - ramka danych
+
+1.  Wycztaj dane `BobryR.xlsx`
 
 ```{r}
 
@@ -1668,7 +1690,7 @@ bobry <- read_excel('BobryR.xlsx')
 
 ```
 
-Obejrzyj dane.
+2.  Obejrzyj dane.
 
 ```{r}
 
@@ -1715,7 +1737,7 @@ Metadane:
 
 Dwie funckje `group_by()` i `summarise()` nalezace do pakietu `dplyr` sa absolutnie fundamentalne podczas eksploracji danych. `group_by()` nie zmienia struktury ramki danych, ale tworzy 'wirtulane' grupy wewnatrz jej struktury, na podstawie wybranej zmiennej lub zmiennych. `summarise()` redukuje wiele przypadkow do jednego podsumowania/ statystyki opisowej.
 
-Oblicz srednia i odchylenie standardowe z `SR` oddzielnie dla kazdego gatunku drzew
+1.  Oblicz srednia i odchylenie standardowe z `SR` oddzielnie dla kazdego gatunku drzew
 
 ```{r}
 
@@ -1731,18 +1753,10 @@ bobry %>% group_by(GAT) %>%
   summarise(srednia = mean(SR, na.rm = T),
             odchylenie = sd(SR, na.rm = T))
 
-# lub odflitrowujac wartosci na ze zmiennej SR
+# lub odflitrowujac wartosci NA ze zmiennej SR
 
 bobry %>% 
   filter(!is.na(SR)) %>%
-  group_by(GAT) %>% 
-  summarise(srednia = mean(SR),
-            odchylenie = sd(SR))
-
-# dodatkowo pozbadz sie NA ze zmiennej GAT
-
-bobry %>% 
-  filter(!is.na(SR) & !is.na(GAT)) %>%
   group_by(GAT) %>% 
   summarise(srednia = mean(SR),
             odchylenie = sd(SR))
@@ -1767,7 +1781,9 @@ bobry %>% na.omit() %>%
 
 ```
 
-Dlaczego w odchyleniu standardowym nadal widnieja wartosci `NA`? Odopowiedzia jest liczba danych, z ktorych ta statystyka jest wyliczona. Dodaj jeszcze jedna statystyke opisowa, jaka jest liczba przypadkow.
+Dlaczego w odchyleniu standardowym nadal widnieja wartosci `NA`? Odopowiedzia jest liczba danych, z ktorych ta statystyka jest wyliczona.
+
+2.  Dodaj jeszcze jedna statystyke opisowa, jaka jest liczba przypadkow.
 
 ```{r}
 
@@ -1780,9 +1796,9 @@ bobry %>%
 
 ```
 
-Nie da sie wyliczyc sd ze zbioru o n = 1.
+Nie da sie wyliczyc SD ze zbioru o n = 1.
 
-Uzywanie `group_by()` i `summarise()` generuje obiekt tabelaryczny, tzw. tibble. Mozna nim manipulowac tak jak ramka danych. Z powstalego podsumowania pozbadz sie gatunkow o liczebnosc = 1 i posortuj malejaco wzgledem sredniej.
+3.  Uzywanie `group_by()` i `summarise()` generuje obiekt tabelaryczny, tzw. tibble. Mozna nim manipulowac tak jak ramka danych. Z powstalego podsumowania pozbadz sie gatunkow o liczebnosc = 1 i posortuj malejaco wzgledem sredniej.
 
 ```{r}
 
@@ -1798,3 +1814,119 @@ bobry %>%
 
 
 ```
+
+4.  Zapoznaj sie z innymi statystykami opisowymi. Wylicz mediane, rozstep kwartylowy, wartosci minimalne i maksymalne z dystansu od cigu wodnego dla drzew o stopniu uszkodzenia od 0 do 3
+
+```{r}
+
+bobry %>% 
+  filter(!is.na(DYST) & between(USZKODZ, 0, 3)) %>% 
+  group_by(as.factor(USZKODZ)) %>%  # w ramce danych USZKOD jest klasy numeric
+  summarise(MEDIANA = median(DYST), # oblicz srednia
+            ROZSTEP = IQR(DYST), # oblicz rozstep kwartylowy
+            MIN = min(DYST), #oblicz wartosc minimalna
+            MAX = max(DYST)) #oblicz wartosc maksymalna
+
+
+```
+
+5.  Wyboraz sobie, ze jednak chcesz zmienic nazwe kolumny w tabeli powstalej w poprzednim podpunkcie (z ROZSTEP na IQR). Sluzy do tego funckja `rename()`, ktora mozesz zastosowac zarowno tutaj jak i do innych ramkek danych.
+
+```{r}
+
+# ten sam kod co w podpunkcie wyzej
+
+bobry %>% 
+  filter(!is.na(DYST) & between(USZKODZ, 0, 3)) %>% 
+  group_by(as.factor(USZKODZ)) %>%
+  summarise(MEDIANA = median(DYST), 
+            ROZSTEP = IQR(DYST), 
+            MIN = min(DYST), 
+            MAX = max(DYST)) %>% 
+  rename(IQR = ROZSTEP) # zmiana nazwy, w formacie nowa nazwa = stara nazwa
+
+
+```
+
+6.  Sprawdz ile roznych gatunkow drzew stwierdzono w danej klasie uszkodzenia. Ustaw wyniki w tabeli od klasy uszkodzenia o najmniejszej do najwiekszej liczbie gatunkow drzew .
+
+```{r}
+
+bobry %>% 
+  group_by(as.factor(USZKODZ)) %>% 
+  summarise(rozne.gatunki = n_distinct(GAT)) %>%
+  arrange(rozne.gatunki) %>% 
+  na.omit()
+
+```
+
+7.  Pogrupuj dane pod wzgledem uszkodzenia i gatunku drzew, uwzgledniajac tylko gatunki 'Ps' i 'Bs'. Nastepnie oblicz wartosc srednia i odchylenie standardowe ze srednicy (SR).
+
+```{r}
+
+
+bobry %>%
+  filter(GAT %in% c('Ps','Bs')) %>% 
+  filter(!is.na(SR)) %>% 
+  group_by(as.factor(USZKODZ), GAT) %>%
+  summarise(srednia = mean(SR),
+            sd = sd(SR))
+
+
+```
+
+8.  Sprawdz jaka bedzie roznica, jezeli wykonasz podpunkt 7 ustawiajac argumenty grupujace w odwrotnej kolejnosci.
+
+```{r}
+
+bobry %>%
+  filter(GAT %in% c('Ps','Bs')) %>% 
+  filter(!is.na(SR)) %>% 
+  group_by(GAT, as.factor(USZKODZ), ) %>%
+  summarise(srednia = mean(SR),
+            sd = sd(SR))
+
+
+
+```
+
+9.  Zapisz tabele stworzona w punkcie 8 w srodowisku, objerzyj wyniki uzywajac funkcji `View()`.
+
+```{r}
+
+tabela.z.wynikami <- bobry %>%
+  filter(GAT %in% c('Ps','Bs')) %>% 
+  filter(!is.na(SR)) %>% 
+  group_by(GAT, as.factor(USZKODZ), ) %>%
+  summarise(srednia = mean(SR),
+            sd = sd(SR))
+
+
+View(tabela.z.wynikami)
+
+
+```
+
+## Cwiczenia
+
+### CW 1
+
+Mediana to to samo co srodkowy kwartyl (50%). Sprawdz, czy tak jest wyliczajac mediane i srodowy kwartyl (uzywajac funckji `quantile()`) dla zmiennej Petal.Width oddzielnie dla 3 gatunkow irysow, o ktorych dane dostepne sa w bazie iris.
+
+Wskazowka: funkcja `quantile()` ma dwa argumenty: wektor, z ktorego wyliczana jest ta statystyka opisowa oraz kwartyl nam chodzi (np. drugi kwartyl to 0.25).
+
+<details>
+
+<summary>ODP 1</summary>
+
+```{r}
+
+
+iris %>%
+  group_by(Species) %>% 
+  summarise(mediana = median(Petal.Width),
+            q50 = quantile(Petal.Width, 0.5))
+
+```
+
+</details>
