@@ -258,7 +258,7 @@ print(gat) # utrata informacji
 
 ## Pomocy!
 
-1.  Nie ignoruj tego co dzieje sie w srodowisku. Jezeli R cos nie pasuje, to R to komunikuje.
+1.  Nie ignoruj tego co dzieje sie w konsoli. Jezeli R cos nie pasuje, to R to komunikuje.
 
 ```{r}
 
@@ -284,7 +284,7 @@ galmed <- 'Gallinago media
 
 W konsoli pojawia sie `+`. Informuje nas o tym, ze formula nie jest skonczona. Np. brakuje zamknietego nazwiasu, albo jak w tym przypadku cudzyslowa. Probowanie wyzwalania kolejnych funckji bedzie kumulowalo skutki tego bledu. Zeby to rozwiazac wejdz w konsole i albo dopisz brakujacy znak (tutaj ') i wyzwol. Albo wejdz w konsole, klikjni ESC, aby zakonczyc zadanie, popraw formule kodu i pusc jeszcze raz.
 
-Help
+4.  Help
 
 Każda pakiet i zawarte w nich fukcje sa dokladnie opisane w ich dokumentacji. Mozna ja wywolac uzywajac `?` przed nazwa danej funckji
 
@@ -468,6 +468,149 @@ my_varıable
 <summary>ODP 5</summary>
 
 Jedna literka roznicy sprawia, ze R nie jest w stanie znalezc takiej zmiennej. Nie istnieje ona w srodowisku
+
+</details>
+
+### CW 6
+
+Jakiego symbolu uzylbys, aby dodac komentarz w swoim kodzie?
+
+<details>
+
+<summary>ODP 6</summary>
+
+Aby skomentowac swoj kod bez naruszania pozostalej jego czesci, nalezy uzyc hashtagu #.
+
+</details>
+
+### CW 7
+
+Stworz zmienna o nazwie: g \<- 'Gdansk'
+
+Jaka jest roznica miedzy 'puszczeniem' (CTRL + ENTER / RUN) g a `print(g)`?
+
+```{r}
+g <- 'Gdansk'
+
+g
+
+print(g)
+
+```
+
+<details>
+
+<summary>ODP 7</summary>
+
+Nie ma zadnej roznicy; oba wywolaja obiekt ze srodowiska.
+
+</details>
+
+### CW 8
+
+Do jakich czterech typow klas moga nalezec zmienne?
+
+<details>
+
+<summary>ODP 8</summary>
+
+```{r}
+# numeric: 
+nb3.6 <- 3.6
+
+# integer:
+nb4 <- 4
+
+# text
+text <- 'Gdansk'
+
+# factor:
+color <- 'blue'
+
+```
+
+Cztery rodzaje zmiennych to:
+
+<ul>
+
+<li>numeric: moze to byc liczba calkowita lub dziesietna</li>
+
+<li>integer: moze to byc tylko liczba calkowita</li>
+
+<li>text: moze to byc dowolna litera, ale zazwyczaj bardziej intuicyjne jest laczenie liter w celu utworzenia slow</li>
+
+<li>factor: moze to byc cokolwiek, zostanie wtedy zakodowane jako kategoria</li>
+
+</ul>
+
+</details>
+
+### CW 9.1
+
+Czy potrafisz zidentyfikowac klase poniższych zmiennych?
+
+```{r}
+
+nb3.6 <- 3.6
+
+nb4 <- 4
+
+text <- 'Gdansk'
+
+color <- 'blue'
+
+```
+
+<details>
+
+<summary>ODP 9.1</summary>
+
+```{r}
+ 
+is.numeric(nb3.6)
+
+is.numeric(nb4)
+
+is.character(text)
+
+is.character(color)
+
+```
+
+is.XXXX zwraca odpowiedz TRUE lub FALSE. Jesli odpowiedz jest TRUE, oznacza to, ze zmienna rzeczywiscie pochodzi z klasy reprezentowanej przez XXXX, w przeciwnym razie nie pochodzi. Do tego zadania mozna rowniez uzyc funckji `class()`.
+
+</details>
+
+### CW 9.2
+
+W poprzednim cwiczeniu nb4 zostalo sklasyfikowane jako zmienna numeryczna, a kolor jako zmienna tekstowa. Chcielibysmy jednak, aby nb4 bylo traktowane jako liczba calkowita, a „kolor” jako czynnik (kategoria). Mozna to osiagnac poprzez zmiane klasy naszego obiektu. Jak to zrobic?
+
+<details>
+
+<summary>ODP 9.2</summary>
+
+```{r}
+# zmien klase wartosci 4 z numerycznej na calkowita
+nb4new <- as.integer(nb4)
+is.integer(nb4new)
+
+# zmien klase wartosci 'blue' z numerycznej na czynnikowa
+colornew <- as.factor(color)
+is.factor(colornew)
+
+```
+
+</details>
+
+### CW 9.3
+
+W zadaniu 9.2 zdecydowalismy sie nadac przeksztalconym zmiennym inne nazwy: nb4 stalo sie nb4new, a color stalo sie colornew. Jakie bylyby konsekwencje, gdybysmy zdecydowali sie zachowac te same nazwy dla przeksztalconych zmiennych?
+
+<details>
+
+<summary>ODP 9.3</summary>
+
+W jezyku R nie ma funkcji 'cofnij', wiec jesli uzyjemy tej samej nazwy zmiennej, poprzednia zmienna zostanie nadpisana.
 
 </details>
 
@@ -719,6 +862,1136 @@ class(rok$pory)
 str(rok)
 
 summary(rok)
+
+
+```
+
+## Cwiczenia
+
+### CW1
+
+Zaladuj zbior danych zawarty w języku R i przyjrzyj się jego strukturze.
+
+```{r}
+str(iris)
+```
+
+Pomaga to uzyskac ogolny obraz danych.
+
+Jakiego polecenia mozna uzyc, aby wyswietlic pierwsze wiersze tego zestawu danych?
+
+<details>
+
+<summary>ODP 1</summary>
+
+Mozesz uuzyc nastepujacego polecenia. Wyswietli ono pierwsze szesc wierszy danych.
+
+```{r}
+head(iris)
+```
+
+</details>
+
+### CW 2
+
+Jaka jest roznica?
+
+```{r}
+# a
+iris[2, ]
+
+# b
+iris[, 2]
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+Liczba przed przecinkiem w [x,x] odnosi się do wiersza; liczba po przecinku odnosi się do kolumny ramki danych.
+
+<details>
+
+### CW 3
+
+Jak postepowac z wartoscami nieistniejącymi (`NA`): Podczas pracy z rzeczywistymi danymi czasami zdarzaja się braki poszczegolnych wartosci. Na przykład mierzymy dlugosc skrzydla ptakow, ale jeden ptak pierzy sie lub ma zlamane lotki. Nadal mozemy zapisac pozostale pomiary tego osobnika, ale bedzie nam brakowac jego dlugosci skrzydla. Symulujemy to tutaj na przykladzie dlugosci dzialek kielicha `Sepal.Length`. Ustaw wartosc w dziesiatym przypadku na „NA”?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+iris$Sepal.Length[10] <- NA          # the 10th value is set to NA
+```
+
+<details>
+
+### CW 4
+
+Co się stanie, jezeli teraz obliczymy srednia dlugosc dzialek kielicha?
+
+```{r}
+mean(iris$Sepal.Length)
+```
+
+Czy mozesz rozwiazac ten problem?
+
+<details>
+
+<summary>ODP 4</summary>
+
+```{r}
+mean(iris$Sepal.Length, na.rm=TRUE)  # The NAs must be actively removed.
+```
+
+<details>
+
+### CW 5.1
+
+Stworz wlasna ramke danych (podobnej do tej z irysami). Najpierw utworz jeden wektor dla Boba, który pokazuje czasy (w sekundach) jego osmiu biegów na 100 m.
+
+<details>
+
+<summary>ODP 5.1</summary>
+
+```{r}
+Bob <- c(62, 85, 92, 59, 68, 72, 67, 74)
+```
+
+<details>
+
+### CW 5.2
+
+Teraz Eva chce sprawdzić, jak dobrze sobie radzi z bieganiem. Utworz kolejny wektor z jej wynikami?
+
+<details>
+
+<summary>ODP 5.2</summary>
+
+```{r}
+Eva <- c(59, 74, 67, 85, 67, 78, 73, 68)
+```
+
+<details>
+
+### CW 5.3
+
+O nie, w danych jest błąd. Popraw wpis dotyczący drugiego biegu Boba.
+
+<details>
+
+<summary>ODP 5.3</summary>
+
+```{r}
+Bob[2] <- 54
+```
+
+Bob jest wektorem, a nie ramką danych ani macierzą, więc nie można używać indeksowania, takiego jak Bob[, 2]. R traktuje wektor Bob jako jednowymiarowy, więc można nim manipulować tylko za pomocą pojedynczego indeksu.
+
+</details>
+
+### CW 5.4
+
+Polacz wektory Bob i Eva w ramke danych zbierajaca ich wyniki.
+
+<details>
+
+<summary>ODP 5.4</summary>
+
+```{r}
+
+wyniki.biegu <- data.frame(Bob, Eva)
+```
+
+</details>
+
+### CW 6.1
+
+Teraz utworz trzy wektory:
+
+<ul>
+
+<li>w1, ktory zawiera nastepujaca sekwencje: 7,0,8,NA,5,5</li>
+
+<li>w2, ktory zawiera sekwencje liczb od 1 do 6</li>
+
+<li>w3, ktory zawiera nastepujacy tekst:'blue','pink','blue','red','yellow'</li>
+
+</ul>
+
+<details>
+
+<summary>ODP 6.1</summary>
+
+```{r}
+w1 <- c(7,0,8,NA,5,5)
+w2 <- 1:6
+w3 <- c('blue','pink','blue','red','yellow')
+```
+
+</details>
+
+### CW 6.2
+
+Swietnie! Polacz te trzy wektory w ramke danych. Jak to zrobic?
+
+<details>
+
+<summary>ODP 6.2</summary>
+
+```{r}
+df1 <- data.frame(w1,w2,w3)
+```
+
+</details>
+
+### CW 6.3
+
+Otrzymujemy nastepujacy komunikat o bledzie: 'Blad w data.frame(w1,w2,w3): argumenty sugeruja rozna liczbe wierszy: 6, 5'. Jakiej funkcji mozna uzyc, aby okreslic dlugosc kazdego wektora?
+
+<details>
+
+<summary>ODP 6.3</summary>
+
+```{r}
+# w1
+length(w1)
+# w2
+length(w2)
+# w3
+length(w3)
+
+```
+
+Widzimy, ze wektor w3 jest krotszy niz wektory w1 i w2. Jesli chcesz polaczyc je w jedna ramke danych, wszystkie wektory musza miec te sama dlugosc podczas tworzenia tabeli na podstawie wektorow.
+
+</details>
+
+### CW 6.4
+
+Dodajmy kolor zielony do wektora w3 i nazwijmy ten wektor w3new. Jak to zrobic?
+
+<details>
+
+<summary>ODP 6.4</summary>
+
+```{r}
+# w3
+w3new <- c('blue','pink','blue','red','yellow','green')
+
+```
+
+Pamietaj, aby umiescic slowo 'green' w nawiasach, poniewaz jest to obiek typu `character`. Jesli o tym zapomnisz, pojawi sie komunikat o bledzie. R bedzie szukac obiektu w Twoim srodowisku, ale poniewaz nie ma obiektu 'green', wyswietli komunikat o bledzie.
+
+</details>
+
+### CW 6.5
+
+Sprobujmy ponownie utworzyc ramke danych, ale tym razem z wektorem w3new z dodanym kolorem zielonym.
+
+<details>
+
+<summary>ODP 6.5</summary>
+
+```{r}
+df1 <- data.frame(w1,w2,w3new)
+```
+
+Great! You made it.
+
+</details>
+
+### CW 6.6
+
+<p>Teraz, gdy mamy juz naszą ramke danych, mozemy ja obejrzec. Mozna to zrobic za pomoca nastepujacej funkcji:`head(df1)` lub klikajac nazwy tabel w panelu Srodowisko po prawej stronie.</p>
+
+<p>Jak widac, w tabeli znajduje sie wartosc NA. Jak uzyskac dostep do tej wartosci NA??</p>
+
+<details>
+
+<summary>ODP 6.6</summary>
+
+```{r}
+df1[4,1]
+```
+
+Aby uzyskac dostep do pozycji NA w ramce danych, nalezy sprawdzic jej pozycje w wierszu [4,], a nastepnie pozycje w kolumnie [,1], poniewaz ramki danych w porownaniu z wektorami sa dwuwymiarowe.
+
+</details>
+
+# Lab 3
+
+## Pakiety
+
+Pakiety rozszerzają podstawowe możliwości w R. Zawierają funkcje, dane, dokumentacje ...
+
+Znaczna wiekszosc pakietow mozna zanalezc na repozytrium [CRAN](https://cran.r-project.org/).
+
+Jezeli dany pakiet nie byl nigdy uzywany na danym komputerze, nalezy go najpierw zainstalowac uzywajac funkcji `install.packages()`. **Wystarczy to zrobic jeden raz!** Pozniej, kazdorazowo przy rozpoczeciu sesji w R nalezy wywolac wszystkie pakiety, ktorych chcemy uzyc. Sluzy do tego funkcja `library()`
+
+```{r}
+
+install.packages('readxl') # sluzy do wczytywania danych zapisanych w formacie .xlsx
+install.packages('tidyverse') # podstawowy pakiet do 'data science'
+
+library(readxl)
+library(tidyverse)
+
+
+```
+
+## Wczytywanie danych
+
+Do R mozemy wgrac dane w wielu roznych formatach, stowrzac z nich np. ramki danych/ tabele / wektory dostepne w srodowisku. Aby to zrobic trzeba wskazac, gdzie 'mieszkaja' nasze dane, czyli podac sciezke.
+
+1.  Wskazanie konkretnego pliku
+
+```{r}
+
+wroble <- read_excel("C:/Users/marta/OneDrive - University of Gdansk/Dydaktyka/Biostatystyka/cw_3/Sparrows.xlsx")
+
+# zwroc uwage na: a) uzycie '', b) uzycie / zamiast \ (Windows domyslnie kopiuje \)
+# c) plik nie sklada sie z samej nazwy, ale tez z info o formacie, w typ wypadku .xlsx
+
+```
+
+2.  Wskazanie folderu roboczego (ang. working directory) i pozniejsze wskazanie pliku w jego obrebie
+
+```{r}
+
+setwd("C:/Users/marta/OneDrive - University of Gdansk/Dydaktyka/Biostatystyka/cw_3") # wskazuje na filder 'cw_3' i wszystkie elementy, ktore sie w nim znajduja
+
+wrbl <- read_excel('Sparrows.xlsx') # wskazanie samego pliku znajdujacego sie w WD
+
+
+```
+
+> TIP: Ustawianie WD jest bardzo dobrym zwyczajem, zwlaszcza przy pracy na wiecej niz jednym pliku. Ponadto, nie musi to byc tylko zrodlo plikow dla R, ale tez miejsce zapisywania elementow wygenerowanych w R (np. wykresow).
+
+3.  Dane cwiczeniowe czesto sa zawarte w pakietach. Obejrzyj
+
+```{r}
+
+library(tidyverse)
+
+View(starwars) # dane dostepne w ramach pakietu, zwroc uwage, ze nie znajduja sie w srodowiku.
+
+```
+
+## Selekcjonowanie
+
+Polega na wybieraniu poszczegolnych kolumn w ramce danych. Sluzy do tego np. funkcja `select()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+W ramce danych `wroble` zostaw tylko kolumne `species`
+
+```{r}
+
+select(wroble, species)
+
+str(wroble) # nadal zawiera wszystkie kolumny, poniewaz zmiana nie zostala w zaden sposob zapisana w srodowisku
+
+ncol(wroble) # sprawdzenie liczby kolumn w ramce danych
+
+wrbl1 <- select(wroble, species) # stworzy oddzielny element w srodowisku zawierajacy wybrana kolumne
+
+# LUB
+
+wroble <- select(wroble, species) # nadpisze istniejaca baze danych, ale wtedy staracisz wszystkie inne informacje. Aby je otworzyc musisz ponownie wczytac dane do srodowiska
+
+```
+
+W ramce danych `wroble` zostaw kolumny `species` i `age`.
+
+```{r}
+
+wrbl2 <- select(wroble, species, age)
+
+#LUB
+
+wrbl2 <- select(wroble, species:age) # wskazuje na zakres
+
+
+```
+
+W ramce danych `wroble` zostaw wszystkie kolumny, z wyjatkiem `bill`.
+
+```{r}
+
+wrbl3 <- select(wroble, -bill)
+
+```
+
+Stworz ramke danych `sprrows`, ktora bedzie zawierala kolumny `species` , `sex`, `wing` i `mass` pochodzace z ramki danych `wroble`.
+
+```{r}
+
+sparrows <- select(wroble, species:wing, mass)
+
+str(sparrows)
+
+
+```
+
+## Filtrowanie
+
+Polega na wybieraniu wierszy spelniajacych pewne cechy. Sluzy do tego np. funkcja `filter()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+### Operatory porownawcze
+
+`==` - rowna sie; `!=` - nie rowna sie, `<` - mniejsze od, `<=` - mniejsze rowne od, `>` wieksze od, `>=` wieksze rowne od.
+
+1.  Stowrz ramke danych, ktora bedzie zawierala dane tylko o samicach wrobli.
+
+```{r}
+
+wrbl_F <- filter(wroble, sex == 'F') # zwroc uwage na roznice miedzy == a =
+
+# jak sprawdzic, czy sie udalo? np. uzywajac funkcji unique()
+
+unique(wroble$sex) # F i M dostepne w pierwotnej bazie
+unique(wrbl_F$sex) # tu pozostalo tylko F
+
+
+```
+
+2.  Stworz ramke danych, ktora bedzie zbierala dane tylko o wroblach o skrzydla (`wing`) dlugosci 60 mm.
+
+```{r}
+
+wrbl_60 <- filter(wroble, wing == 60)
+
+# czy sie udalo?
+
+
+summary(wroble$wing)
+
+summary(wrbl_60$wing)
+
+# jak wiele jest takich wrobli?
+
+nrow(wrbl_60) # zlicza wiersze
+
+
+```
+
+3.  Stworz ramke danych, ktora bedzie zawierala wroble o masie (`mass`) ponizej sredniej.
+
+```{r}
+
+# sprawdzenie ile wynosi srednia masa
+
+summary(wroble$mass)
+
+
+wrbl_lekkie <- filter(wroble, mass < 21.02)
+
+# sprawdzenie czy sie udalo?
+
+max(wrbl_lekkie$mass) # podaje najwyzsza wartosc ze zbioru
+
+
+
+```
+
+4.  Stworz ramke danych, ktora nie bedzie zawierala ptakow o minimalnej wartosci dlugosci dziolba (`bill)`
+
+```{r}
+
+#sprawdz minimalna wartosc
+
+min(wroble$bill)
+
+# filtruj
+
+wrbl_duze <- filter(wroble, bill != 11.4)
+
+# sprawdz czy zadzialalo
+
+min(wrbl_duze$bill)
+
+```
+
+### Operatory logiczne
+
+`|` - lub, `&` - i / oraz, `!` - nie
+
+![Complete set of boolean operations. x is the left-hand circle, y is the right-hand circle, and the shaded region show which parts each operator selects.](https://r4ds.had.co.nz/diagrams/transform-logical.png){width="563"}
+
+1.  Stworz ramke danych, ktora bedzie zawierala tylko osobniki o minimalnej i maksymalnej masie.
+
+```{r}
+
+min(wroble$mass)
+max(wroble$mass)
+
+
+wrbl_skrajne <- filter(wroble, mass == 16.5 | mass == 26.5)
+
+# jaki efekt daje uzycie & zamiast |?
+
+```
+
+2.  Stworz ramke danych, ktora bedzie zabierala osobniki o minimalnej masie i bedzie w wieku juv.
+
+```{r}
+
+wrbl4 <- filter(wroble, mass == 16.5 & age == 'juv')
+
+# jaki efekt daje uzycie | zamiast &?
+
+
+```
+
+3.  Stworz ramke danych, w ktorej ptaki nie beda ciezsze niz 20 g i nie beda mialy samcami.
+
+```{r}
+
+wrbl5 <- filter(wroble, !mass > 20 & sex != 'M')
+
+# lub
+
+wrbl6 <- filter(wroble, mass <= 20 & sex == 'F')
+
+# as they say there is more than one way to skin a cat ;)
+
+```
+
+4.  Stworz ramke danych, w ktorej beda znajodwac sie ptaki o masie 20 i 25 g. Uzyj operatora dopasowania `%in%` .
+
+```{r}
+
+wrbl7 <- filter(wroble, mass %in% c(20, 25))
+
+# przydatna alternatywna dla uzywania wielu | przy filtorowaniu na podstawie cechy zapisanej w obrebie jednej zmiennej (kolumny)
+
+```
+
+5.  Stworz ramke danych, w ktorej ptaki beda mialy mase wieksza niz 18.2 i mniejsza niz 19.2. Uzyj funckji `between()` .
+
+```{r}
+
+wrbl.between <- filter(wroble, between(mass, 18.2, 19.2))
+
+```
+
+6.  Stworz ramke danych, w ktorej nie bedzie samcow i osobnikow z gatunku P. montanus
+
+```{r}
+
+wrbl8 <- filter(wroble, sex != 'M' & species != 'montanus')
+
+
+
+```
+
+> TIP: Zauwaz, ze mimo tego, ze filtorwanie zbiory odbylo sie z uzyciem warunkow z dwoch roznych kolumn, uzyto operatora & nie \|. Jest to zwiazane z prawami De Morgana, ktore stanowia, ze:
+>
+> -   `!(A & B)` to samo co `!A | !B`
+>
+> -   `!(A | B)` to samo co `!A & !B`
+>
+> W skrocie przy pojedynczych wykluczeniach, operatory & i \| dzialaja inaczej niz przy wlaczeniach.
+
+7.  Stworz ramke danych, gdzie nie bedzie mlodych samic.
+
+```{r}
+
+wrbl9 <- filter(wroble, sex != 'F' | age != 'juv')
+
+# LUB
+
+wrbl9.1 <- filter(wroble, !(sex == 'F' & age == 'juv'))
+
+
+```
+
+8.  Stworz ramke danych, gdzie nie bedzie mlodych ptakow i samic.
+
+```{r}
+
+wrbl10 <- filter(wroble, sex != 'F' & age != 'juv')
+
+# LUB
+
+wrbl.10.1 <- filter(wroble, !(sex == 'F' | age == 'juv'))
+
+
+
+
+
+```
+
+## Sortowanie
+
+Zmienianie kolejnosci przypadkow wg. wybranej zasady. Sluzy do tego np. funkcja `arrange()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+1.  Posortuj dane od najlzejszego do najciezszego ptaka.
+
+```{r}
+
+wrbl.ar.mass <- arrange(wroble, mass)
+
+
+```
+
+2.  Posortuj dane od najciezszego do najlzejszego ptaka
+
+```{r}
+
+wrbl.ar.des.mass <- arrange(wroble, desc(mass))
+
+```
+
+3.  Posortuj dane rosnaco pod wzgledem dlugosci skoku i w odwrotnej kolejnosci alfabetycznej gatunku.
+
+```{r}
+
+wrb.ar.tar.spec <- arrange(wroble, tarsus, desc(species))
+
+```
+
+4.  Posortuj dane w odwrotnej kolejnosci alfabetycznej gatunku i rosnaco pod wzgledem skoku
+
+```{r}
+
+wrbl.ar.spec.tar <- arrange(wroble, desc(species), tarsus)
+
+```
+
+## Operator potokowy `%>%`
+
+`%>%` rowniez jest czescia pakietu `dyplr`. Doslownie oznacza 'i potem'. Sluzy to tworzenia ciagow nastepujacych po sobie akcji.
+
+Stworz ramke danych, gdzie bedzie zawierala dane tylko o samicach o dlugosci skoku pomiedzy 21 a 23 mm, bez kolumny okreslajacej ich gatunek i z danymi posortowanymi rosnaco wg ich masy.
+
+```{r}
+
+wrbl.potok1 <- wroble %>%  # oznacza: wez obiekt wroble i potem
+  filter(sex == 'F' & between(tarsus, 21, 23)) %>% #przefiltruj i potem
+  select(-species) %>% #wyselekcjonuj i potem
+  arrange(mass) #posortuj
+
+
+```
+
+Stowrz ramke danych, ktora nie bedzie miala ptakow o masie wiekszej niz 21 g i bedzie zawierala tylko informacje o biometrii.
+
+```{r}
+
+wrbl.potok2 <- wroble %>% 
+  filter(!mass > 21) %>% 
+  select(wing:mass)
+
+```
+
+> TIP: `%>%` jest jednym z najczesniej uzywanych operatorow w R.
+
+## Cwiczenia
+
+### CW1
+
+Czemu ten kod nie dziala?
+
+```{r}
+
+install.packages(palmerpenguins)
+
+library('palmerpenguins')
+
+
+```
+
+<details>
+
+<summary>ODP 1</summary>
+
+' - mala rzecz o wielkim znaczeniu. Dzialajacy kod wyglada tak:
+
+```{r}
+
+install.packages('palmerpenguins')
+
+library(palmerpenguins)
+
+
+```
+
+</details>
+
+### CW 2.1
+
+Dane sa dostepne w ramach pakietu, ale nalezy pamietac, ze nie znajdują się one jeszcze w srodowisku. Czy mozesz je pobrac i zapisac jako „starwars” w srodowisku?
+
+```{r}
+View(starwars)
+```
+
+Wskazowka: najpierw nalezy wywolac pakiet „dplyr”.
+
+<details>
+
+<summary>ODP 2.1</summary>
+
+```{r}
+starwars <- dplyr::starwars
+```
+
+Zapis z podowjnym dwukropkiem, czyli `pakiet::funkcja`, to w jezyku R tzw. operator dostępu do przestrzeni nazw (namespace access operator). Pozwala on uzyc konkretnej funkcji z danego pakietu bez konieczności ladowania calego pakietu za pomocą `library()`.
+
+</details>
+
+### CW 2.2
+
+W jezyku R mozesz poprosic o pomoc. Otworz strone pomocy dla zbioru danych `starwars`. Mozna to zrobic na kilka sposobow.
+
+<details>
+
+<summary>ODP 2.2</summary>
+
+```{r}
+?starwars
+```
+
+Inna ocpja jest otwarcie strony pomocy (Help) w prawym dolnym rogu i wpisanie nazwy „starwars” w wyszukiwarce.
+
+<details>
+
+### CW 2.3
+
+Jaka jest różnica?
+
+```{r}
+#a 
+starwars2 <- select(starwars, films, vehicles, starships)
+
+#b
+starwars3 <- select(starwars, -films, -vehicles, -starships)
+
+```
+
+<details>
+
+<summary>ODP 2.3</summary>
+
+W opcji a wybieramy kolumny „filmy”, „pojazdy” i „statki kosmiczne”. W opcji b usuwamy te trzy kolumny.
+
+<details>
+
+### CW 2.4
+
+Czy możesz zaznaczyć wszystkie kolumny od „name” do „birth_year” i zapisać je jako „cleaned_starwars”?
+
+<details>
+
+<summary>ODP 2.4</summary>
+
+```{r}
+cleaned_starwars <- select(starwars, name:birth_year)
+
+```
+
+<details>
+
+### CW 2.5
+
+Funkcja unique() w języku R służy do wyodrębniania unikalnych wartości z wektora, ramki danych lub innych struktur danych. Pomaga ona w identyfikowaniu odrbnych wpisow, usuwajac duplikaty z danych. Wyprobuj, aby zobaczyc roznorodnosc kolorow skory postaci z Gwiezdnych Wojen.
+
+<details>
+
+<summary>ODP 2.5</summary>
+
+```{r}
+unique(cleaned_starwars$skin_color)
+```
+
+<details>
+
+### CW 2.6
+
+Zrób to samo dla kolumny wysokości. Jakie problemy dostrzegasz, patrząc na dane?
+
+<details>
+
+<summary>ODP 2.6</summary>
+
+```{r}
+unique(cleaned_starwars$height)
+```
+
+Mamy kilka wartości NA, które spowodują problemy na przykład podczas obliczania średniej.
+
+<details>
+
+### CW 2.7
+
+Oblicz średnią dla kolumny „wzrost” i zapisz ją w swoim środowisku.
+
+<details>
+
+<summary>ODP 2.7</summary>
+
+```{r}
+height_mean <- mean(cleaned_starwars$height)
+```
+
+Napotkaliśmy problem. Jak widzielismy wczesniej, w zbiorze danych wystepuja wartosci NA.
+
+<details>
+
+### CW 2.8
+
+Oblicz mediane i srednia dla kolumny „wzrost”, ale pamietaj, aby pominac NA.
+
+<details>
+
+<summary>ODP 2.8</summary>
+
+```{r}
+height_mean <- mean(cleaned_starwars$height, na.rm = TRUE)
+height_median <- median(cleaned_starwars$height, na.rm = TRUE)
+```
+
+<details>
+
+# Lab 4
+
+## Statystyki opisowe
+
+Celem statystyk opisowych jest podsumowanie i przedstawianie infomracji ze zbioru danych. Dwie glowne kategorie to miary polozenia (wsrod nich przedewszystkim miary tendencji centralnej) i miary rozrzutu. Kilka przykladow:
+
+-   Miary tendencji centralnej
+
+    -   srednia (np. arytmetyczna, wazona)
+
+    -   mediana - dzieli obserwacje na dwie rowne polowy i wskazuje wartosc od ktorej 50% obserwacji jest mniejsze, a drugie 50% wieksze
+
+    -   dominanta/moda - najczesciej wystepujaca wartosc w zbiorze
+
+-   Miary rozrzutu
+
+    -   odchylenie standardowe - mowi o tym o ile srednio rozni sie wynik od sredniej arytmetycznej
+
+    -   rozstep kwartlowy - roznica miedzy trzecim (75%) a pierwszym kwartylem (25%). Kwartle dzialaja tak jak mediana, w zasadzie mediana jest rowniez rodzajem kwartyla, tzw. srodowym (50%)
+
+    -   zakres - roznica miedzy wartoscia minimalna a maksymalna
+
+## BobryR - ramka danych
+
+1.  Wycztaj dane `BobryR.xlsx`
+
+```{r}
+
+#library(readxl)
+
+setwd()
+
+bobry <- read_excel('BobryR.xlsx')
+
+
+```
+
+2.  Obejrzyj dane.
+
+```{r}
+
+str(bobry)
+
+summary(bobry)
+
+```
+
+Metadane:
+
+-   ID - numer identyfikacyjny
+
+-   DYST - odleglosc w metrach [m] od brzegu cieku
+
+-   GAT - gatunek uszkodzonego grzewa
+
+|     |                    |                    |
+|-----|--------------------|--------------------|
+| Pa  | Picea abies        | swierk pospolity   |
+| Bs  | Betula sp.         | brzoza             |
+| Ps  | Pinus sylvestris   | sosna zwyczajna    |
+| Ag  | Alnus glutinosa    | olsza czrna        |
+| Jc  | Juniperus communis | jalowiec           |
+| Ms  | Malus sylvestris   | jablon lesna       |
+| Fa  | Frangula alnus     | kruszyna pospolita |
+| Sa  | Sorbus aucuparia   | jarzab pospolity   |
+
+-   SR - srednica drzewa mierzona na wysokosci zgryzu bobrzego [cm]
+
+-   USZKODZ - uszkodzenie drzewa w pieciostopniowej skali
+
+|     |                                 |
+|:---:|---------------------------------|
+|  0  | zdrowe nieuszkodzone dzewo      |
+|  1  | uszkodzenie kory i łyka         |
+|  2  | uszkodzenie drewna              |
+|  3  | ścięte drzewo z powalonym pniem |
+|  4  | pniak po ścietym drzewie        |
+
+![Drzewo uszkodzone przez bobra. Zdjęcie: Adrian Zwolicki](images/uszkodz.jpg){width="413"}
+
+## Grupowanie i podsumowywanie danych
+
+Dwie funckje `group_by()` i `summarise()` nalezace do pakietu `dplyr` sa absolutnie fundamentalne podczas eksploracji danych. `group_by()` nie zmienia struktury ramki danych, ale tworzy 'wirtulane' grupy wewnatrz jej struktury, na podstawie wybranej zmiennej lub zmiennych. `summarise()` redukuje wiele przypadkow do jednego podsumowania/ statystyki opisowej.
+
+1.  Oblicz srednia i odchylenie standardowe z `SR` oddzielnie dla kazdego gatunku drzew
+
+```{r}
+
+bobry %>% group_by(GAT) %>% 
+  summarise(srednia = mean(SR),
+            odchylenie = sd(SR))
+
+# rozwiaz problem z NA
+
+# uwywajac argumentu na.rm = TRUE
+
+bobry %>% group_by(GAT) %>% 
+  summarise(srednia = mean(SR, na.rm = T),
+            odchylenie = sd(SR, na.rm = T))
+
+# lub odflitrowujac wartosci NA ze zmiennej SR
+
+bobry %>% 
+  filter(!is.na(SR)) %>%
+  group_by(GAT) %>% 
+  summarise(srednia = mean(SR),
+            odchylenie = sd(SR))
+
+
+```
+
+> TIP: Poniewaz NA jest wartoscia logiczna, filtowanie typu `filter(SR != NA)` nie zadziala.
+>
+> Zadziala natomiast wykluczenie za pomoca `!` wartosci, ktore daja odpowiedz `TRUE`, czy zapytaniu czy dana wartosc `is.na()`
+>
+> Mozna tez zastosowac funkcje `na.omit()` , ktora pomija wszystkie wartosci `NA` w danym zbiorze danych. Funkcje trzeba jednak stosowac z **duza rozwaga!!** poniewaz wykluczeniu podlegaja cale wiersze danych, nie pojedyncze wartosci.
+
+W przypadku tej ramki danych, uzycie funkcji `na.omit()` daje takie same wyniki:
+
+```{r}
+
+bobry %>% na.omit() %>% 
+  group_by(GAT) %>% 
+  summarise(srednia = mean(SR),
+            odchylenie = sd(SR))
+
+```
+
+Dlaczego w odchyleniu standardowym nadal widnieja wartosci `NA`? Odopowiedzia jest liczba danych, z ktorych ta statystyka jest wyliczona.
+
+2.  Dodaj jeszcze jedna statystyke opisowa, jaka jest liczba przypadkow.
+
+```{r}
+
+bobry %>% 
+  filter(!is.na(SR) & !is.na(GAT)) %>%
+  group_by(GAT) %>% 
+  summarise(srednia = mean(SR),
+            odchylenie = sd(SR),
+            liczebnosc = n()) # nie wymaga podania argumentu
+
+```
+
+Nie da sie wyliczyc SD ze zbioru o n = 1.
+
+3.  Uzywanie `group_by()` i `summarise()` generuje obiekt tabelaryczny, tzw. tibble. Mozna nim manipulowac tak jak ramka danych. Z powstalego podsumowania pozbadz sie gatunkow o liczebnosc = 1 i posortuj malejaco wzgledem sredniej.
+
+```{r}
+
+bobry %>% 
+  filter(!is.na(SR) & !is.na(GAT)) %>%
+  group_by(GAT) %>% 
+  summarise(srednia = mean(SR),
+            odchylenie = sd(SR),
+            liczebnosc = n()) %>% 
+  filter(liczebnosc != 1) %>% 
+  arrange(desc(srednia))
+
+
+
+```
+
+4.  Zapoznaj sie z innymi statystykami opisowymi. Wylicz mediane, rozstep kwartylowy, wartosci minimalne i maksymalne z dystansu od cigu wodnego dla drzew o stopniu uszkodzenia od 0 do 3
+
+```{r}
+
+bobry %>% 
+  filter(!is.na(DYST) & between(USZKODZ, 0, 3)) %>% 
+  group_by(as.factor(USZKODZ)) %>%  # w ramce danych USZKOD jest klasy numeric
+  summarise(MEDIANA = median(DYST), # oblicz srednia
+            ROZSTEP = IQR(DYST), # oblicz rozstep kwartylowy
+            MIN = min(DYST), #oblicz wartosc minimalna
+            MAX = max(DYST)) #oblicz wartosc maksymalna
+
+
+```
+
+5.  Wyboraz sobie, ze jednak chcesz zmienic nazwe kolumny w tabeli powstalej w poprzednim podpunkcie (z ROZSTEP na IQR). Sluzy do tego funckja `rename()`, ktora mozesz zastosowac zarowno tutaj jak i do innych ramkek danych.
+
+```{r}
+
+# ten sam kod co w podpunkcie wyzej
+
+bobry %>% 
+  filter(!is.na(DYST) & between(USZKODZ, 0, 3)) %>% 
+  group_by(as.factor(USZKODZ)) %>%
+  summarise(MEDIANA = median(DYST), 
+            ROZSTEP = IQR(DYST), 
+            MIN = min(DYST), 
+            MAX = max(DYST)) %>% 
+  rename(IQR = ROZSTEP) # zmiana nazwy, w formacie nowa nazwa = stara nazwa
+
+
+```
+
+6.  Sprawdz ile roznych gatunkow drzew stwierdzono w danej klasie uszkodzenia. Ustaw wyniki w tabeli od klasy uszkodzenia o najmniejszej do najwiekszej liczbie gatunkow drzew .
+
+```{r}
+
+bobry %>% 
+  group_by(as.factor(USZKODZ)) %>% 
+  summarise(rozne.gatunki = n_distinct(GAT)) %>%
+  arrange(rozne.gatunki) %>% 
+  na.omit()
+
+```
+
+7.  Pogrupuj dane pod wzgledem uszkodzenia i gatunku drzew, uwzgledniajac tylko gatunki 'Ps' i 'Bs'. Nastepnie oblicz wartosc srednia i odchylenie standardowe ze srednicy (SR).
+
+```{r}
+
+
+bobry %>%
+  filter(GAT %in% c('Ps','Bs')) %>% 
+  filter(!is.na(SR)) %>% 
+  group_by(as.factor(USZKODZ), GAT) %>%
+  summarise(srednia = mean(SR),
+            sd = sd(SR))
+
+
+```
+
+8.  Sprawdz jaka bedzie roznica, jezeli wykonasz podpunkt 7 ustawiajac argumenty grupujace w odwrotnej kolejnosci.
+
+```{r}
+
+bobry %>%
+  filter(GAT %in% c('Ps','Bs')) %>% 
+  filter(!is.na(SR)) %>% 
+  group_by(GAT, as.factor(USZKODZ), ) %>%
+  summarise(srednia = mean(SR),
+            sd = sd(SR))
+
+
+
+```
+
+9.  Zapisz tabele stworzona w punkcie 8 w srodowisku, objerzyj wyniki uzywajac funkcji `View()`.
+
+```{r}
+
+tabela.z.wynikami <- bobry %>%
+  filter(GAT %in% c('Ps','Bs')) %>% 
+  filter(!is.na(SR)) %>% 
+  group_by(GAT, as.factor(USZKODZ), ) %>%
+  summarise(srednia = mean(SR),
+            sd = sd(SR))
+
+
+View(tabela.z.wynikami)
+
+
+```
+
+## Cwiczenia
+
+### CW 1
+
+Mediana to to samo co srodkowy kwartyl (50%). Sprawdz, czy tak jest wyliczajac mediane i srodowy kwartyl (uzywajac funckji `quantile()`) dla zmiennej Petal.Width oddzielnie dla 3 gatunkow irysow, o ktorych dane dostepne sa w bazie iris.
+
+Wskazowka: funkcja `quantile()` ma dwa argumenty: wektor, z ktorego wyliczana jest ta statystyka opisowa oraz kwartyl nam chodzi (np. drugi kwartyl to 0.25).
+
+<details>
+
+<summary>ODP 1</summary>
+
+```{r}
+
+
+iris %>%
+  group_by(Species) %>% 
+  summarise(mediana = median(Petal.Width),
+            q50 = quantile(Petal.Width, 0.5))
+
+```
+
+</details>
+
+# Lab 5
+
+## Palmer Penguins - ramka danych
+
+Do zadan uzyta zostanie cwiczeniowa baza danych dostepna w pakiecie `palmerpenguins`. Metadane sa dostepne pod `?penguins` lub `?penguins_raw` .
+
+![Meet the Plamer penguins! Artwork by \@allison_horst”](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
+
+1.  Wczytaj pakiet i zapisz dane w srodowisku.
+
+```{r}
+
+library(palmerpenguins) # jezeli robisz to pierwszy raz, nalezy poprzedzic to instalacja tego pakietu
+
+pingwiny <- penguins
+
+#objerzyj ramke danych
+
+View(pingwiny)
+
+# sprawdz strukture danych
+
+str(pingwiny)
+```
+
+## Tworzenie nowych zmiennych
+
+Słuzy do tego np. funckja `mutate()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+
+1.  Stworz nowa zmiena 'kondycja', ktora bedzie masa ciala pingiwnow podzielona przez dlugosc skrzydla.
+
+```{r}
+
+ping.kond <- pingwiny %>% 
+  mutate(kondycja = body_mass_g/flipper_length_mm)
+
+
+```
+
+2.  Stworz trzy nowe zmienne 'bill.vol', ktora bedzie ilorazem dlugosci dzioba i grubosci dzioba, 'body_mass_kg', ktora bedzie masa ptakow wyrazona w kilogramach i residual.cond, ktora bedzie roznica miedzy srednia kondycja wszystkich pingiwnow a kondycja danego osobnika.
+
+```{r}
+
+pingw2 <- ping.kond %>% 
+  mutate(bill.vol = bill_length_mm * bill_depth_mm,
+         body_mass_kg = body_mass_g/1000,
+         residual.cond = mean(kondycja, na.rm = T) - kondycja)
+
+```
+
+## Jeżeli...
+
+Do warunkowania loginczego w R moze sluzyc funkcja `ifelse()`. Ta funkcja ma trzy argumenty: 1) test logiczny, ktory daje odpowiedz TRUE/FALSE; 2) wartosci zwracane jezeli odpowiedz jest TRUE; 3) wartosci zwracane jezeli odpowiedz jest FALSE.
+
+Stworz nowa ramke danych zawierajaca tylko pingwiny Adelie. W obrebie tej ramki danych stworz nowa zmienna 'size', gdzie pojawi sie wartosc 'small' jezeli dlugosc skrzydla jest mniejsza niz srednia lub wartosc 'large' dla pozostalych przypadkow.
+
+```{r}
+
+adelie <- pingwiny %>% filter(species == 'Adelie') %>% 
+  mutate(size = ifelse(flipper_length_mm < median(flipper_length_mm, na.rm = T),
+                       'small', 'large'))
 
 
 ```
