@@ -1,0 +1,193 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 3 - Data handling with tidyverse
+
+## Cwiczenia
+
+Today, we are going to work with the 'friends' data set. This data set contains the following information:
+<ul>
+<li>Friends: the ID number of the friend</li>
+<li>Sex: whether the person is male or female</li>
+<li>Eye_color: the person's eye colour</li>
+<li>Hair_color:  the person's hair colour</li>
+<li>Age: the person's age</li>
+</ul>
+
+### CW 1.1
+
+Upload the dataset "friends" available on the following GitHub page: https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main
+
+The dataset ends with the extension '.csv'; in this case, you need to use the 'read.csv()' function. It works in a similar way to the 'read_excel()' function in point 2, 'Wczytywanie danych', of lab 3.
+
+</ul>
+
+<details>
+
+<summary>ODP 1.1</summary>
+
+To access your working directory, go to the panel: Session > Set Working Directory > Choose Directory ...
+This will open your folder window, where you need to select the folder in which you have stored the friends.csv file that was downloaded from GitHub. 
+
+setwd("C:/your_computer_directories")
+friends <- read.csv("friends.csv")
+
+</details>
+
+
+
+### CW 1.2
+
+Which function should you use to gain an overview of the structure of your dataset and view it?
+
+<details>
+
+<summary>ODP 1.2</summary>
+
+```{r}
+str(friends)
+View(friends)
+
+```
+
+You may have noticed that the dataset is not displaying correctly; everything is stored in a single column. To correct this, we need to specify the separator used in our file to ensure the columns appear correctly. In this case, the separator appears to be ';'. Thus, we need to write the following code to display the data correctly:
+
+friends <- read.csv("friends.csv", sep = ";")
+
+</details>
+
+
+
+### CW 1.3
+
+Now that our dataset appears correctly, we would like to see the unique observations for the following categories: eye colour, hair colour, and age. 
+
+
+<details>
+
+<summary>ODP 1.3</summary>
+
+```{r}
+# eye color:
+unique(friends$Eyes_color)
+
+# hair color:
+unique(friends$Hair_color)
+
+# age:
+unique(friends$Age)
+
+
+```
+
+</details>
+
+### CW 1.4
+
+We would like to create two separate data frames: one containing only information about female friends and another containing only information about male friends. How would you do that?
+
+<details>
+
+<summary>ODP 1.4</summary>
+
+```{r}
+
+# download the package required to use the cleaning function
+library(tidyverse)
+
+# female table
+female_tab1 <- filter(friends, Sex == "F")
+female_tab1 <- filter(friends, Sex != "M")
+
+
+# male table
+male_tab1 <- filter(friends, Sex == "M")
+male_tab1 <- filter(friends, Sex != "F")
+
+
+```
+You can create the table in a variety of ways using functions from the tidyverse library. See two options for each method above.
+
+</details>
+
+### CW 1.5
+
+We no longer need the 'Sex' column in each individual table, as all individuals in male_tab1 are male, and the same goes for female_tab1. How would you remove the 'Sex' column?
+
+<details>
+
+<summary>ODP 1.5</summary>
+
+```{r}
+# remove the sex information column for the female data set
+female_tab2 <- select(female_tab1,-Sex)
+
+
+# remove the sex information column for the male data set
+male_tab2 <- select(male_tab1,c("Friend","Eyes_color","Hair_color","Age"))
+
+```
+You can create the table in a variety of ways using the functions from the tidyverse library. See two options above.
+
+</details>
+
+
+### CW 1.6
+
+Our friends' ages are not organised. We would like them to be ordered from youngest to oldest for females and from oldest to youngest for males. Once this has been done, we would like to see if the females in our group of friends are, on average, younger than the males. How would you code this information?
+
+<details>
+
+<summary>ODP 1.6</summary>
+
+```{r}
+# re-arrange the female table from the youngest to the oldest:
+female_tab2 <- arrange(female_tab2,Age)
+
+# calculate the mean age of the male group:
+mean(female_tab2$Age)
+
+
+# re-arrange the male table from the youngest to the oldest:
+male_tab2 <- arrange(male_tab2,desc(Age))
+
+# calculate the mean age of the male group:
+mean(male_tab2$Age)
+
+```
+
+</details>
+
+
+### CW 1.7
+
+We want to check in one piece of code for friends who have brown eyes and blonde hair. Hwever, we only want this information if our friends are over 20 years old. We don't care about the ID of the friend, so we want to drop this column from our final table.
+
+<details>
+
+<summary>ODP 1.7</summary>
+
+```{r}
+# re-arrange the female table from the youngest to the oldest:
+friends_Q7 <- friends %>% 
+  filter(Eyes_color == "Brown" & Hair_color == "Blonde" & Age > 20) %>%
+  select(-Friend)
+
+```
+
+<details>
+
+<summary>ODP 1.7</summary>
