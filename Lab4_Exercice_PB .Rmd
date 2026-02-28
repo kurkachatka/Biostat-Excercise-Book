@@ -1,0 +1,131 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 4 - Statistical computing with tidyverse
+
+## Cwiczenia
+
+Let's continue working with the 'friends' data set. This data set contains the following information:
+<ul>
+<li>Friends: the ID number of the friend</li>
+<li>Sex: whether the person is male or female</li>
+<li>Eye_color: the person's eye colour</li>
+<li>Hair_color:  the person's hair colour</li>
+<li>Age: the person's age</li>
+</ul>
+
+Download the available dataset from the following GitHub page: https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main
+
+
+Remember to save the file 'friends.csv' in an easily accessible folder.
+First set your working directory, then upload the file using the following command: friends<-read.csv("friends.csv", sep=";" ).
+
+
+### CW 1
+
+Let's do some statistics on our friends' files. In the previous lab, we saw how to calculate the mean age of our female and male friends in multiple steps. Now, you should be able to calculate the mean age of both groups in one function. How would you calculate the mean age and standard deviation (SD) for both males and females? Could you also include the number of males and females present in the dataset?
+
+</ul>
+
+<details>
+
+<summary>ODP 1</summary>
+
+```{r}
+library(tidyverse)
+AgeFMFriend <- friends %>% group_by(Sex) %>% summarise(
+  counts = n(),
+  mean_age = mean(Age),
+  sd_age = sd(Age)
+)
+```
+counts = n() # counts how many of the friends are female or male.
+mean_age = mean(Age), # calculates the mean age of females or males.
+sd_age = sd(Age) # calculates the standard deviation of the mean age of females or males.
+
+</details>
+
+
+### CW 2
+
+Actually, some of our friends in our data set have dyed their hair blue, purple or pink. We want to see if they are, on average, younger than friends who haven't dyed their hair. 
+(Hint: you can create two different tables.)
+
+<details>
+
+<summary>ODP 2</summary>
+
+```{r}
+
+unique(friends$Hair_color)
+Dyed <- friends %>% filter(Hair_color %in% c("Pink","Purple","Blue")) %>% summarise(Age_mean = mean(Age))
+Dyed
+
+NotDyed <- friends %>% filter(Hair_color %in% c("Brown","Blonde","Black")) %>% summarise(Age_mean = mean(Age))
+NotDyed
+
+```
+
+On average, friends with dyed hair are younger (22.5 years old) than friends who have not dyed their hair (23.4 years old). 
+
+</details>
+
+
+
+### CW 3
+
+We are curious about the eye colour of our friends who did not dye their hair. How many of them have blue eyes, and how many have brown? What are the youngest and oldest ages of people with blue and brown eyes? What is their median age?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+Q3 <- friends %>% 
+  filter(!Hair_color %in% c("Pink","Purple","Blue")) %>% 
+  filter(Eyes_color %in% c("Brown","Blue")) %>% 
+  group_by(Eyes_color) %>% 
+  summarise(counts = n(),
+            min_age = min(Age),
+            median_age = median(Age),
+            max_age = max(Age)
+            )
+```
+filter(!Hair_color %in% c("Pink","Purple","Blue"))  # select friends with non-dyed hair, because we added an exclamation mark before 'Hair_color', it will keep all colors except pink, purple and blue.
+filter(Eyes_color %in% c("Brown","Blue")) # select friends with brown or blue eyes.
+group_by(Eyes_color) # calculate the age based on the eyes color
+
+</details>
+
+
+### CW 4
+
+Our full dataset contains many different combinations of eye and hair color. How can I find out how many there are? And how can I count the number of specific hair-eye color combinations?
+
+<details>
+
+<summary>ODP 1.4</summary>
+
+```{r}
+Q4 <- friends %>% group_by(Eyes_color,Hair_color) %>% 
+  summarise(CombineHairEyes = n_distinct(Eyes_color,Hair_color),
+            N_Combination = n())
+```
+group_by() # select only the information about eye and hair color.
+n_distinct() # present the unique combinations of eye and hair color.
+n() # count the number of each combination.
+
+</details>
