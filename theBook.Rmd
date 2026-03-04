@@ -2114,6 +2114,142 @@ iris %>%
 
 </details>
 
+### CW 2
+
+Kontynuujmy pracę z zestawem danych „friends”. Ten zestaw danych zawiera następujące informacje:
+
+<ul>
+
+<li>Friends: numer identyfikacyjny przyjaciela</li>
+
+<li>Sex: płeć osoby (mezczyzna lub kobieta)</li>
+
+<li>Eye_color: kolor oczu osoby</li>
+
+<li>Hair_color: kolor wlosow osoby</li>
+
+<li>Age: wiek osoby</li>
+
+</ul>
+
+Pobierz dostępny zestaw danych z następującej strony GitHub: <https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
+
+Pamietaj, aby zapisac plik „friends.csv” w latwo dostepnym folderze. Najpierw ustaw katalog roboczy, a nastepnie przeslij plik za pomoca nastepujacego polecenia:
+
+```{r}
+
+setwd()
+
+friends<-read.csv(„friends.csv”, sep=";" )
+
+
+```
+
+### CW 2.1
+
+Policzmy troche statystyk na temat naszych znajomych. W poprzednim laboratorium zobaczylismy, jak obliczyc srednia wieku naszych znajomych plci zenskiej i meskiej w kilku krokach. Teraz powinienes byc w stanie obliczyc srednia wieku obu grup w jednej funkcji. Jak obliczylbys srednia wieku i odchylenie standardowe (SD) zarowno dla mezczyzn, jak i kobiet? Czy moglbys rowniez uwzglednic liczbe mezczyzn i kobiet obecnych w zbiorze danych?
+
+</ul>
+
+<details>
+
+<summary>ODP 2.1</summary>
+
+```{r}
+library(tidyverse)
+
+AgeFMFriend <- friends %>% group_by(Sex) %>% summarise(
+  counts = n(),
+  mean_age = mean(Age),
+  sd_age = sd(Age)
+)
+```
+
+`counts = n()` \# zlicza, ilu przyjaciól jest kobietami, a ilu mezczyzna.
+
+`mean_age = mean(Age)` \# oblicza srednia wieku kobiet lub mezczyzn.
+
+`sd_age = sd(Age)` \# oblicza odchylenie standardowe sredniej wieku kobiet lub mezczyzn.
+
+</details>
+
+### CW 2.2
+
+W rzeczywistosci niektorzy z naszych znajomych z naszego zbioru danych farbują wlosy na niebiesko, fioletowo lub rozowo. Chcemy sprawdzic, czy sa oni srednio mlodsi od znajomych, ktorzy nie farbuja wlosow. (Wskazowka: aby wykonac to cwiczenie mozna utworzyc dwie rozne ramki danych).
+
+<details>
+
+<summary>ODP 2.2</summary>
+
+```{r}
+
+unique(friends$Hair_color)
+Dyed <- friends %>% filter(Hair_color %in% c("Pink","Purple","Blue")) %>% summarise(Age_mean = mean(Age))
+
+Dyed
+
+NotDyed <- friends %>% filter(Hair_color %in% c("Brown","Blonde","Black")) %>% summarise(Age_mean = mean(Age))
+
+NotDyed
+
+```
+
+Srednio osoby farbujace wlosy sa mlodsze (22,5 lat) niz osoby, ktore nie farbuja wlosow (23,4 lat).
+
+</details>
+
+### CW 2.3
+
+Jestesmy ciekawi koloru oczu naszych znajomych, ktorzy nie farbuja wlosow. Ilu z nich ma niebieskie oczy, a ilu brazowe? Jaki jest najmlodszy i najstarszy wiek osob o niebieskich i brazowych oczach? Jaka jest ich srednia wieku?
+
+<details>
+
+<summary>ODP 2.3</summary>
+
+```{r}
+Q3 <- friends %>% 
+  filter(!Hair_color %in% c("Pink","Purple","Blue")) %>% 
+  filter(Eyes_color %in% c("Brown","Blue")) %>% 
+  group_by(Eyes_color) %>% 
+  summarise(counts = n(),
+            min_age = min(Age),
+            median_age = median(Age),
+            max_age = max(Age)
+            )
+
+print(Q3)
+```
+
+`filter(!Hair_color %in% c("Pink","Purple",„Blue”))` \# wybierz znajomych z wlosami niefarbowanymi, poniewaz dodalismy wykrzyknik przed „Hair_color”, zachowane zostaną wszystkie kolory oprócz rozowego, fioletowego i niebieskiego.
+
+`filter(Eyes_color %in% c("Brown","Blue"))` \# wybierz znajomych o brazowych lub niebieskich oczach. group_by(Eyes_color) \# oblicz wiek na podstawie koloru oczu.
+
+</details>
+
+### CW 2.4
+
+Nasz pelny zbior danych zawiera wiele roznych kombinacji kolorow oczu i wlosow. Jak moge sprawdzic, ile ich jest? Jak moge policzyc liczbe konkretnych kombinacji kolorow wlosow i oczu?
+
+<details>
+
+<summary>ODP 2.4</summary>
+
+```{r}
+Q4 <- friends %>% group_by(Eyes_color,Hair_color) %>% 
+  summarise(CombineHairEyes = n_distinct(Eyes_color,Hair_color),
+            N_Combination = n())
+
+print(Q4)
+```
+
+`group_by()` \# wybierz tylko informacje dotyczące koloru oczu i wlosow.
+
+`n_distinct()` \# przedstaw unikalne kombinacje koloru oczu i wlosow.
+
+`n()` \# policz liczbe kazdej kombinacji.
+
+</details>
+
 # Lab 5
 
 ## Palmer Penguins - ramka danych
