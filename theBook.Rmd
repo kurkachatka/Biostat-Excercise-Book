@@ -1653,6 +1653,189 @@ height_median <- median(cleaned_starwars$height, na.rm = TRUE)
 
 <details>
 
+### CW 3
+
+Bedziemy pracować z zestawem danych „friends”. Ten zestaw danych zawiera nastepujace informacje:
+
+<ul>
+
+<li>Friends: numer identyfikacyjny przyjaciela</li>
+
+<li>Sex: płeć osoby (mezczyzna lub kobieta)</li>
+
+<li>Eye_color: kolor oczu osoby</li>
+
+<li>Hair_color: kolor wlosow osoby</li>
+
+<li>Age: wiek osoby</li>
+
+</ul>
+
+### CW 3.1
+
+Pobierz zbior danych „friends” dostepny na nastepujacej stronie GitHub: <https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
+
+Zbior danych konczy sie rozszerzeniem „.csv”; w tym przypadku nalezy uzyc funkcji „read.csv()”. Dziala ona podobnie jak funkcja „read_excel()” opisana w punkcie 2 „Wczytywanie danych” laboratorium 3.
+
+</ul>
+
+<details>
+
+<summary>ODP 3.1</summary>
+
+Aby uzyskac dostep do katalogu roboczego, przejdz do panelu: Session \> Set Working Directory \> Choose Directory ... Spowoduje to otwarcie okna folderow, w ktorym nalezy wybrac folder, w ktorym zapisano plik friends.csv pobrany z serwisu GitHub.
+
+```{r}
+setwd("C:/your_computer_directories")
+friends <- read.csv("friends.csv")
+
+```
+
+</details>
+
+### CW 3.2
+
+Ktora funkcje nalezy uzyc, aby uzyskac przeglad struktury zbioru danych i wyswietlic go?
+
+<details>
+
+<summary>ODP 3.2</summary>
+
+```{r}
+str(friends)
+View(friends)
+
+```
+
+Byc moze zauwazylez, ze zestaw danych nie wyswietla sie poprawnie; wszystko jest zapisane w jednej kolumnie. Aby to poprawic, musimy okreslic separator uzywany w naszym pliku, aby kolumny wyswietlaly sie poprawnie. W tym przypadku separatorem wydaje sie byc „;”. Aby dane wyswietlaly sie poprawnie, musimy wiec uzyc nastepujacego kod przy wczytywaniu danych:
+
+```{r}
+
+friends <- read.csv("friends.csv", sep = ";")
+```
+
+</details>
+
+### CW 3.3
+
+Teraz, gdy nasz zbior danych wyswietla sie poprawnie, chcielibysmy zobaczyc unikalne obserwacje dla nastepujacych kategorii: kolor oczu, kolor wlosow i wiek.
+
+<details>
+
+<summary>ODP 3.3</summary>
+
+```{r}
+# eye color:
+unique(friends$Eyes_color)
+
+# hair color:
+unique(friends$Hair_color)
+
+# age:
+unique(friends$Age)
+
+
+```
+
+</details>
+
+### CW 3.4
+
+Chcielibysmy utworzyc dwie oddzielne ramki danych: jedna zawierajaca wylacznie informacje o przyjaciolkach, a druga zawierajaca wylacznie informacje o przyjaciolach. Jak to zrobic?
+
+<details>
+
+<summary>ODP 3.4</summary>
+
+```{r}
+
+# download the package required to use the cleaning function
+library(tidyverse)
+
+# female table
+female_tab1 <- filter(friends, Sex == "F")
+female_tab1 <- filter(friends, Sex != "M")
+
+
+# male table
+male_tab1 <- filter(friends, Sex == "M")
+male_tab1 <- filter(friends, Sex != "F")
+
+
+```
+
+Mozesz utworzyc tabele na wiele sposobow, korzystajac z funkcji biblioteki tidyverse. Powyzej przedstawiono dwie opcje dla kazdej metody.
+
+</details>
+
+### CW 3.5
+
+Nie potrzebujemy juz kolumny „Plec” w kazdej tabeli, poniewaz wszystkie osoby w tabeli male_tab1 to mezczyzni, to samo dotyczy tabeli female_tab1. Jak usunac kolumne „Plec”?
+
+<details>
+
+<summary>ODP 3.5</summary>
+
+```{r}
+# remove the sex information column for the female data set
+female_tab2 <- select(female_tab1,-Sex)
+
+
+# remove the sex information column for the male data set
+male_tab2 <- select(male_tab1,c("Friend","Eyes_color","Hair_color","Age"))
+
+```
+
+Mozesz utworzyc tabele na wiele sposobow, korzystajac z funkcji biblioteki tidyverse. Powyzej przedstawiono dwie opcje.
+
+</details>
+
+### CW 3.6
+
+Wiek naszych przyjaciól nie jest uporzadkowany. Chcielibysmy, aby kobiety byly uporzadkowane od najmlodszej do najstarszej, a mezczyzni od najstarszego do najmlodszego. Po wykonaniu tej czynnosci chcielibysmy sprawdzic, czy kobiety w naszej grupie przyjaciol sa srednio mlodsze od mezczyzn. Jak zakodowac te informacje?
+
+<details>
+
+<summary>ODP 3.6</summary>
+
+```{r}
+# re-arrange the female table from the youngest to the oldest:
+female_tab2 <- arrange(female_tab2,Age)
+
+# calculate the mean age of the male group:
+mean(female_tab2$Age)
+
+
+# re-arrange the male table from the youngest to the oldest:
+male_tab2 <- arrange(male_tab2,desc(Age))
+
+# calculate the mean age of the male group:
+mean(male_tab2$Age)
+
+```
+
+</details>
+
+### CW 3.7
+
+Chcemy sprawdzic w jednym fragmencie kodu, ktorzy z naszych znajomych maja brazowe oczy i blond wlosy. Jednak informacje te interesuja nas tylko w przypadku osob powyzej 20 roku zycia. Nie interesuje nas identyfikator znajomego, wiec chcemy usunac te kolumne z naszej ostatecznej tabeli.
+
+<details>
+
+<summary>ODP 3.7</summary>
+
+```{r}
+# re-arrange the female table from the youngest to the oldest:
+friends_Q7 <- friends %>% 
+  filter(Eyes_color == "Brown" & Hair_color == "Blonde" & Age > 20) %>%
+  select(-Friend)
+
+```
+
+<details>
+
+<summary>ODP 3.7</summary>
+
 # Lab 4
 
 ## Statystyki opisowe
