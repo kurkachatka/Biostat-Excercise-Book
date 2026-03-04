@@ -2395,7 +2395,7 @@ pingw2 <- ping.kond %>%
 
 Do warunkowania loginczego w R moze sluzyc funkcja `ifelse()`. Ta funkcja ma trzy argumenty: 1) test logiczny, ktory daje odpowiedz TRUE/FALSE; 2) wartosci zwracane jezeli odpowiedz jest TRUE; 3) wartosci zwracane jezeli odpowiedz jest FALSE.
 
-Stworz nowa ramke danych zawierajaca tylko pingwiny Adelie. W obrebie tej ramki danych stworz nowa zmienna 'size', gdzie pojawi sie wartosc 'small' jezeli dlugosc skrzydla jest mniejsza niz srednia lub wartosc 'large' dla pozostalych przypadkow.
+1.  Stworz nowa ramke danych zawierajaca tylko pingwiny Adelie. W obrebie tej ramki danych stworz nowa zmienna 'size', gdzie pojawi sie wartosc 'small' jezeli dlugosc skrzydla jest mniejsza niz srednia lub wartosc 'large' dla pozostalych przypadkow.
 
 ```{r}
 
@@ -2405,3 +2405,139 @@ adelie <- pingwiny %>% filter(species == 'Adelie') %>%
 
 
 ```
+
+Funkcje jezeli mozna zagniezdzac, wtedy kolejne `ifelse()` nalezy wstawic w miejsce argumentu niespelniajacego warnku (FALSE).
+
+2.  Stworz nowa ramke danych, ktora nazwiesz `endangared`. Stworz nowa kolumne o tej samej nazwie, gdzie:
+
+-   dla Adelie, ktore sa na wyspie Biscoe pojawi sie wartosc 'safe'
+
+-   dla Gentoo, ktore sa na wyspie Biscoe pojawi sie wartosc 'in danger'
+
+-   dla wszystkich Chinstrap pojawi sie wartosc 'action needed'
+
+-   dla pozostalych pingiwnow w roznych lokalizacjach pojawi sie wartosc 'not known'
+
+```{r}
+
+endangared <- pingwiny %>% 
+  mutate(endangared = ifelse(species == 'Adelie' & island == 'Biscoe',
+                'safe',
+                ifelse(species == 'Gentoo' & island == 'Biscoe',
+                       'in danger',
+                       ifelse(species == 'Chinstrap', 'action needed',
+                              'not known'))))
+
+```
+
+## W przypadku...
+
+Alternatywa dla funkcji `ifelse()` jest funkcja `case_when()`.
+
+[![Jak uzywac case_when(). Credits: [Allison Horst](https://allisonhorst.com/allison-horst)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6ffcd6d6-c783-4087-ae76-99aa851663ed_rw_1920.png?h=5f67935d69c92e1fda9074d00dfea972)](https://allisonhorst.com/allison-horst)
+
+Chcemy po poklasyfikowac pingwiny ze wzgledu na ich mase na 6 kategorii, gdzie ktorym oznaczymy nietypowo niskie i wysokie wartosci dla masy. Jednym ze sposobow opisania nietypowych pomiarow (tzw. odstajacych) jest uzycie odchylenia standardowego. Jezeli masa wypada ponizej lub powyzej granicy wyznaczonej przez +/- 2\* SD od sredniej mozemy taki pomiar uznac za nietypowy. Pingwiny przydzielimy do kategorii:
+
+-   small female, large female, small male, large male - dla nietypowych oberwacji, gdzie masa bedzie wieksza lub mniejsza od +/- 2\*SD od sredniej masy
+
+-   no info on mass, no info on sex - dla brakujacych danych
+
+-   not extreme - dla ptakow o typowej masie mieszczacych sie w zakresie +/- 2\*SD od sredniej masy
+
+```{r}
+
+# krok 1 stworz tabele, ktora bedzie zbierac informacje o sredniej masie i podwojnym SD oddzielnie dla obu plci
+
+podsum <- pingwiny %>% na.omit() %>% # pomin NA
+  group_by(sex) %>%  # pogrupuj wzgledem plci
+  summarise(srednia = mean(body_mass_g), # wylicz srednia
+            sd = sd(body_mass_g), # wylicz SD
+            dwa_sd = sd*2, # wylicz podwojne SD
+            dwa_sd_minus = srednia - dwa_sd, # wylicz dolna granice dla odstajacych
+            dwa_sd_plus = srednia + dwa_sd) # wylicz gorna granice dla odstajacych
+
+
+
+# krok 2 stworz zmienna mass_cat, ktora bedzie zawierala kategorie dotyczace masy:
+
+
+pingw3 <- pingwiny %>% mutate(
+  mass_cat = case_when(sex == 'female' & body_mass_g < podsum$dwa_sd_minus[1] ~ 'small female', # uzycie [1] wskazuje konkretna wartosci z tabeli (ta dla samic)
+                       sex == 'female' & body_mass_g > podsum$dwa_sd_plus[1] ~ 'large female',
+                       sex == 'male' & body_mass_g < podsum$dwa_sd_minus[2] ~ 'small male', # uzycie [2] wskazuje konkretna wartosci z tabeli (ta dla samocw)
+                       sex == 'male' & body_mass_g > podsum$dwa_sd_plus[2] ~ 'large male',
+                       is.na(body_mass_g) ~ 'no info on mass',
+                       is.na(sex) ~ 'no info on sex',
+                       TRUE ~ 'not extreme' # mowi co zrobic, jezeli zadny z powzyszch warunkow nie zachodzi
+                       )
+)
+
+
+# zlicz ile bylo przypadkow nietypowych
+
+pingw3 %>% group_by(mass_cat) %>% 
+  summarise(n())
+
+
+
+
+
+
+
+```
+
+## Cwiczenia
+
+### CW 1.1
+
+Uzwyajac ramki danych `pingwiny`, stworz nowa zmienna `cooridnates`, gdzie podasz informacje tekstową o koordynatach dla wszystkich 3 wysp. Uzyj funkcji `ifelse()`
+
+-   Dream: -64.730419, -64.247602
+
+-   Biscoe: -65.787207, -66.022186
+
+-   Torgersen: -64.766100, -64.086226
+
+<details>
+
+<summary>ODP 1.1</summary>
+
+
+
+```{r}
+
+pingw_coord <- pingwiny %>% 
+  mutate(cooridnates = ifelse(island == 'Dream', '-64.730419, -64.247602',
+                              ifelse(island == 'Biscoe', '-65.787207, -66.022186',
+                                     '-64.766100, -64.086226'))
+    
+  )
+
+```
+
+</details>
+
+
+### CW 1.2
+
+Wykonaj to samo polecenie uzywajac funkcji `case_when()`
+
+<details>
+
+<summary>ODP 1.2</summary>
+
+```{r}
+
+pingw_coord <- pingwiny %>% 
+  mutate(cooridnates = case_when(island == 'Dream' ~ '-64.730419, -64.247602',
+                                  island == 'Biscoe' ~ '-65.787207, -66.022186',
+                                  island == 'Torgersen' ~ '-64.766100, -64.086226',
+                                  TRUE ~ NA)) # wstaw NA jezeli zadne z powyzszych nie jest prawidzwe
+
+
+```
+
+
+
+# Lab 6
+
