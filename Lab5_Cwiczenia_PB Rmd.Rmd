@@ -1,0 +1,204 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 5 - More statistical computing with dplyr
+
+## Cwiczenia
+
+Należy pobrać zbiór danych "Penguins_fulldata.csv" który jest dostępny na następującej stronie GitHub:
+https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main
+
+This data set contain the following information:
+A tibble with 344 rows and 17 variables:
+
+<ul>
+
+<li> studyName:  Wyprawa badawcza, podczas której zebrano dane, wygenerowano informacje itp. </li>
+
+<li> Sample Number: liczba całkowita oznaczająca ciągłą sekwencję numeracji dla każdej próbki </li>
+
+<li> Species: ciąg znaków oznaczający gatunek pingwina </li>
+
+<li> Region: ciąg znaków oznaczający region siatki pomiarowej Palmer LTER </li>
+
+<li> Island: ciąg znaków oznaczający wyspę w pobliżu stacji Palmer, gdzie pobrano próbki </li>
+
+<li> Stage: ciąg znaków oznaczający etap reprodukcyjny w momencie pobierania próbek </li>
+
+<li> Individual ID: ciąg znaków oznaczający unikalny identyfikator każdej osoby w zbiorze danych </li>
+
+<li> Clutch Completion: ciąg znaków oznaczający, czy gniazdo badane miało pełny lęg, tj. 2 jaja </li>
+
+<li> Date Egg: data oznaczająca datę obserwacji gniazda z 1 jajkiem (próbka) </li>
+
+<li> Culmen Length: a number denoting the length of the dorsal ridge of a bird's bill (millimeters) </li>
+
+<li> Culmen Depth: liczba określająca długość grzbietowego wyrostka dzioba ptaka (w milimetrach) </li>
+
+<li> Flipper Length: liczba całkowita określająca długość płetwy pingwina (w milimetrach) </li>
+
+<li> Body Mass: liczba całkowita określająca masę ciała pingwina (w gramach) </li>
+
+<li> Sex: ciąg znaków oznaczający płeć zwierzęcia</li>
+
+<li> Delta 15 N: liczba określająca stosunek izotopów stabilnych 15N:14N </li>
+
+<li> Delta 13 C: liczba określająca stosunek izotopów stabilnych 13C:12C </li>
+
+<li> Comments: ciąg znaków zawierający tekst dostarczający dodatkowych istotnych informacji dotyczących danych </li>
+
+</ul>
+
+
+Zanim przejrzysz poniższe rozwiązanie, spróbuj samodzielnie pobrać dane i poprawić potencjalny typ separatora.
+
+
+
+<details>
+
+<summary>ODP </summary>
+
+```{r}
+## setwd('Musisz sprawdzić, gdzie pobrałeś plik na swój komputer')
+## W przypadku użytkowników komputerów Mac rozpocznie się od:
+setwd("~/")
+## W przypadku użytkowników systemu Windows rozpocznie się od:
+setwd("C:/")
+
+Penguinsfulldata <- read.csv("Penguins_fulldata.csv",sep=",",dec=".", h=T)  
+
+
+```
+sep = "," : separatorem w pliku csv jest przecinek, więc przecinek powinien zostać zamieniony na separator kolumn.
+
+dec = ".": separatorem dziesiętnym jest kropka.
+
+h = "T": header, czy nagłówek w pliku csv powinien być odczytywany jako nazwa kolumny (TRUE), czy nie (FALSE). Domyślnie jest ustawiony na TRUE, co oznacza, że jeśli zapomnisz wkleić argument do funkcji read.csv(), zostanie on automatycznie uznany za TRUE.
+
+</details>
+
+
+
+### CW 1.1
+
+Na następnych zajęciach nauczymy się wizualizować dane za pomocą ggplot. Zanim jednak to zrobimy, musimy oczyścić nasz zbiór danych, aby nadawał się do tworzenia wykresów. 
+
+1) Jak uzyskać przegląd aktualnego zbioru danych?
+
+2) Jak sprawdzić, ile unikalnych kategorii istnieje dla zmiennych: Species and Sex? 
+
+3) Chcielibyśmy zmienić nazwy zmiennych 'Species' i 'Sex' w następujący sposób: 
+<ul>
+
+     <li> Adelie Penguin (Pygoscelis adeliae) -> Adelie </li>
+
+     <li> Gentoo penguin (Pygoscelis papua) -> Gentoo </li>
+
+     <li> Chinstrap penguin (Pygoscelis antarctica) -> Chinstrap </li>
+
+     <li> MALE -> M </li>
+
+     <li> FEMALE -> F </li>
+
+</ul>
+
+4) Usuń następujące kolumny z tabeli: Sample.Number, Region, Stage, Date.Egg, Comments, Sex and Species.
+
+
+<details>
+
+<summary>ODP 1.1</summary>
+
+```{r}
+## Upewnij się, że biblioteki są zainstalowane i załadowane.
+library(dplyr)
+
+## 1) Sprawdź, jak wyglądają dane
+str(Penguinsfulldata)
+
+## 2) Sprawdź, ile unikalnych kategorii istnieje dla zmiennej: Species and Sex
+unique(Penguinsfulldata$Species)
+unique(Penguinsfulldata$Sex) ## należy pamiętać, że ta kategoria zawiera wartości NA
+
+## 3 & 4) Zmień nazwę zmiennej Sex i Species oraz usuń wspomniane kolumny.
+Penguins_clean <- Penguinsfulldata %>% mutate(SEX = case_when(Sex == "MALE" ~ "M",
+                                                Sex == "FEMALE" ~ "F"),
+                                SPECIES = case_when(Species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+                                                    Species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+                                                    Species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap")) %>%
+  select(-c(Sex,Species,Sample.Number,Region, Stage, Date.Egg, Comments))
+
+```
+
+</details>
+
+
+### CW 1.2
+
+W poprzednim pytaniu widzieliśmy, że kolumna "SEX" zawierała wartość NA. Jednak uwzględnienie osób o nieznanej płci nie dostarczy nam żadnych użytecznych informacji. 
+Zdecydowaliśmy się usunąć wiersze zawierające wartość NA. Można to zrobić na kilka sposobów. Czym różnią się te dwa kody?
+
+Penguins_clean1 <- Penguins_clean %>% filter(if_all(.cols = c(1:12), ~ !is.na(.x))) 
+
+
+Penguins_clean2 <- Penguins_clean %>% filter(!is.na(SEX))
+
+
+<details>
+
+<summary>ODP 1.2</summary>
+
+```{r}
+## Ta metoda wyszukuje brakujące wartości (NA) we wszystkich kolumnach naszego zbioru danych, od kolumny 1 do 12, i usuwa wszystkie wiersze zawierające co najmniej jedną wartość NA.
+Penguins_clean1 <- Penguins_clean %>% filter(if_all(.cols = c(1:12), ~ !is.na(.x))) 
+
+## Ta metoda usuwa tylko brakujące wartości z kolumny "SEX".
+Penguins_clean2 <- Penguins_clean %>% filter(!is.na(SEX))
+
+
+```
+
+</details>
+
+
+### CW 1.3
+
+Korzystając z pliku "Penguins_clean1" utworzonego w poprzednim pytaniu, chcemy zbadać zmienną "Clutch.Completion" i utworzyć nową klasyfikację.
+Jeśli realizacja sprzęgła jest określona jako "No", chcemy odnotować to jako zły rok dla pingwina, ale jeśli jest określona jako "Yes", należy to uznać za dobry rok. Następnie sprawdź, ile obserwacji mamy dla każdej kategorii ("good year" i "bad year").
+
+
+<details>
+
+<summary>ODP 1.3 </summary>
+
+```{r}
+names(Penguins_clean1) ## Wydrukuj nazwy zmiennych, aby upewnić się, że zapisujesz je poprawnie w poniższej funkcji.
+unique(Penguins_clean1$Clutch.Completion) ## Wydrukuj listę kategorii dostępnych na stronie Clutch.Completion, aby upewnić się, że wpisujesz je poprawnie.
+
+Penguins_clean_Yearquality <- Penguins_clean1 %>% mutate(Quality = case_when(Clutch.Completion == "No" ~ "Bad year",
+                                                                             Clutch.Completion == "Yes" ~ "Good year"))
+
+## Oto kilka sposobów sprawdzenia liczby obserwacji dla dobrych i złych lat:
+table(Penguins_clean_Yearquality$Quality)
+
+Penguins_clean_Yearquality %>% group_by(Quality) %>% summarise(counts = n())
+
+
+```
+
+</details>
+
+

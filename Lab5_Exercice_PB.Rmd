@@ -1,0 +1,204 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 5 - More statistical computing with dplyr
+
+## Cwiczenia
+
+You will need to download the "Penguins_fulldata.csv" dataset, which is available on the following GitHub page:
+https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main
+
+This data set contain the following information:
+A tibble with 344 rows and 17 variables:
+
+<ul>
+
+<li> studyName:  Sampling expedition from which data were collected, generated, etc. </li>
+
+<li> Sample Number: an integer denoting the continuous numbering sequence for each sample </li>
+
+<li> Species: a character string denoting the penguin species </li>
+
+<li> Region: a character string denoting the region of Palmer LTER sampling grid </li>
+
+<li> Island: a character string denoting the island near Palmer Station where samples were collected </li>
+
+<li> Stage: a character string denoting reproductive stage at sampling </li>
+
+<li> Individual ID: a character string denoting the unique ID for each individual in dataset </li>
+
+<li> Clutch Completion: a character string denoting if the study nest observed with a full clutch, i.e., 2 eggs </li>
+
+<li> Date Egg: a date denoting the date study nest observed with 1 egg (sampled) </li>
+
+<li> Culmen Length: a number denoting the length of the dorsal ridge of a bird's bill (millimeters) </li>
+
+<li> Culmen Depth: a number denoting the depth of the dorsal ridge of a bird's bill (millimeters) </li>
+
+<li> Flipper Length: an integer denoting the length penguin flipper (millimeters) </li>
+
+<li> Body Mass: an integer denoting the penguin body mass (grams) </li>
+
+<li> Sex: a character string denoting the sex of an animal </li>
+
+<li> Delta 15 N: a number denoting the measure of the ratio of stable isotopes 15N:14N </li>
+
+<li> Delta 13 C: a number denoting the measure of the ratio of stable isotopes 13C:12C </li>
+
+<li> Comments: a character string with text providing additional relevant information for data</li>
+
+</ul>
+
+
+Before looking at the solution below, try to see if you can download the data yourself and correct the potential separator type.
+
+
+
+<details>
+
+<summary>ODP </summary>
+
+```{r}
+## setwd('You need to check where you downloaded the file on your computer')
+## For Mac users, it will start with:
+setwd("~/")
+## For Windows users, it will start with:
+setwd("C:/")
+
+Penguinsfulldata <- read.csv("Penguins_fulldata.csv",sep=",",dec=".", h=T)  
+
+
+```
+sep = "," : the separator in the csv file is a comma, so the comma should be converted into a column separator.
+
+dec = ".": the decimal separator is a dot.
+
+h = "T": header, whether the header in the csv file should be read as a column name (TRUE) or not (FALSE). By default, it is set to TRUE, meaning that if you forget to paste the argument to the read.csv() function, it will be automatically considered as TRUE.
+
+</details>
+
+
+
+### CW 1.1
+
+In the next class, we will learn how to visualise data using ggplot. However, before doing so, we need to clean our dataset to make it suitable for plotting. 
+
+1) How would you get an overview of your current dataset?
+
+2) How can we see how many unique categories there are for the variables: Species and Sex? 
+
+3) We would like to change the variable name of 'Species' and 'Sex' as follows: 
+<ul>
+
+     <li> Adelie Penguin (Pygoscelis adeliae) -> Adelie </li>
+
+     <li> Gentoo penguin (Pygoscelis papua) -> Gentoo </li>
+
+     <li> Chinstrap penguin (Pygoscelis antarctica) -> Chinstrap </li>
+
+     <li> MALE -> M </li>
+
+     <li> FEMALE -> F </li>
+
+</ul>
+
+4) Remove the following columns from the table: Sample.Number, Region, Stage, Date.Egg, Comments, Sex and Species.
+
+
+<details>
+
+<summary>ODP 1.1</summary>
+
+```{r}
+## Make sure that the libraries are installed and loaded.
+library(dplyr)
+
+## 1) Check how the data looks like
+str(Penguinsfulldata)
+
+## 2) Check how many unique categories there are for the variable: Species and Sex
+unique(Penguinsfulldata$Species)
+unique(Penguinsfulldata$Sex) ## note that this category contains NAs
+
+## 3 & 4) Rename the variable Sex and Species categories & removes the mentioned columns
+Penguins_clean <- Penguinsfulldata %>% mutate(SEX = case_when(Sex == "MALE" ~ "M",
+                                                Sex == "FEMALE" ~ "F"),
+                                SPECIES = case_when(Species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+                                                    Species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+                                                    Species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap")) %>%
+  select(-c(Sex,Species,Sample.Number,Region, Stage, Date.Egg, Comments))
+
+```
+
+</details>
+
+
+### CW 1.2
+
+In the previous question, we saw that the 'SEX' column contained 'NA'. However, including individuals with an unknown sex will not provide us with any useful information. 
+We have decided to remove the rows containing NA. There are a couple of ways of doing so. How do these two codes differ?
+
+Penguins_clean1 <- Penguins_clean %>% filter(if_all(.cols = c(1:12), ~ !is.na(.x))) 
+
+
+Penguins_clean2 <- Penguins_clean %>% filter(!is.na(SEX))
+
+
+<details>
+
+<summary>ODP 1.2</summary>
+
+```{r}
+## This method looks for missing values (NA) in all columns of our dataset, from column 1 to 12, and removes all rows containing at least one NA
+Penguins_clean1 <- Penguins_clean %>% filter(if_all(.cols = c(1:12), ~ !is.na(.x))) 
+
+## This method only removes missing values from the 'SEX' column
+Penguins_clean2 <- Penguins_clean %>% filter(!is.na(SEX))
+
+
+```
+
+</details>
+
+
+### CW 1.3
+
+Using the 'Penguins_clean1' created in the previous question, we want to examine the 'Clutch.Completion' variable and create a new classification.
+If the clutch completion is stated as 'No', we want to note it as a bad year for the penguin, but if it is stated as 'Yes', it should be considered a good year. Then, look at how many observations we have for each category ('good year' and 'bad year').
+
+
+<details>
+
+<summary>ODP 1.3 </summary>
+
+```{r}
+names(Penguins_clean1) ## Print the names of the variables to ensure that you are writing them correctly in the following function
+unique(Penguins_clean1$Clutch.Completion) ## Print out the list of categories available on Clutch.com to ensure that you are writing them correctly
+
+Penguins_clean_Yearquality <- Penguins_clean1 %>% mutate(Quality = case_when(Clutch.Completion == "No" ~ "Bad year",
+                                                                             Clutch.Completion == "Yes" ~ "Good year"))
+
+## Here are a couple of ways to check the number of observations for good and bad years.:
+table(Penguins_clean_Yearquality$Quality)
+
+Penguins_clean_Yearquality %>% group_by(Quality) %>% summarise(counts = n())
+
+
+```
+
+</details>
+
+
