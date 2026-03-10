@@ -2552,7 +2552,7 @@ Rozklad mozna zwizualizowac za pomoca dwoch glownych typow wykresow:
 
 ### Histogramy
 
-Stworz histogram obrazujacy rozklad czasu spedzonego na snie `sleep_total` u ssakow.
+1.  Stworz histogram obrazujacy rozklad czasu spedzonego na snie `sleep_total` u ssakow.
 
 ```{r}
 msleep %>% 
@@ -2563,7 +2563,7 @@ msleep %>%
 
 ```
 
-Okresl odpowiedni zakres dla szerokosci slupkow
+2.  Okresl odpowiedni zakres dla szerokosci slupkow
 
 ```{r}
 
@@ -2577,7 +2577,7 @@ msleep %>%
 
 > TIP: Inne metody ustawiania szerokosci slupka to np. Regula Sturgesa (`nclass.Sturges()`) i Regula Freedmana-Diaconisa (`nclass.FD()`).
 
-Zmien graficzne elementy geomu
+3.  Zmien graficzne elementy geomu
 
 ```{r}
 
@@ -2592,7 +2592,7 @@ msleep %>%
 
 ```
 
-Dodaj podpisy osi i zmien motyw.
+4.  Dodaj podpisy osi i zmien motyw.
 
 ```{r}
 
@@ -2611,7 +2611,7 @@ msleep %>%
 
 > TIP: Wyprobuj rozne opcje motywow z autouzupelniania po `theme_`
 
-Stworz wykres rozrzutu, tym razme jako wykres gestosci.
+5.  Stworz wykres rozrzutu, tym razme jako wykres gestosci.
 
 ```{r}
 
@@ -2622,7 +2622,7 @@ msleep %>%
 
 ```
 
-Zmien wypelnienie pod wykresem, tak aby bylo innego koloru dla zwierzat z innych klas pokarmowych.
+6.  Zmien wypelnienie pod wykresem, tak aby bylo innego koloru dla zwierzat z innych klas pokarmowych.
 
 ```{r}
 
@@ -2633,7 +2633,7 @@ msleep %>%
 
 ```
 
-Zwieksz przejrzystosc wykresu poprzez wykluczenie ssakow z brakiem danych w grupie pokarmowej. Ustaw przezroczystosc dla elementow wykresu.
+7.  Zwieksz przejrzystosc wykresu poprzez wykluczenie ssakow z brakiem danych w grupie pokarmowej. Ustaw przezroczystosc dla elementow wykresu.
 
 ```{r}
 msleep %>%
@@ -2643,7 +2643,7 @@ msleep %>%
 
 ```
 
-Te kolory nie sa zbyt fajne. Sprobuj ustawic inne kolory dla kazdej grupy uzywajac funckji `scale_fill_manual()` . A kolorow jest 'do wyboru do koloru' 😉🌈 Sprawdz [kolor w R](https://derekogle.com/NCGraphing/img/colorbynames.png) , lub uzyj [Hex kody kolorow w HTML](https://htmlcolorcodes.com/) .
+8.  Te kolory nie sa zbyt fajne. Sprobuj ustawic inne kolory dla kazdej grupy uzywajac funckji `scale_fill_manual()` . A kolorow jest 'do wyboru do koloru' 😉🌈 Sprawdz [kolor w R](https://derekogle.com/NCGraphing/img/colorbynames.png) , lub uzyj [Hex kody kolorow w HTML](https://htmlcolorcodes.com/) .
 
 ```{r}
 
@@ -2668,7 +2668,7 @@ msleep %>%
 
 ```
 
-Przy zmianie kolorow mozesz tez skorzystac z wielu sprawdzonych palet kolorow, wiele z nich wymaga sciagniecia i wywolania dodatkowych pakietow.
+9.  Przy zmianie kolorow mozesz tez skorzystac z wielu sprawdzonych palet kolorow, wiele z nich wymaga sciagniecia i wywolania dodatkowych pakietow.
 
 ```{r}
 msleep %>%
@@ -2680,7 +2680,7 @@ msleep %>%
 
 ```
 
-Nadal malo przejrzyscie? Sprobuj rozbic wykres na banele.
+10. Nadal malo przejrzyscie? Sprobuj rozbic wykres na banele.
 
 ```{r}
 
@@ -2695,7 +2695,7 @@ msleep %>%
 
 ```
 
-Zmodyfikuj motyw (czyli elementy wykresu, ktore nie sa zwiazane z danymi).
+11. Zmodyfikuj motyw (czyli elementy wykresu, ktore nie sa zwiazane z danymi).
 
 ```{r}
 
@@ -2719,4 +2719,56 @@ msleep %>%
 
 ## Wykresy ramka-wasy (tzw. boxploty)
 
+Sluza do pokazywania polozenia miar tendencji centralnej, innych miar polozenia oraz miar rozrzutu. Wykorzystuje sie je przedwszystkim przy porownywaniu grup miedzy soba. W klasycznym ukladzie zmienna zalezna y jest w skali ciaglej, a zmienna niezalezna x w skali dyskretnej.
 
+1.  Stowrz boxplot, ktory porowna czas obudzenia miedzy zwierzetami o roznych kategoriach statusach ochrony.
+2.  
+
+```{r}
+
+msleep %>% 
+  filter(!is.na(conservation)) %>% 
+  ggplot(aes(x = conservation, y = awake)) + # obie osi opisane
+  geom_boxplot() # geom rysujacy wykres ramka wasy
+
+```
+
+2.  Dodaj tytlu wykresu i etykiete. Zapisz ten wykres w srodowisku
+
+```{r}
+
+wykres1A <- msleep %>% 
+  filter(!is.na(conservation)) %>% 
+  ggplot(aes(x = conservation, y = awake)) + # obie osi opisane
+  geom_boxplot() +
+  labs(title = 'Porowanie dlugosci przebudzenia u ssakow o roznym statusie ochrony', # tytul wykresu
+       tag = 'A') # etykieta
+
+
+```
+
+3.  Stworz drugi wykres porownujacy ssaki o roznym statusie ochronnym pod wzgledem calkowitej masy mozgu. Dodaj do niego tytul i etykiete B. Zapisz wykres w srodowisku
+
+```{r}
+
+wykres1B <- msleep %>% 
+  filter(!is.na(conservation)) %>% 
+  ggplot(aes(x = conservation, y = sleep_total)) +
+  geom_boxplot() +
+  labs(title = 'Porowanie dlugosci snu u ssakow o roznym statusie ochrony', # tytul wykresu
+       tag = 'B')
+
+```
+
+4.  Polacz wykres 1A i 1B. Wykorzystaj do tego funkcje pakietu `patchwork`
+
+```{r}
+
+library(patchwork)
+
+wykres1A + wykres1B
+
+wykres1A / wykres1B
+
+
+```
