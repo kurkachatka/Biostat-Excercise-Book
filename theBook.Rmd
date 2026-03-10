@@ -2772,3 +2772,103 @@ wykres1A / wykres1B
 
 
 ```
+
+## Wykresy rozrzutu z liniowym modelem zaleznosci
+
+Sluzy do obrazowania umiejscowienia kazdej obserwacji wzgledem jej dwoch cech i zaleznosci miedzy dwoma zmiennymi o charakterze ciaglym.
+
+Stworz wykres rozrzutu dla dlugosci snu zestawionej z dlugoscia fazy rem.
+
+```{r}
+
+msleep %>% 
+  ggplot(aes(x = sleep_total, y = sleep_rem)) +
+  geom_point() # rozrzuca punkty w przestrzeni wykresu
+
+
+```
+
+Dodaj funkcje liniowa obrazujaca zaleznosc miedzy dlugoscia fazy rem a calkowita dlugoscia snu
+
+```{r}
+
+msleep %>% 
+  ggplot(aes(x = sleep_total, y = sleep_rem)) +
+  geom_point() +
+  geom_smooth(method = 'lm') # dodaje funkcje liniowa
+
+
+```
+
+> TIP: Sprobuj uzyc funkcji `na.omit()` i zobacz jak wiele punkto zostaje wykluczonych z wykresu, tylko dlatego ze w innych kolumnach, ktore nie sa uzyte podczas jego towrzenia wystepuja wartosci `NA`
+
+Zmien [ksztalt](https://www.sthda.com/sthda/RDoc/figure/graphs/r-plot-pch-symbols-points-in-r.png), wielkosc i przezroczystosc punktow. Zmien tez ich kolor w zaleznosci od rzedu taksonomicznego, do ktorego nalezy dany punkt. Uwaga: niektore ksztalty maja tylko kolor, inne maja zarowno kolor jak i wypelenienie. Dodaj tytul i usun legende. Zapisz ten element w srodowisku.
+
+```{r}
+
+wykres2 <- msleep %>% 
+  ggplot(aes(x = sleep_total, y = sleep_rem)) +
+  geom_point(aes(fill = order), size = 4, shape = 23, alpha = 0.7) +
+  geom_smooth(method = 'lm') +
+  labs(title = 'Zaleznosc dlugosci fazy REM od calkowitej dlugosci snu') +
+  scale_fill_viridis_d() +
+  theme(legend.position = 'none')
+
+
+
+
+```
+
+Polacz wszystkie wykresy.
+
+```{r}
+
+wykres2 | (wykres1A/wykres1B)
+
+
+```
+
+## Wykresy frekwencji
+
+Sluza do obrazowania czestosci wystepowania danej kategorii zmiennej miedzy kategoriami innej zmiennej. Jednym z typow takich wykresow jest wykres slupkowy
+
+Stworz wykres slupkowy obrazujacy czestosc wystepowania danego status ochrony w danej grupie pokarmowej.
+
+```{r}
+
+msleep %>% 
+  filter(!(is.na(conservation) | is.na(vore))) %>% 
+  ggplot(aes(x = vore, fill = conservation)) +
+  geom_bar()
+
+
+```
+
+Na osi y przedstaw udzial %. Dodaj tytul, zapisz element w srodowisku.
+
+```{r}
+
+wykres3 <- msleep %>% 
+  filter(!(is.na(conservation) | is.na(vore))) %>% 
+  ggplot(aes(x = vore, fill = conservation)) +
+  geom_bar(position = 'fill') +
+    labs(title = 'Frekwnecja statusow ochrony w danej grupie pokarmowej')
+
+```
+
+Dolacz do pozostalych wykresow. Przygotowana grafike zapisz na komputerze.
+
+```{r}
+
+
+rycina <- (wykres2 | (wykres1A / wykres1B)) / wykres3
+
+ggsave('Rycina.jpg', # nazwa pliku razem z rozszerzeniem. Jezeli nie ma ustawionego WD w tym miejscu najlepiej podac cala sciezke
+       plot = rycina, # nazwa elementu ze srodowiska
+       width = 25, height = 25, #szerokosc i wysokosc 
+       units = c('cm'), #jednostka w jakiej ma byc przeliczona szer i wys
+       dpi = 1500) # dot per inch - jakos grafiki
+
+
+
+```
