@@ -2535,3 +2535,188 @@ pingw_coord <- pingwiny %>%
 ```
 
 # Lab 6
+
+Do zadan wykorzystamy dane o paramterach snu ssakow, ktore sa zawarte w `msleep` dostepnym jako cwiczeniowa baza danych w `ggplot` bedacycm czescia `tidyverse`. [Metadane](https://ggplot2.tidyverse.org/reference/msleep.html)
+
+## Wykresy rozkładu
+
+Sluza do zobrazowania czestosci wystepowania poszczegolnych wartosci zmiennej w skali ciaglej w zbiorze danych. Jest to jeden z najwazniejszych typow wykresow diagnotycznych, ktore sa niezbedne np. podczas wyboru odpowiedniego typu testu statystycznego. Pozwalaja ocenic najbardziej przecietne wartosci i rozrzut w zbiorze, jak rowniez zidentyfikowac pomiary odstajace.
+
+![](https://media.licdn.com/dms/image/v2/D4D22AQG0q1LVAgCD3g/feedshare-shrink_2048_1536/feedshare-shrink_2048_1536/0/1701610583868?e=2147483647&v=beta&t=dFuYGv2sjexAJr0uF_dyvk786Kru6czaPlWXL-rSTks)
+
+Rozklad mozna zwizualizowac za pomoca dwoch glownych typow wykresow:
+
+-   Histogram - wykres slupkowy, gdzie dany slupek reprezentuje przedzial zmiennej ciaglej, a jego wyskosc mowi o liczbie obserwacji z danego przedzialu
+
+-   Wykres gestosci - wygladzona funkcja obliczana przy uzyciu metody KDE.
+
+### Histogramy
+
+Stworz histogram obrazujacy rozklad czasu spedzonego na snie `sleep_total` u ssakow.
+
+```{r}
+msleep %>% 
+  ggplot(aes(x = sleep_total)) + # tworzy przestrzen wykresu, opisuje osi
+  geom_histogram() # geom osadzony na stworzonej przestrzeni wykresu
+
+
+
+```
+
+Okresl odpowiedni zakres dla szerokosci slupkow
+
+```{r}
+
+msleep %>% 
+  ggplot(aes(x = sleep_total)) +
+  geom_histogram(binwidth = nclass.scott(msleep$sleep_total)) # argument binwidth okresla zakres dla slupkow, mozna ustawic go recznie metoda prob i bledow lub skorzystac z roznych regul ich ustanawiania. Tutaj np. metoda Scotta
+
+
+
+```
+
+> TIP: Inne metody ustawiania szerokosci slupka to np. Regula Sturgesa (`nclass.Sturges()`) i Regula Freedmana-Diaconisa (`nclass.FD()`).
+
+Zmien graficzne elementy geomu
+
+```{r}
+
+msleep %>% 
+  ggplot(aes(x = sleep_total)) +
+  geom_histogram(fill = 'white', # wypelnienie
+                 color = 'black', # kolor obramowania
+                 linewidth = 1.5, # szerokosc lini obramowania
+                 binwidth = nclass.scott(msleep$sleep_total))
+
+
+
+```
+
+Dodaj podpisy osi i zmien motyw.
+
+```{r}
+
+msleep %>% 
+  ggplot(aes(x = sleep_total)) +
+  geom_histogram(fill = 'white',
+                 color = 'black',
+                 linewidth = 1.5,
+                 binwidth = nclass.scott(msleep$sleep_total)) +
+  labs(y = 'Liczba osobnikow', x = 'Calkowita dlugosc snu [h]') + 
+  theme_classic() 
+
+
+
+```
+
+> TIP: Wyprobuj rozne opcje motywow z autouzupelniania po `theme_`
+
+Stworz wykres rozrzutu, tym razme jako wykres gestosci.
+
+```{r}
+
+msleep %>% 
+  ggplot(aes(x = sleep_total)) + # poczatek taki sam
+  geom_density() # pozniej odpowiedni geom
+
+
+```
+
+Zmien wypelnienie pod wykresem, tak aby bylo innego koloru dla zwierzat z innych klas pokarmowych.
+
+```{r}
+
+msleep %>% 
+  ggplot(aes(x = sleep_total)) +
+  geom_density(aes(fill = vore)) # poniewaz zmiana koloru zalezy od danych zakodowanych w zmiennej vore musi byc ona podana w aes().
+
+
+```
+
+Zwieksz przejrzystosc wykresu poprzez wykluczenie ssakow z brakiem danych w grupie pokarmowej. Ustaw przezroczystosc dla elementow wykresu.
+
+```{r}
+msleep %>%
+  filter(!is.na(vore)) %>% # wykluczenie NA
+  ggplot(aes(x = sleep_total)) +
+  geom_density(aes(fill = vore), alpha = 0.6) # argument ustawiajacy przezroczystosc znajduje sie poza aes() poniewaz dotyczy jednakowo wszystkich elementow wykresu.
+
+```
+
+Te kolory nie sa zbyt fajne. Sprobuj ustawic inne kolory dla kazdej grupy uzywajac funckji `scale_fill_manual()` . A kolorow jest 'do wyboru do koloru' 😉🌈 Sprawdz [kolor w R](https://derekogle.com/NCGraphing/img/colorbynames.png) , lub uzyj [Hex kody kolorow w HTML](https://htmlcolorcodes.com/) .
+
+```{r}
+
+# nazwy kolorow
+
+msleep %>%
+  filter(!is.na(vore)) %>% 
+  ggplot(aes(x = sleep_total)) +
+  geom_density(aes(fill = vore), alpha = 0.6) +
+  scale_fill_manual(values = c('deepskyblue4', 'palegreen3', 'cadetblue1', 'olivedrab3'))
+
+# HTLM Hex codes:
+
+msleep %>%
+  filter(!is.na(vore)) %>%
+  ggplot(aes(x = sleep_total)) +
+  geom_density(aes(fill = vore), alpha = 0.6) +
+  scale_fill_manual(values = c('#412059', '#E3823B', '#9E1C95', '#EDC374'))
+
+
+
+
+```
+
+Przy zmianie kolorow mozesz tez skorzystac z wielu sprawdzonych palet kolorow, wiele z nich wymaga sciagniecia i wywolania dodatkowych pakietow.
+
+```{r}
+msleep %>%
+  filter(!is.na(vore)) %>% # wykluczenie NA
+  ggplot(aes(x = sleep_total)) +
+  geom_density(aes(fill = vore), alpha = 0.6) +
+  scale_fill_brewer(palette = 3)
+
+
+```
+
+Nadal malo przejrzyscie? Sprobuj rozbic wykres na banele.
+
+```{r}
+
+msleep %>%
+  filter(!is.na(vore)) %>% # wykluczenie NA
+  ggplot(aes(x = sleep_total)) +
+  geom_density(aes(fill = vore), alpha = 0.6) +
+  scale_fill_brewer(palette = 3) +
+  facet_wrap(vars(vore), # tworzy oddzielne panele rozdzielone na podstawie wskazanej zmiennej
+             ncol = 4, # ustala liczbe kolumn, mozna tez uzyc nrow
+             strip.position = 'left') # zmiena pozycje podpisu, domylsnie 'top'
+
+```
+
+Zmodyfikuj motyw (czyli elementy wykresu, ktore nie sa zwiazane z danymi).
+
+```{r}
+
+msleep %>%
+  filter(!is.na(vore)) %>% # wykluczenie NA
+  ggplot(aes(x = sleep_total)) +
+  geom_density(aes(fill = vore), alpha = 0.6, color = 'white',
+               linewidth = 1.2) +
+  scale_fill_brewer(palette = 3) +
+  facet_wrap(vars(vore),
+             ncol = 4,
+             strip.position = 'bottom') +
+  theme(legend.position = 'top', # ustawienie legendy
+        panel.background = element_rect(fill = 'grey13'), #ustawienia tla panelu wykresu
+        panel.grid = element_blank(), # ustawienia lini siatki, element_blank() oznacza pusty element
+        axis.title = element_text(size = 17, color = 'darkblue'), # tytlu osi
+        axis.text = element_text(size = 12), # teskt osi
+        strip.background = element_rect(fill = 'white', color = 'black')) # paski poszczegolnych paneli
+
+```
+
+## Wykresy ramka-wasy (tzw. boxploty)
+
+
