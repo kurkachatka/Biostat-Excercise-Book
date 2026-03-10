@@ -2434,7 +2434,7 @@ endangared <- pingwiny %>%
 
 Alternatywa dla funkcji `ifelse()` jest funkcja `case_when()`.
 
-[![Jak uzywac case_when(). Credits: [Allison Horst](https://allisonhorst.com/allison-horst)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6ffcd6d6-c783-4087-ae76-99aa851663ed_rw_1920.png?h=5f67935d69c92e1fda9074d00dfea972)](https://allisonhorst.com/allison-horst)
+![Jak uzywac case_when(). Credits: [Allison Horst](https://allisonhorst.com/allison-horst)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6ffcd6d6-c783-4087-ae76-99aa851663ed_rw_1920.png?h=5f67935d69c92e1fda9074d00dfea972)
 
 Chcemy po poklasyfikowac pingwiny ze wzgledu na ich mase na 6 kategorii, gdzie ktorym oznaczymy nietypowo niskie i wysokie wartosci dla masy. Jednym ze sposobow opisania nietypowych pomiarow (tzw. odstajacych) jest uzycie odchylenia standardowego. Jezeli masa wypada ponizej lub powyzej granicy wyznaczonej przez +/- 2\* SD od sredniej mozemy taki pomiar uznac za nietypowy. Pingwiny przydzielimy do kategorii:
 
@@ -2502,8 +2502,6 @@ Uzwyajac ramki danych `pingwiny`, stworz nowa zmienna `cooridnates`, gdzie podas
 
 <summary>ODP 1.1</summary>
 
-
-
 ```{r}
 
 pingw_coord <- pingwiny %>% 
@@ -2516,7 +2514,6 @@ pingw_coord <- pingwiny %>%
 ```
 
 </details>
-
 
 ### CW 1.2
 
@@ -2537,7 +2534,4 @@ pingw_coord <- pingwiny %>%
 
 ```
 
-
-
 # Lab 6
-
