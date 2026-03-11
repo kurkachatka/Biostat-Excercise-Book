@@ -1,0 +1,179 @@
+---
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 6
+
+## Cwiczenia - histograms in ggplot
+
+### CW 1
+
+We will now import a data set that contains the data for the following exercises.
+Can you import the data called 'birth_places_uni.csv'?
+
+Teraz zaimportujemy zbiór danych zawierający dane do poniższych ćwiczeń.
+Czy możesz zaimportować dane o nazwie „birth_places_uni.csv”? Znajdziesz je na GitHubie.
+
+<details>
+
+<summary>ODP 1</summary>
+
+You can use the following command but will need to replace the working directory with your folder names of where you are saving your files:
+
+Możesz użyć poniższego polecenia, ale musisz zastąpić katalog roboczy nazwami folderów, w których zapisujesz swoje pliki:
+
+```{r}
+birth_places_uni <- read.csv("C:/Users/krist/Desktop/birth_places_uni.csv")
+```
+
+Another way to do it is using the button 'session', selecting the working directory, going to the tab files, and uploading it from there.
+
+Innym sposobem jest użycie przycisku „sesja”, wybranie katalogu roboczego, przejście do zakładki plików i przesłanie go stamtąd.
+
+</details>
+
+### CW 1.2
+
+Can you look at the structure of the data? What is wrong? Does something need to be changed/adjusted?
+
+Czy możesz sprawdzić strukturę danych? Co jest nie tak? Czy coś należy zmienić/dostosować?
+
+```{r}
+str(birth_places_uni)
+```
+
+<details>
+
+<summary>ODP 1.2</summary>
+
+We will need to change 'Sex' and 'Distance' to a factor and numerical, respectively.
+
+Będziemy musieli zmienić „Płeć” i „Odległość” odpowiednio na czynnik i wartość liczbową.
+
+<details>
+
+### CW 1.3
+
+Let's change the two columns that I described in the answer to what we need to continue.
+
+Zmieńmy dwie kolumny, które opisałem w odpowiedzi, tak aby odpowiadały naszym potrzebom.
+
+<details>
+
+<summary>ODP 1.3</summary>
+
+```{r}
+birth_places_uni$Sex <- as.factor(birth_places_uni$Sex)
+
+birth_places_uni$Distance.to.University..km. <- as.numeric(birth_places_uni$Distance.to.University..km.)
+
+```
+
+<details>
+
+### CW 1.4
+
+Can you create a histogram using ggplot that we got to know during class? We want to see the count data for how far away from university people live.
+
+Can you give it a nice color (either with a color name or the HTML Hex code)?
+
+
+Czy potrafisz stworzyć histogram przy użyciu ggplot, którego nauczyliśmy się podczas zajęć? Chcemy zobaczyć dane liczbowe dotyczące odległości, w jakiej ludzie mieszkają od uniwersytetu.
+
+Czy możesz nadać mu ładny kolor (podając nazwę koloru lub kod HTML Hex)?
+
+<details>
+
+<summary>ODP 1.4</summary>
+
+```{r}
+library(ggplot2)
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +  # Set bin width
+  theme_minimal()
+
+```
+
+<details>
+
+### CW 1.5
+
+Now, we do not have very nice axis descriptions. Can you change them to make it a better plot?
+
+Obecnie nie mamy zbyt ładnych opisów osi. Czy możesz je zmienić, aby wykres wyglądał lepiej?
+
+<details>
+
+<summary>ODP 1.5</summary>
+
+```{r}
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
+labs(title = "Histogram of Distances people need to travel to University", 
+       x = "Distance to University (km)", 
+       y = "Frequency") +
+  theme_minimal()
+```
+
+<details>
+
+### CW 1.6
+
+Do you know what this plot shows? What is different in the code from the previous code?
+
+Czy wiesz, co pokazuje ten wykres? Czym różni się ten kod od poprzedniego?
+
+```{r}
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 5, fill = "skyblue", color = "black") +
+labs(title = "Histogram of Distances to University", 
+       x = "Distance to University (km)", 
+       y = "Frequency") +
+  facet_wrap(~Sex) +
+  theme_minimal()
+```
+
+<details>
+
+<summary>ODP 1.6</summary>
+
+We firstly added a part of the code that creates two separate plots for male and female students and their respective distances between their place of birth and university. 
+
+Najpierw dodaliśmy fragment kodu, który tworzy dwa oddzielne wykresy dla studentów płci męskiej i żeńskiej oraz odpowiednie odległości między ich miejscem urodzenia a uczelnią. 
+
+<details>
+
+### CW 1.7
+
+Play with the 'binwidth'. What changes in your plot?
+
+Zmieniaj wartość „binwidth”. Jakie zmiany zachodzą na wykresie?
+
+<details>
+
+<summary>ODP 1.7</summary>
+
+Here, we changed the binwidth for better visualization. Now we can better see the differences between the distances of males and females.
+
+W tym przypadku zmieniliśmy szerokość przedziału, aby uzyskać lepszą wizualizację. Teraz możemy lepiej dostrzec różnice między odległościami dla mężczyzn i kobiet.
+
+```{r}
+ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
+  geom_histogram(binwidth = 2, fill = "skyblue", color = "black") +
+labs(title = "Histogram of Distances to University", 
+       x = "Distance to University (km)", 
+       y = "Frequency") +
+  facet_wrap(~Sex) +
+  theme_minimal()
+```
+
+<details>
+

@@ -1,0 +1,142 @@
+---
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 2 - Vectors and data frames
+
+## Cwiczenia
+
+### CW 1
+
+Teraz załadujemy zbiór danych zawarty w języku R i przyjrzymy się jego strukturze.
+
+```{r}
+str(iris)
+```
+Pomaga to uzyskać ogólny obraz danych.
+
+Jakiego polecenia można użyć, aby wyświetlić pierwsze wiersze tego zestawu danych?
+
+<details>
+
+<summary>ODP 1</summary>
+
+Możesz użyć następującego polecenia. Wyświetli ono pierwsze sześć wierszy danych.
+
+```{r}
+head(iris)
+```
+
+</details>
+
+### CW 2
+
+Jaka jest roznica?
+
+```{r}
+# a
+iris[2, ]
+
+# b
+iris[, 2]
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+Liczba przed przecinkiem w [x,x] odnosi się do wiersza; liczba po przecinku odnosi się do kolumny ramki danych.
+
+<details>
+
+### CW 3
+
+Jak postępować z wartościami nieistniejącymi:
+Podczas pracy z rzeczywistymi danymi czasami zdarzają się braki poszczególnych wartości.
+Na przykład mierzymy długość skrzydeł ptaków, ale jeden ptak pierzy się lub ma złamane pióro. Nadal możemy zapisać pozostałe pomiary, ale brakuje nam długości skrzydła. 
+Symulujemy to tutaj na przykładzie długości działki kielicha. Czy można ustawić dziesiątą wartość na „NA”?
+
+<details>
+
+<summary>ODP 3</summary>
+
+Możesz użyć następującego polecenia. Wyświetli ono pierwsze sześć wierszy danych.
+
+```{r}
+iris$Sepal.Length[10] <- NA          # the 10th value is set to NA
+```
+
+<details>
+
+### CW 4
+
+Co się stanie, jeśli teraz obliczymy średnią długości działek kielicha?
+
+```{r}
+mean(iris$Sepal.Length)
+```
+
+Czy możesz rozwiązać ten problem?
+
+<details>
+
+<summary>ODP 4</summary>
+
+```{r}
+mean(iris$Sepal.Length, na.rm=TRUE)  # The NAs must be actively removed.
+```
+
+<details>
+
+### CW 5
+
+Stwórzmy własną ramkę danych (podobną do tej z irysami).
+Najpierw utwórzmy jeden wektor dla Boba, który pokazuje czasy (w sekundach) jego biegów na 100 m. Każdy biegł 8 razy.
+
+<details>
+
+<summary>ODP 5</summary>
+
+```{r}
+Bob <- c(62, 85, 92, 59, 68, 72, 67, 74)
+```
+
+<details>
+
+### CW 6
+
+Teraz Eva chce sprawdzić, jak dobrze sobie radzi. Czy możesz utworzyć kolejny wektor z jej czasami wyścigowymi?
+
+<details>
+
+<summary>ODP 6</summary>
+
+```{r}
+Eva <- c(59, 74, 67, 85, 67, 78, 73, 68)
+```
+
+<details>
+
+### CW 7
+
+O nie, w danych jest błąd. Popraw wpis dotyczący drugiego przejazdu Boba.
+
+<details>
+
+<summary>ODP 7</summary>
+
+```{r}
+Bob[2] <- 54
+```
+Bob jest wektorem, a nie ramką danych ani macierzą, więc nie można używać indeksowania, takiego jak Bob[, 2]. R traktuje wektor Bob jako jednowymiarowy, więc można nim manipulować tylko za pomocą pojedynczego indeksu.
+
+<details>
+

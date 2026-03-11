@@ -1,0 +1,143 @@
+---
+author: "Kristin"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 2 - Vectors and data frames
+
+## Cwiczenia
+
+### CW 1
+
+We will now load a data set that is incorporated in R and look at its structure.
+
+```{r}
+str(iris)
+```
+This helps a lot to get an overview on what your data looks like.
+
+Which command can you use to look at the first rows of this dataset?
+
+<details>
+
+<summary>ODP 1</summary>
+
+You can use the following command. It shows you the first six rows of your data.
+
+```{r}
+head(iris)
+```
+
+</details>
+
+### CW 2
+
+What is the difference?
+
+```{r}
+# a
+iris[2, ]
+
+# b
+iris[, 2]
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+The number before the comma in [x,x] refers to the row; the number behind the comma refers to the column of your data frame.
+
+<details>
+
+### CW 3
+
+How to handle non existing values
+When working with real data, individual values will occasionally be missing.
+For example, you are measuring the wing lengths of birds, but one bird is molting or has a broken feather. You can still record the other measurements, but you are missing the wing length. 
+We will simulate this here with the sepal length. Can you set the 10th value to 'NA'?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+iris$Sepal.Length[10] <- NA          # the 10th value is set to NA
+```
+
+<details>
+
+### CW 4
+
+What happens if you now calculate the mean of sepal length?
+
+```{r}
+mean(iris$Sepal.Length)
+```
+
+Can you solve this issue?
+
+<details>
+
+<summary>ODP 4</summary>
+
+You can use the following command. It shows you the first six rows of your data.
+
+```{r}
+mean(iris$Sepal.Length, na.rm=TRUE)  # The NAs must be actively removed.
+```
+
+<details>
+
+### CW 5
+
+Let us create our own data frame (similar to the iris one).
+First, create one vector for Bob, which show the times (in sec) he ran on his 100m races. He ran 8 times each.
+
+<details>
+
+<summary>ODP 5</summary>
+
+```{r}
+Bob <- c(62, 85, 92, 59, 68, 72, 67, 74)
+```
+
+<details>
+
+### CW 6
+
+Now, Eva wants to see how well she can do. Can you create another vector with her racing times?
+
+<details>
+
+<summary>ODP 6</summary>
+
+```{r}
+Eva <- c(59, 74, 67, 85, 67, 78, 73, 68)
+```
+
+<details>
+
+### CW 7
+
+Oh no, there is a mistake in the data. Correct the entry for Bob's second run.
+
+<details>
+
+<summary>ODP 7</summary>
+
+```{r}
+Bob[2] <- 54
+```
+Bob is a vector, not a data frame or matrix, so you cannot use indexing such as Bob[, 2]. R treats the vector Bob as one-dimensional, so you can only manipulate it with a single index.
+
+<details>
+
