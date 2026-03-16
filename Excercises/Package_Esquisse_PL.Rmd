@@ -1,0 +1,70 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+## Szkic biblioteki na poczatek pracy z ggplot
+
+Kiedy zaczynasz nauke tworzenia wykresow w RStudio przy uzyciu biblioteki `library(ggplot2)`, moze byc trudno zrozumiec, jak napisac kod, gdzie umiescic zmienne, a takze gdzie umiescic parametry sluzace do dostosowania wykresu. 
+
+Biblioteka `library(esquisse)` zostala stworzona, aby ulatwic pierwsze kroki w korzystaniu z biblioteki `library(ggplot2)`. Zobaczmy, jak to dziala
+
+
+Najpierw musisz zaimportowac zbior danych do swojego srodowiska
+
+`library(palmerpenguins)`
+
+`Penguins <- penguins`
+
+Nastepnie zainstaluj i pobierz biblioteke
+
+`install.packages("esquisse")`
+
+`library(esquisse)`
+
+Na koniec otworz funkcje, ktora pomoże Ci wykreslic wykres danych
+
+`esquisse::esquisser()`
+
+Ta funkcja spowoduje otwarcie nastepujacego okna:
+![](../assets/Screenshot_1esquisse.png)
+
+Nastepnie mozesz kliknac „Importuj dane” – rozne zmienne dostepne w Twoim zbiorze danych pojawia sie teraz w gornej czesci funkcji `esquisser()`, w polu **zmienna**:
+![](../assets/Screenshot_2esquisse.png)
+
+
+
+Mozesz przeciagac zmienne do poszczegolnych pol: x, y, wypelnienie, kolor, rozmiar, grupa, aby utworzyc wykres:
+![](../assets/Screenshot_3esquisse.png)
+
+Mozesz zmienic sposóob wyswietlania etykiet, tytulow, osi i wykresu, dostosowujac ustawienia znajdujące sie na dole funkcji `esquisser()`
+
+Na koniec mozesz wygenerowac kod i sprawdzic, jak wygladalby on w przypadku bezposredniego uzycia biblioteki ggplot, klikajac sekcje „Kod” w prawym dolnym rogu funkcji `esquisser()`
+![](../assets/Screenshot_4esquisse.png)
+
+Teraz jest idealny moment, zeby to wyprobowac
+```{r}
+
+## Najpierw musisz zaimportowac zbior danych do swojego srodowiska
+library(palmerpenguins)
+Penguins <- penguins
+
+
+## Następnie mozesz zainstalowac i pobrac biblioteke
+#install.packages("esquisse")
+library(esquisse)
+
+## Gdy bedziesz gotowy do wykreslenia wykresu danych, mozesz uruchomic ponizszy fragment kodu:
+esquisse::esquisser() 
+```
