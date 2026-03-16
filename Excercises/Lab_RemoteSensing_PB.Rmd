@@ -1,0 +1,219 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Vizualisation of Geospatial data
+
+```{r}
+#install.packages("")
+library(dplyr) ## to clean the data set => %>% , mutate(), case_when(), filter(), select()
+library(tidyr) ## to tidy up the data 
+library(lubridate) ## to play with date and time format
+library(ragg) ## to export your plots while having control over the size of the text
+library(ggplot2) ## to plot
+library(esquisse) ## if you're new to R and find creating plots with code intimidating, this package is for you!
+library(ggridges) ## extension needed in ggplot when stacking density plots
+library(cowplot) ## to combine different plots together
+library(sf) ## to use certain function when playing with geospatial data
+library(raster) ## to download raster files in R
+library(rnaturalearth) ## to have the land polygon
+library(ggspatial) ## to plot geospatial data with ggplot
+library(viridis) ## to use specific color gradient in ggplot
+library(stars) ## to tidy up geospatial data
+
+library(palmerpenguins)
+Penguins <- penguins_raw
+```
+
+Right now, the column names are not written in a efficient way for coding as they include space & parantheses. 
+
+We will rename the column for easier data handling:
+
+```{r}
+## You can rename your colnames in different ways
+
+## First way of doing it:
+#colnames(Penguins) <- gsub(" ", ".", colnames(Penguins)) ## replace the space by a dot
+#colnames(Penguins) <- gsub("\\s*\\([^\\)]+\\)", "", colnames(Penguins)) ## remove the (...)
+
+
+## Second way of doing it, this is the way we will use for this training:
+## Create column name that will be easier to use:
+Penguins_clean <- Penguins %>% rename(Individual_ID = "Individual ID", 
+                                Clutch_Completion= "Clutch Completion", 
+                                Date_Egg = "Date Egg", 
+                                Culmen_Length_mm = "Culmen Length (mm)",
+                                Culmen_Depth_mm = "Culmen Depth (mm)",
+                                Flipper_Length_mm = "Flipper Length (mm)",
+                                Body_Mass_g = "Body Mass (g)",
+                                Delta_15N_ooo = "Delta 15 N (o/oo)",
+                                Delta_13C_ooo = "Delta 13 C (o/oo)") %>%
+  # Create new variables which we will be used in our analysis:
+  mutate(SEX = case_when(Sex == "MALE" ~ "M",
+                         Sex == "FEMALE" ~ "F"),
+         SPECIES = case_when(Species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+                             Species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+                             Species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap"),
+         Quality = case_when(Clutch_Completion == "No" ~ "Bad year",
+                            Clutch_Completion == "Yes" ~ "Good year")) %>%
+   # Only keep certain column:
+  dplyr::select(SPECIES,SEX,Island,Quality,Date_Egg,Culmen_Length_mm,Culmen_Depth_mm,Flipper_Length_mm,Body_Mass_g,Delta_15N_ooo,Delta_13C_ooo)
+
+```
+
+As you can see in the last line of the code we are writing `dplyr::select` this is because we are using many different packages and there is a conflict with at least two packages using the function select. We need to specify the function from which package we are calling to avoid getting an error message.
+
+We can combine spatial data with remote sensing, in our case, we are combining it with the data coming from Copernicus from the following link: https://data.marine.copernicus.eu/product/SST_GLO_SST_L4_NRT_OBSERVATIONS_010_001/description
+
+To understand the data you are extracting and are about to analyze, it is helpful to check the user manual provided on the product's webpage.
+
+In the User Manual we can see that the analysed_sst in the file is express in Kelvin 
+
+We can visualize spatial data using 
+```{r}
+head(Penguins_clean)
+
+### Coordinates of the three colonies: Latitude then Longitude
+Dream <-c(-64.730419, -64.247602)
+Biscoe <- c(-66.286626, -67.033080) 
+Torgersen <- c(-64.765938, -64.082502)
+
+Colonies <- data.frame(Names =c("Dream","Biscoe","Torgersen"),
+                       Latitude = c (-64.730419, -66.286626,-64.765938),
+                       Longitude = c(-64.247602,-67.033080,-64.082502))
+
+## Extract the land map of the area we are interested in
+library(rnaturalearth)
+antarctica <- ne_countries(scale = 10, returnclass = "sf", country = "Antarctica")
+plot(antarctica)
+
+## Extract only the area I want to focus on which is the Region of Anvers where we have the three island:
+library(sf)
+anvers <- st_crop(antarctica$geometry, xmin = -70.4, xmax = -63, ymin = -66.5, ymax = -64.5) 
+plot(anvers)
+
+### Import data remote sensing data:
+library(raster)
+SST <- raster("~/YOUR_COMPUTER_DIRECTORIES/20251214120000-UKMO-L4_GHRSST-SSTfnd-OSTIA-GLOB-v02.0-fv02.0.nc")
+
+
+### Create a crop to extract the data only for the area of interest
+pr.e <- extent(-70.4, -63, -66.5, -64.5) # Anvers Region
+pr.SST <- crop(SST, pr.e)
+dfSST <- as.data.frame(pr.SST, xy = TRUE)
+str(dfSST)
+
+### Convert the data from Kelvin to °C:
+dfSSTc <- dfSST %>% mutate(SST_celsius = analysed.sea.surface.temperature - 273.15) %>%
+  mutate(Zone = case_when(SST_celsius < 0 ~ "Very cold",
+                          SST_celsius >= 0 ~ "Cold"))
+  
+range(dfSSTc$SST_celsius, na.rm=T)
+unique(dfSSTc$SST_celsius, na.rm=T)
+
+
+### We can plot everything the first results: including the Zone category color, the colonies locations, and the map of the island
+library(ggspatial) ## necessary to use geom_spatial_point()
+plot_geospatial1 <- ggplot() +
+  geom_raster(data = dfSSTc, aes(x = x, y = y, fill = as.factor(Zone))) +
+  scale_fill_manual(name = "Sea Surface Zones", values = c("#33CCFF","#FFFFFF")) +
+  # Show the map:
+  geom_sf(data = anvers, fill = "bisque3", inherit.aes = FALSE) +
+  # Show the location of the three different colonies:
+  geom_spatial_point(data=Colonies,aes(x=Longitude,y=Latitude),
+                     size=3, crs=4326, shape = 21, stroke = 0.5, fill = c("#FF33CC")) +
+  labs(title = "Colonies and SST")
+plot_geospatial1
+
+### We can plot everything the first results: including the Zone category color, the colonies locations, and the map of the island
+library(viridis) ## necessry to use scale_fill_viridis
+plot_geospatial2 <- ggplot() +
+  geom_raster(data = dfSSTc, aes(x = x, y = y, fill = SST_celsius)) +
+  scale_fill_viridis(option = "D") + ## you can try different letter from A to H
+  # Show the map:
+  geom_sf(data = anvers, fill = "bisque3", inherit.aes = FALSE) +
+  # Show the location of the three different colonies:
+  geom_spatial_point(data=Colonies,aes(x=Longitude,y=Latitude),
+                     size=3, crs=4326, shape = 21, stroke = 0.5, fill = c("#FF33CC")) +
+  labs(title = "Colonies and SST")
+plot_geospatial2
+
+```
+
+If you work with GPS tracking data, you can extract the information from remote sensing for the specific GPS location and you can plot everything together
+
+
+```{r}
+## Let's create fake GPS position in the Anvers Region:
+bbox_lonlat <- st_bbox(c(xmin = -70.4, xmax = -63, ymin = -66.5, ymax = -64.5),
+                       crs = st_crs(4326))
+
+## Convert the box into a polygon:
+bbox_poly <- st_as_sfc(bbox_lonlat)
+
+## Sample in the area of interest
+set.seed(123) ## By setting the seed we are always creating the same random point
+sample_points <- st_sample(bbox_poly, size = 200)
+
+## Remove sampled point thats might have been created on land that are in the area:
+random_GPS_points <- sample_points[
+  !st_intersects(sample_points, anvers, sparse = FALSE)
+]
+
+## keep only 30 computed random points
+random_GPS_points30 <- random_GPS_points[1:30]
+head(random_GPS_points30)
+random_GPS_points30df <- as.data.frame(st_coordinates(random_GPS_points30))
+
+## We randomly assign the GPS point to a specific penguin species, by taking the X value as the classifying parameter:
+random_GPS_points30df <- random_GPS_points30df %>% mutate(Species = case_when(X < -68 ~ "Adelie",
+                                                                              X > -69 & X < -64 ~ "Gentoo",
+                                                                              X > -65 ~ "Chinstrap"))
+
+## Visually inspect if the created GPS position have correct coordinates and overlap with the study area:
+plot_geospatial3 <- ggplot() +
+  geom_raster(data = dfSSTc, aes(x = x, y = y, fill = as.factor(Zone))) +
+  scale_fill_manual(name = "Sea Surface Zones", values = c("#33CCFF","#FFFFFF")) +
+  # Show the map:
+  geom_sf(data = anvers, fill = "bisque3", inherit.aes = FALSE) +
+  # Show the location of the three different colonies:
+  geom_spatial_point(data=Colonies,aes(x=Longitude,y=Latitude),
+                     size=3, crs=4326, shape = 21, stroke = 0.5, fill = c("#FF33CC")) +
+  ## Show the location of the fake-GPS points:
+  #geom_point(data = random_GPS_points30df, aes(x = X, y = Y), color = "black", shape = 21, size = 2, fill = c("#FFCCCC")) +
+  geom_point(data = random_GPS_points30df, aes(x = X, y = Y,  color = Species), size = 2) + ## if you want to color by Species of penguins
+  labs(title = "Colonies and SST")
+plot_geospatial3
+
+
+### Add the SST to the specific GPS positions:
+library(stars)
+## Convert the SST raster object to stars format:
+starsSST <- st_as_stars(pr.SST, crs = st_crs(4326))
+## Make sure the GPS object is in the same format as the SST object
+random_GPS_points30dfsf <- st_as_sf(random_GPS_points30df, coords = c("X", "Y"), crs = 4326)
+
+## Extract cell values (SST values) at point locations (GPS locations)
+SSTextractGPS <- st_extract(starsSST, random_GPS_points30dfsf) %>% st_as_sf() 
+
+## Combine the GPS position where we have the penguins information with the extracted SST info for those GPS positions
+GPSxySST <- cbind(random_GPS_points30dfsf, SSTextractGPS) 
+
+## Convert the column geometry in coordinates X and Y then extract it
+GPSxySSTcoord <- st_coordinates(GPSxySST)
+## Attach the coordinates in the X and Y format to our table
+GPSSSTcombined <- cbind(GPSxySST, GPSxySSTcoord)
+GPSSSTcombined
+```
