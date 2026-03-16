@@ -1,0 +1,373 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 6 - Korzystanie z ggplot
+
+
+## Cwiczenia
+
+W trakcie tej sesji ćwiczeniowej będziemy nadal korzystać z zestawu danych „penguin” i będziemy musieli pobrać kilka pakietów
+
+```{r}
+#install.packages("")
+library(dplyr) ## do czyszczenia zbioru danych => %>% , mutate(), case_when(), filter(), select()
+library(tidyr) ## do porzadkowania danych
+library(ragg) ## do eksportowania wykresow z mozliwoscia dostosowania rozmiaru tekstu
+library(ggplot2) ## do tworzenia wykresow
+library(cowplot) ## do laczenia roznych wykresow
+
+library(palmerpenguins)
+Penguins <- penguins_raw
+```
+
+Obecnie nazwy kolumn nie są napisane w sposób sprzyjający kodowaniu, ponieważ zawierają spacje i nawiasy.
+
+Zmienimy nazwy kolumn, aby ułatwić obsługę danych:
+
+```{r}
+## Nazwy kolumn mozna zmieniac na rozne sposoby
+
+## Pierwszy sposob:
+#colnames(Penguins) <- gsub(" ", ".", colnames(Penguins)) ## replace the space by a dot
+#colnames(Penguins) <- gsub("\\s*\\([^\\)]+\\)", "", colnames(Penguins)) ## remove the (...)
+
+
+## Drugi sposob, z ktorego skorzystamy podczas tego szkolenia:
+## Utworz nazwe kolumny, ktora bedzie latwiejsza w uzyciu:
+Penguins_clean <- Penguins %>% rename(Individual_ID = "Individual ID", 
+                                Clutch_Completion= "Clutch Completion", 
+                                Date_Egg = "Date Egg", 
+                                Culmen_Length_mm = "Culmen Length (mm)",
+                                Culmen_Depth_mm = "Culmen Depth (mm)",
+                                Flipper_Length_mm = "Flipper Length (mm)",
+                                Body_Mass_g = "Body Mass (g)",
+                                Delta_15N_ooo = "Delta 15 N (o/oo)",
+                                Delta_13C_ooo = "Delta 13 C (o/oo)") %>%
+  # Utworz nowe zmienne, ktore wykorzystamy w naszej analizie:
+  mutate(SEX = case_when(Sex == "MALE" ~ "M",
+                         Sex == "FEMALE" ~ "F"),
+         SPECIES = case_when(Species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+                             Species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+                             Species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap"),
+         Quality = case_when(Clutch_Completion == "No" ~ "Bad year",
+                            Clutch_Completion == "Yes" ~ "Good year")) %>%
+   # Zachowaj tylko okreslona kolumne:
+  dplyr::select(SPECIES,SEX,Island,Quality,Date_Egg,Culmen_Length_mm,Culmen_Depth_mm,Flipper_Length_mm,Body_Mass_g,Delta_15N_ooo,Delta_13C_ooo)
+
+```
+
+Jak widac w ostatnim wierszu kodu, uzywamy `dplyr::select`. Wynika to z faktu, ze korzystamy z wielu roznych pakietów i wystepuje konflikt z co najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu wywolujemy te funkcje.
+
+### CW 1.1
+
+Jak sporzadzilbys wykres przedstawiajacy liczbe osob, ktore mialy dobry rok, w porownaniu z liczba osob, ktore mialy zly rok?
+
+</ul>
+
+<details>
+
+<summary>ODP 1.1 </summary>
+
+```{r}
+## Porownaj liczbe osob, ktore mialy dobry rok, z liczba osob, ktore mialy zly rok:
+GoodvsBad <- Penguins_clean %>% group_by(Quality) %>% summarise(counts = n())
+GoodvsBad
+
+## Wykresl wyniki z funkcji GoodvsBad:
+plot_amount1.1 <- ggplot(data = GoodvsBad, aes(x = Quality, y = counts, fill = Quality)) +
+            geom_bar(stat = "identity")+
+            theme_bw()
+plot_amount1.1
+```
+
+</details>
+
+### CW 1.2 
+
+Jak sporzadzilbys wykres przedstawiajacy liczbe osobników, ktore mialy dobry rok, w porownaniu z osobnikami, ktore mialy zly rok, z tym ze tym razem nalezaloby rowniez rozroznic poszczegolne gatunki?
+
+</ul>
+
+<details>
+
+<summary>ODP 1.2 </summary>
+
+```{r}
+## Porownaj liczbe osobnikow, ktore mialy dobry rok, z liczba osobnikow, ktore mialy zly rok, dla kazdego gatunku:
+GoodvsBadSpecies <- Penguins_clean %>% group_by(Quality, SPECIES) %>% summarise(counts = n())
+GoodvsBadSpecies
+
+## Wykresl wyniki z funkcji GoodvsBadSpecies:
+plot_amount1.2 <- ggplot(data = GoodvsBadSpecies, aes(x = Quality, y = counts, fill = SPECIES)) +
+            geom_bar(stat = "identity", position=position_dodge())+
+            theme_bw()
+plot_amount1.2
+```
+
+</details>
+
+
+### CW 2
+
+Czy potrafisz powiedziec, co przedstawiają wykresy `plot_proportions2opt1` i `plot_proportions2opt2`, oraz wyjasnic, na czym 
+polega roznica? Ktora czesc kodu odpowiada za te roznice?
+
+```{r}
+head(Penguins_clean)
+
+GoodvsBadSpecies_perc <- Penguins_clean %>% group_by(Quality, SPECIES) %>% 
+  summarise(counts = n()) %>% 
+  mutate(perc_GoodBadSex=round(prop.table(counts) * 100))
+GoodvsBadSpecies_perc
+
+plot_proportions2opt1 <- ggplot(data = GoodvsBadSpecies_perc, aes(x = Quality, y = perc_GoodBadSex, fill = SPECIES)) +
+            geom_bar(stat = "identity", position=position_dodge())
+plot_proportions2opt1
+
+plot_proportions2opt2 <- ggplot(data = GoodvsBadSpecies_perc, aes(x = Quality, y = perc_GoodBadSex, fill = SPECIES)) +
+            geom_bar(stat = "identity")
+plot_proportions2opt2
+
+## Ten fragment kodu pozwoli Ci wyswietlic oba wykresy obok siebie:
+library(cowplot)
+plot_grid(plot_proportions2opt1,plot_proportions2opt2)
+
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+Oba wykresy pokazuja, czy dany rok byl dobry, czy zly dla poszczegolnych gatunkow pingwinow, a wynik ten przedstawiaja w procentach.
+Roznica miedzy tymi dwoma kodami polega na poleceniu `position=position_dodge()`. W przypadku plot_proportions1 slupki sa ulozone obok siebie, natomiast w przypadku plot_proportions2 sa ulozone jeden nad drugim.
+
+</details>
+
+
+
+### CW 3.1
+
+Jak narysowalbys wykres przedstawiajacy mase ciala wylacznie u pingwinow Adeli?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+
+## Rozwiazanie 1:
+plot_distribution3.1opt1 <- ggplot(subset(Penguins_clean, SPECIES == "Adelie"), aes(Body_Mass_g,fill = SPECIES, colour = SPECIES)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.1
+
+## Rozwiazanie 2:
+Adelie <- Penguins_clean %>% filter(SPECIES == "Adelie")
+
+plot_distribution3.1opt2 <- ggplot(Adelie, aes(Body_Mass_g, fill = SPECIES, colour = SPECIES)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.1opt2
+```
+</details>
+
+
+### CW 3.2
+
+Jak narysowalbys wykres, aby przedstawic mase ciala wylacznie u pingwinow Adeli, uwzgledniajac przy tym podzial wedlug plci?
+
+<details>
+
+<summary>ODP 3.2</summary>
+
+```{r}
+## Jesli zapomnisz usunac wartosc „NA”, otrzymasz nastepujacy wykres:
+Adelie <- Penguins_clean %>% filter(SPECIES == "Adelie")
+
+plot_distribution3.2opt1 <- ggplot(Adelie, aes(Body_Mass_g,fill = SEX, colour = SEX)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.2opt1
+
+## Najpierw musisz usunac wartosci „NA”, w przeciwnym razie pojawia sie one na wykresie:
+AdelieSex <- Penguins_clean %>% filter(SPECIES == "Adelie" & !is.na(SEX))
+
+## Wykres ten przedstawia mase ciala pingwinow Adeli, z jedna krzywa dla samic i jedna dla samcow:
+plot_distribution3.2opt2 <- ggplot(AdelieSex, aes(Body_Mass_g,fill = SEX, colour = SEX)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.2opt2
+
+## Tutaj widac oba wykresy obok siebie:
+library(cowplot)
+plot_grid(plot_distribution3.2opt1,plot_distribution3.2opt2)
+
+
+```
+</details>
+
+### CW 4.1
+
+Jak ocenilbys zaleznosc miedzy Delta_13C a Delta_15N?
+
+<details>
+
+<summary>ODP 4.1 </summary>
+
+```{r}
+## Najpierw musimy usunac wartosci „brak danych” dla zmiennych Delta15N i Delta13C:
+Penguins_delta <- Penguins_clean %>% filter(!is.na(Delta_13C_ooo)) %>% filter(!is.na(Delta_15N_ooo))
+
+## Mozemy przyjrzec sie zaleznosci miedzy Delta15N a Delta13C
+plot_xyrelationship1 <- ggplot(Penguins_delta, aes(x = Delta_15N_ooo, y = Delta_13C_ooo)) +
+  geom_point(size = 1, shape = 21)
+plot_xyrelationship1
+```
+
+</details>
+
+
+### CW 4.2
+
+Wlasciwie mozesz sie dobrze bawic, zmieniajac ksztalt, rozmiar i kolor punktow z poprzedniego wykresu, korzystajac z ponizszego linku:
+
+<ul>   
+<li> kolor: https://www.sthda.com/english/wiki/colors-in-r </li>
+<li> ksztalt: https://stackoverflow.com/questions/46803260/assigning-40-shapes-or-more-in-scale-shape-manual </li>
+<li> rozmiar: https://www.statology.org/ggplot-point-size/#:~:text=by%20Zach%20Bobbitt%20Last%20updated,y=wt))%20+%20geom_point() </li>
+</ul>
+
+Sprobuj zmienic rozmiar, kolor i ksztalt punktow w zaleznosci od gatunku
+
+```{r}
+head(Penguins_delta)
+
+plot_xyrelationship4.2 <- ggplot(Penguins_delta) +
+  geom_point(aes(x = Delta_15N_ooo, y = Delta_13C_ooo, size = SPECIES, color = SPECIES, shape = SPECIES)) +
+  scale_size_manual(values=c(2,3,4)) +
+  scale_color_manual(values = c("pink4","purple3","darkblue")) +
+  scale_shape_manual(values=c(11,8,25))
+plot_xyrelationship4.2
+```
+
+
+<details>
+
+<summary>ODP 4.2 </summary>
+
+```{r}
+
+### Oto przyklad zmian wprowadzonych w parametrach:
+plot_xyrelationship4.2 <- ggplot(Penguins_delta) +
+  geom_point(aes(x = Delta_15N_ooo, y = Delta_13C_ooo, size = SPECIES, color = SPECIES, shape = SPECIES)) + # Twierdzisz tutaj, ze rozmiar, kolor i ksztalt pior powinny zalezec od gatunku pingwina
+  scale_size_manual(values=c(4,4,4)) + # poniewaz w naszym zbiorze danych znajduja sie trzy gatunki, musimy podac trzy wartosci 
+  scale_color_manual(values = c("dodgerblue3","lightblue4","cadetblue")) + # poniewaz w naszym zbiorze danych znajduja sie trzy gatunki, musimy podac trzy wartosci 
+  scale_shape_manual(values=c(97,99,103)) # poniewaz w naszym zbiorze danych znajduja sie trzy gatunki, musimy podac trzy wartosci 
+plot_xyrelationship4.2
+```
+
+</details>
+
+### CW 5
+
+Jak obliczylbys odchylenie standardowe od sredniej dla dlugosci pletw wszystkich gatunkow pingwinow?
+
+<details>
+
+<summary>ODP 5 </summary>
+
+```{r}
+head(Penguins_clean)
+
+## Obliczymy odchylenie standardowe od sredniej dla dlugosci pletw wszystkich gatunkow pingwinow:
+Flipper_Species <- Penguins_clean %>% group_by(SPECIES) %>% 
+  summarise(mean_flipper = mean(Flipper_Length_mm, na.rm=T),
+            sd_flipper = sd(Flipper_Length_mm, na.rm=T))
+
+
+## Oto sposob na wizualizacje tych wynikow za pomoca biblioteki ggplot:
+## Wizualizacja roznic w dlugosci pletw u poszczegolnych gatunkow pingwinow:
+plot_uncertainty5 <- ggplot(Flipper_Species, aes(x = SPECIES, y = mean_flipper, color = SPECIES)) +
+  geom_pointrange(aes(ymin=mean_flipper-sd_flipper, ymax=mean_flipper+sd_flipper))
+  
+plot_uncertainty5
+```
+</details>
+
+
+### CW 6 - Not for the faint hearted ;) 
+
+W tej czesci chcemy przede wszystkim pokazac, jak za pomocą ggplot tworzyc zlozone wykresy poprzez nakladanie na siebie roznych warstw.
+Mozesz skopiowac ten kod do swojego srodowiska RStudio i poeksperymentowac z parametrami sekcji `theme()`, aby zobaczyc, jak wplywaja one na ostateczny wyglad wykresu.
+
+```{r}
+
+## Usun wszystkie wartosci „NA” z zbioru danych:
+Penguins_allnarm <- Penguins_clean %>%
+  na.omit()
+
+## Zmien format mojej tabeli:
+library(tidyr) ## wymagane jest uzycie funkcji gather()
+Penguinslong <- gather(Penguins_allnarm, key="measure", value="value", c("Culmen_Length_mm", "Culmen_Depth_mm","Flipper_Length_mm","Body_Mass_g"))
+Penguinslong$measure <- as.factor(Penguinslong$measure)
+
+##  Zmien nazwy moich zmiennych, aby na koncowym wykresie pojawily sie ladniejsze nazwy:
+Penguinslong <- Penguinslong %>% mutate(measure = case_when(measure == "Culmen_Length_mm" ~ "Culmen length (mm)",
+                                                            measure == "Culmen_Depth_mm" ~ "Culmen depth (mm)",
+                                                            measure == "Flipper_Length_mm" ~ "Flipper length (mm)",
+                                                            measure == "Body_Mass_g" ~ "Body mass (g)"))
+
+
+
+
+## Opracuj fabule:
+Penguins_SpeciesIsland_plot <- ggplot(Penguinslong, aes(x = as.factor(SPECIES), y = value)) +
+  # Poszczegolne punkty
+  geom_point(aes(color = SPECIES),position = position_jitter(w = .15), alpha=0.5) +
+  scale_color_manual(values = c("dodgerblue3","lightblue4","cadetblue")) +
+  # Violon plot: dystrybucje
+  geom_violin(aes(fill = SPECIES), alpha = 0.5) + 
+  scale_fill_manual(values = c("dodgerblue3","lightblue4","cadetblue")) +
+  # Boxplot: dystrybucje
+  geom_boxplot(aes(fill = SPECIES),width = .25,outlier.shape = NA) +
+  # Utworz wykres fasetowy: polacz rozne zmienne na jednym wykresie
+  facet_grid(measure ~ Island, scales = "free", #  Funkcja facetingu z dowolnymi skalami osi Y, umozliwiająca ustawienie indywidualnych zakresow wartosci na osi Y dla kazdego wiersza
+             switch = "y") +  # zmien kolejnosc nazw zmiennych mierzonych z prawej na lewa
+  theme_bw() +  # Opcjonalnie: lepsza wizualizacja dzieki czystemu tlu
+  # Dostosuj wszystkie parametry wykresu wedlug wlasnego uznania
+  theme(
+    strip.text.x = element_text(size = 12),  # Dostosuj rozmiar tekstu dla filtrow dotyczących gatunkow
+    strip.text.y = element_text(size = 12),   # Dostosuj rozmiar tekstu dla elementow twarzy miary
+    axis.text = element_text(size=12, color = "black"), # Dostosuj tekst osi
+    axis.title = element_blank(),  # Zmien tytul osi
+    legend.title = element_text(size = 12), # Zmien tytul legendy 
+    legend.text = element_text(size = 12) # Dostosuj tekst legendy
+  ) +
+  scale_y_continuous("value", position = "right")  # Zmien skale osi Y po prawej stronie
+Penguins_SpeciesIsland_plot
+
+
+### Sprobuj wyeksportowac wykres bezposrednio z konsoli, zachowujac kontrole nad rozmiarem tekstu i linii:
+setwd("")
+library(ragg)
+## Scaling change the size of the text on my plot
+ragg::agg_png("Penguins_SpeciesIsland_plot_10x10_2.png", width = 10, height = 10, units = "in", res = 300, scaling = 2)
+Penguins_SpeciesIsland_plot
+dev.off()
+
+
+```
+
+
+
+
+

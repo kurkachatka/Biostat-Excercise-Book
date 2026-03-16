@@ -1,0 +1,380 @@
+---
+author: "Pauline"
+output:
+  html_document:
+    toc: true
+    toc_float: true
+    toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(eval = FALSE)
+```
+
+# Lab 6 - Using ggplot
+
+
+## Cwiczenia
+
+During this exercise session we will continue using the penguin data set and will need to download a couple of packages
+
+```{r}
+#install.packages("")
+library(dplyr) ## to clean the data set => %>% , mutate(), case_when(), filter(), select()
+library(tidyr) ## to tidy up the data 
+library(ragg) ## to export your plots while having control over the size of the text
+library(ggplot2) ## to plot
+library(cowplot) ## to combine different plots together
+
+library(palmerpenguins)
+Penguins <- penguins_raw
+```
+
+Right now, the column names are not written in a efficient way for coding as they include space & parantheses. 
+
+We will rename the column for easier data handling:
+
+```{r}
+## You can rename your colnames in different ways
+
+## First way of doing it:
+#colnames(Penguins) <- gsub(" ", ".", colnames(Penguins)) ## replace the space by a dot
+#colnames(Penguins) <- gsub("\\s*\\([^\\)]+\\)", "", colnames(Penguins)) ## remove the (...)
+
+
+## Second way of doing it, this is the way we will use for this training:
+## Create column name that will be easier to use:
+Penguins_clean <- Penguins %>% rename(Individual_ID = "Individual ID", 
+                                Clutch_Completion= "Clutch Completion", 
+                                Date_Egg = "Date Egg", 
+                                Culmen_Length_mm = "Culmen Length (mm)",
+                                Culmen_Depth_mm = "Culmen Depth (mm)",
+                                Flipper_Length_mm = "Flipper Length (mm)",
+                                Body_Mass_g = "Body Mass (g)",
+                                Delta_15N_ooo = "Delta 15 N (o/oo)",
+                                Delta_13C_ooo = "Delta 13 C (o/oo)") %>%
+  # Create new variables which we will be used in our analysis:
+  mutate(SEX = case_when(Sex == "MALE" ~ "M",
+                         Sex == "FEMALE" ~ "F"),
+         SPECIES = case_when(Species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+                             Species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+                             Species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap"),
+         Quality = case_when(Clutch_Completion == "No" ~ "Bad year",
+                            Clutch_Completion == "Yes" ~ "Good year")) %>%
+   # Only keep certain column:
+  dplyr::select(SPECIES,SEX,Island,Quality,Date_Egg,Culmen_Length_mm,Culmen_Depth_mm,Flipper_Length_mm,Body_Mass_g,Delta_15N_ooo,Delta_13C_ooo)
+
+```
+
+As you can see in the last line of the code we are writing `dplyr::select` this is because we are using many different packages and there is a conflict with at least two packages using the function select. We need to specify the function from which package we are calling to avoid getting an error message.
+
+
+
+
+### CW 1.1
+
+How would you make a plot looking at the number of individual with a good year vs individual with a bad year:
+
+</ul>
+
+<details>
+
+<summary>ODP 1.1 </summary>
+
+```{r}
+## Look at the number of individual with a good year vs individual with a bad year:
+GoodvsBad <- Penguins_clean %>% group_by(Quality) %>% summarise(counts = n())
+GoodvsBad
+
+## Plot the results from GoodvsBad:
+plot_amount1.1 <- ggplot(data = GoodvsBad, aes(x = Quality, y = counts, fill = Quality)) +
+            geom_bar(stat = "identity")+
+            theme_bw()
+plot_amount1.1
+```
+
+</details>
+
+### CW 1.2 
+
+How would you make a plot looking at the number of individual with a good year vs individual with a bad year but this time you should also discriminate between species
+
+</ul>
+
+<details>
+
+<summary>ODP 1.2 </summary>
+
+```{r}
+## Look at the number of individual with a good year vs individual with a bad year, for each species:
+GoodvsBadSpecies <- Penguins_clean %>% group_by(Quality, SPECIES) %>% summarise(counts = n())
+GoodvsBadSpecies
+
+## Plot the results from GoodvsBadSpecies:
+plot_amount1.2 <- ggplot(data = GoodvsBadSpecies, aes(x = Quality, y = counts, fill = SPECIES)) +
+            geom_bar(stat = "identity", position=position_dodge())+
+            theme_bw()
+plot_amount1.2
+```
+
+</details>
+
+
+### CW 2
+
+Can you tell what we are representing in  plot_proportions2opt1 and plot_proportions2opt2 and tell what 
+is the difference? Which part of the code is coding for the difference ?
+
+```{r}
+head(Penguins_clean)
+
+GoodvsBadSpecies_perc <- Penguins_clean %>% group_by(Quality, SPECIES) %>% 
+  summarise(counts = n()) %>% 
+  mutate(perc_GoodBadSex=round(prop.table(counts) * 100))
+GoodvsBadSpecies_perc
+
+plot_proportions2opt1 <- ggplot(data = GoodvsBadSpecies_perc, aes(x = Quality, y = perc_GoodBadSex, fill = SPECIES)) +
+            geom_bar(stat = "identity", position=position_dodge())
+plot_proportions2opt1
+
+plot_proportions2opt2 <- ggplot(data = GoodvsBadSpecies_perc, aes(x = Quality, y = perc_GoodBadSex, fill = SPECIES)) +
+            geom_bar(stat = "identity")
+plot_proportions2opt2
+
+## This piece of code help you to have both plot next to each other:
+library(cowplot)
+plot_grid(plot_proportions2opt1,plot_proportions2opt2)
+
+```
+
+<details>
+
+<summary>ODP 2</summary>
+
+Both plot are looking at if the year was good or bad for each penguins species and is expressing this result in percentage. 
+The difference between the two code is found in the command `position=position_dodge()`. In plot_proportions1, the bars are standing next to one another whereas in plot_proportions2, the bars are stacked above each other
+
+
+</details>
+
+
+
+### CW 3.1
+
+How would you plot the graph to look at the body mass for Adelie Penguin only?
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+
+## Solution 1:
+plot_distribution3.1opt1 <- ggplot(subset(Penguins_clean, SPECIES == "Adelie"), aes(Body_Mass_g,fill = SPECIES, colour = SPECIES)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.1
+
+## Solution 2:
+Adelie <- Penguins_clean %>% filter(SPECIES == "Adelie")
+
+plot_distribution3.1opt2 <- ggplot(Adelie, aes(Body_Mass_g, fill = SPECIES, colour = SPECIES)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.1opt2
+```
+</details>
+
+
+### CW 3.2
+
+How would you plot the graph to look at the body mass for Adelie Penguin only but discriminate between sex?
+
+<details>
+
+<summary>ODP 3.2</summary>
+
+```{r}
+## If you forget to remove the NA, you will have the following plot:
+Adelie <- Penguins_clean %>% filter(SPECIES == "Adelie")
+
+plot_distribution3.2opt1 <- ggplot(Adelie, aes(Body_Mass_g,fill = SEX, colour = SEX)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.2opt1
+
+
+## You first need to remove the NA, otherwise they will appears in your plot
+AdelieSex <- Penguins_clean %>% filter(SPECIES == "Adelie" & !is.na(SEX))
+
+## This plot shows the body mass for Adelie Penguin with one curve for females and one curve for males:
+plot_distribution3.2opt2 <- ggplot(AdelieSex, aes(Body_Mass_g,fill = SEX, colour = SEX)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.2opt2
+
+## This shows you both plot next to each other:
+library(cowplot)
+plot_grid(plot_distribution3.2opt1,plot_distribution3.2opt2)
+
+
+```
+</details>
+
+### CW 4.1
+
+How would you look at the realtionship between Delta_13C and Detla_15N?
+
+<details>
+
+<summary>ODP 4.1 </summary>
+
+```{r}
+## First we need to remove the NA for the variable Delta15N & for Delta13C:
+Penguins_delta <- Penguins_clean %>% filter(!is.na(Delta_13C_ooo)) %>% filter(!is.na(Delta_15N_ooo))
+
+## We can look at the relation ship between Delta15N & Delta13C
+plot_xyrelationship1 <- ggplot(Penguins_delta, aes(x = Delta_15N_ooo, y = Delta_13C_ooo)) +
+  geom_point(size = 1, shape = 21)
+plot_xyrelationship1
+```
+
+</details>
+
+
+### CW 4.2
+
+Actually, you can have fun changing the shape, size and color of the points from the previous plot, using the following link:
+
+<ul>   
+<li> color: https://www.sthda.com/english/wiki/colors-in-r </li>
+<li> shape: https://stackoverflow.com/questions/46803260/assigning-40-shapes-or-more-in-scale-shape-manual </li>
+<li> size: https://www.statology.org/ggplot-point-size/#:~:text=by%20Zach%20Bobbitt%20Last%20updated,y=wt))%20+%20geom_point() </li>
+</ul>
+
+Try and change the size, color and shape of the points based on the Species
+
+```{r}
+head(Penguins_delta)
+
+## We can look at the relation ship between Delta15N & Delta13C
+plot_xyrelationship4.2 <- ggplot(Penguins_delta) +
+  geom_point(aes(x = Delta_15N_ooo, y = Delta_13C_ooo, size = SPECIES, color = SPECIES, shape = SPECIES)) +
+  scale_size_manual(values=c(2,3,4)) +
+  scale_color_manual(values = c("pink4","purple3","darkblue")) +
+  scale_shape_manual(values=c(11,8,25))
+plot_xyrelationship4.2
+```
+
+
+<details>
+
+<summary>ODP 4.2 </summary>
+
+```{r}
+
+### Here is an example of how the parameters where changed:
+plot_xyrelationship4.2 <- ggplot(Penguins_delta) +
+  geom_point(aes(x = Delta_15N_ooo, y = Delta_13C_ooo, size = SPECIES, color = SPECIES, shape = SPECIES)) + # Here you are stating that the size, the color and the shape of the points should be dependent of the species of penguin
+  scale_size_manual(values=c(4,4,4)) + # because we have three species in our data set, we need to provide three values 
+  scale_color_manual(values = c("dodgerblue3","lightblue4","cadetblue")) + # because we have three species in our data set, we need to provide three values 
+  scale_shape_manual(values=c(97,99,103)) # because we have three species in our data set, we need to provide three values 
+plot_xyrelationship4.2
+```
+
+</details>
+
+### CW 5
+
+How would you calculate standard deviation around the mean for the flipper length of all penguin species?
+
+<details>
+
+<summary>ODP 5 </summary>
+
+```{r}
+head(Penguins_clean)
+
+## We will calculate the standard deviation around the mean for the flipper length of all penguin species:
+Flipper_Species <- Penguins_clean %>% group_by(SPECIES) %>% 
+  summarise(mean_flipper = mean(Flipper_Length_mm, na.rm=T),
+            sd_flipper = sd(Flipper_Length_mm, na.rm=T))
+
+
+## Here is a way to vizualize those results using ggplot:
+## Visualize the difference in flippers length for each penguin species:
+plot_uncertainty5 <- ggplot(Flipper_Species, aes(x = SPECIES, y = mean_flipper, color = SPECIES)) +
+  geom_pointrange(aes(ymin=mean_flipper-sd_flipper, ymax=mean_flipper+sd_flipper))
+  
+plot_uncertainty5
+```
+</details>
+
+
+### CW 6 - Not for the faint hearted ;) 
+
+This part is more to show you how we can build complex plot with ggplot by stacking different layers together. 
+You can copy this code in you Rstudio and try and play with the parameters of the `theme()` section to see how it affect the final plot
+
+
+```{r}
+
+## Remove all the NA from the data set:
+Penguins_allnarm <- Penguins_clean %>%
+  na.omit()
+
+## Reformat my table:
+library(tidyr) ## required to use the function gather()
+Penguinslong <- gather(Penguins_allnarm, key="measure", value="value", c("Culmen_Length_mm", "Culmen_Depth_mm","Flipper_Length_mm","Body_Mass_g"))
+Penguinslong$measure <- as.factor(Penguinslong$measure)
+
+## Rename my variables for them to have a pretty name appearing in the final plot:
+Penguinslong <- Penguinslong %>% mutate(measure = case_when(measure == "Culmen_Length_mm" ~ "Culmen length (mm)",
+                                                            measure == "Culmen_Depth_mm" ~ "Culmen depth (mm)",
+                                                            measure == "Flipper_Length_mm" ~ "Flipper length (mm)",
+                                                            measure == "Body_Mass_g" ~ "Body mass (g)"))
+
+
+
+
+## Build the plot:
+Penguins_SpeciesIsland_plot <- ggplot(Penguinslong, aes(x = as.factor(SPECIES), y = value)) +
+  # Individual points
+  geom_point(aes(color = SPECIES),position = position_jitter(w = .15), alpha=0.5) +
+  scale_color_manual(values = c("dodgerblue3","lightblue4","cadetblue")) +
+  # Violon plot: distributions 
+  geom_violin(aes(fill = SPECIES), alpha = 0.5) + # geom_flat_violin would not accept scale free from facet_grid or facet_wrap
+  scale_fill_manual(values = c("dodgerblue3","lightblue4","cadetblue")) +
+  # Boxplot: distributions
+  geom_boxplot(aes(fill = SPECIES),width = .25,outlier.shape = NA) +
+  # Create the facet plot: combine different variables all together on the same plot
+  facet_grid(measure ~ Island, scales = "free", #  Faceting with free y-scales to allow individual y-ranges for each row
+             switch = "y") +  # switch the side of the measured variables names from right to left
+  theme_bw() +  # Optional, better visualization with a clean background
+  # Adjust every parameter in your plot as you like
+  theme(
+    strip.text.x = element_text(size = 12),  # Adjust text size for Species facets
+    strip.text.y = element_text(size = 12),   # Adjust text size for measure facets
+    axis.text = element_text(size=12, color = "black"), # Adjust the axis text
+    axis.title = element_blank(),  # Adjust the axis title
+    legend.title = element_text(size = 12), # Adjust the legend title 
+    legend.text = element_text(size = 12) # Adjust the legend text
+  ) +
+  scale_y_continuous("value", position = "right")  # change the y-axis scale on the right
+Penguins_SpeciesIsland_plot
+
+
+### Try to export the plot directly from the console while having control over the size of the text and lines:
+setwd("")
+library(ragg)
+## Scaling change the size of the text on my plot
+ragg::agg_png("Penguins_SpeciesIsland_plot_10x10_2.png", width = 10, height = 10, units = "in", res = 300, scaling = 2)
+Penguins_SpeciesIsland_plot
+dev.off()
+
+
+```
+
+
+
+
+
