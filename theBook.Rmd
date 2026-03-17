@@ -6,6 +6,9 @@ output:
     toc: true
     toc_float: true
     toc_depth: 3
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
@@ -16,7 +19,11 @@ knitr::opts_chunk$set(eval = FALSE)
 
 ## Instalacja R i RStudio
 
-R Studio to IDE (zintegrowane srodowisko programistyczne) dla jezyka programowania R. Mozna myslec o nim jak o nakladce, ktora ulatwia prace, R natomiast jest 'silnikiem' wszystkich operacji. Instrukcje instalacji **obu** mozna znalezc [pod tym linkiem](https://posit.co/download/rstudio-desktop/){.uri}.
+R Studio to IDE (zintegrowane srodowisko programistyczne) dla jezyka
+programowania R. Mozna myslec o nim jak o nakladce, ktora ulatwia prace,
+R natomiast jest 'silnikiem' wszystkich operacji. Instrukcje instalacji
+**obu** mozna znalezc [pod tym
+linkiem](https://posit.co/download/rstudio-desktop/){.uri}.
 
 R jest i bedzie darmowy
 
@@ -91,11 +98,14 @@ sqrt(4/2)
 
 ```
 
-> TIP: Dodawanie komentarzy do kodu jest niesamowicie wazne! Nie ma nic gorszego, niz wrocic do swojego kodu po miesiacu i nie byc w stanie go zrozumiec
+> TIP: Dodawanie komentarzy do kodu jest niesamowicie wazne! Nie ma nic
+> gorszego, niz wrocic do swojego kodu po miesiacu i nie byc w stanie go
+> zrozumiec
 
 ## Przypisywanie zmiennych
 
-1.  Uzywajac znaku przypisania mozesz stowrzyc element w srodowisku o konretnej wartosci
+1.  Uzywajac znaku przypisania mozesz stowrzyc element w srodowisku o
+    konretnej wartosci
 
 ```{r}
 
@@ -105,7 +115,8 @@ y <- 10
 
 ```
 
-2.  Elementy ze srodowiska mozna wywolywac, najprosciej uzywajac ich nazw, lub uwyzwajac funkcji `print()`
+2.  Elementy ze srodowiska mozna wywolywac, najprosciej uzywajac ich
+    nazw, lub uwyzwajac funkcji `print()`
 
 ```{r}
 x
@@ -114,7 +125,9 @@ print(y)
 
 ```
 
-> TIP: Funkcje w R maja format **nazwa_funckji(arg1 = wartosc1, arg2 = wartosc2)**. Fukcje sa zawarte w pakietach, ale mozna je tez tworzyc samemu!
+> TIP: Funkcje w R maja format **nazwa_funckji(arg1 = wartosc1, arg2 =
+> wartosc2)**. Fukcje sa zawarte w pakietach, ale mozna je tez tworzyc
+> samemu!
 
 3.  Na elementach ze srodowiska mozna przeprowadzac rozne czynnosci
 
@@ -142,9 +155,13 @@ print(zmienna)
 
 ```
 
-Nazwy zmiennych nie moga zaczynac sie od cyfr lub podkreslenia. Oprocz tego istnieje dowolnosc w nazywaniu elementow srodowiska, z wyjatkiem: FALSE/TRUE, Inf (infinity), NaN (not a number), NA (not avaiable), NULL
+Nazwy zmiennych nie moga zaczynac sie od cyfr lub podkreslenia. Oprocz
+tego istnieje dowolnosc w nazywaniu elementow srodowiska, z wyjatkiem:
+FALSE/TRUE, Inf (infinity), NaN (not a number), NA (not avaiable), NULL
 
-> TIP: Dlugie nazwy elementow w srodowisku mozna rozbijac (nie spacja!), aby zwiekszyc ich czytelnosc. Znane sposoby to: snake_case, leopard.case, CamelCase
+> TIP: Dlugie nazwy elementow w srodowisku mozna rozbijac (nie spacja!),
+> aby zwiekszyc ich czytelnosc. Znane sposoby to: snake_case,
+> leopard.case, CamelCase
 
 5.  Zmienna nie musi byc liczba
 
@@ -161,21 +178,26 @@ imie.nazwisko
 
 ## Skale pomiarowe i typy zmiennych
 
-Zmienne moga wystepowac w 4 roznych skalach pomiarowych, ktore mozna podzielicz na dwa typy:
+Zmienne moga wystepowac w 4 roznych skalach pomiarowych, ktore mozna
+podzielicz na dwa typy:
 
--   skala ciagle (ilościowe) - zmienne przyjmuja dowone, nieskonczenie podzielne wartosci liczbowe w okreslonym przedziale
+-   skala ciagle (ilościowe) - zmienne przyjmuja dowone, nieskonczenie
+    podzielne wartosci liczbowe w okreslonym przedziale
 
     -   skala interwałowa
 
     -   skala ilorazowa
 
--   skala dyskretne (jakościowe) - zmienne przyjmuja okreslone, odrebne wartosci
+-   skala dyskretne (jakościowe) - zmienne przyjmuja okreslone, odrebne
+    wartosci
 
     -   skala nominalna
 
     -   porzadkowa
 
-Elementy srodowiska, w tym zmienne, maja okreslona klase. Definiuje ona jak sa przechowywane i jakie operacja mozna na nich wykonywac. Najwazniejsze klasy to:
+Elementy srodowiska, w tym zmienne, maja okreslona klase. Definiuje ona
+jak sa przechowywane i jakie operacja mozna na nich wykonywac.
+Najwazniejsze klasy to:
 
 -   `numeric` - numeryczna
 
@@ -185,7 +207,11 @@ Elementy srodowiska, w tym zmienne, maja okreslona klase. Definiuje ona jak sa p
 
 -   `factor` - czynnikowa, okresla kategorie
 
-Klasy obiektow i skale pomiarowe to zagadnienia, ktore sie ze soba lacza. Zmienne, ktore sa w skalach ciaglych powinny miec klase `numeric`. Zmienne w skalach dyskretnych powinny byc zakodowane jako klasy `character` lub `factor`. W zaleznosci od przypadku klasa `integer` moze byc odpowednia dla zmiennych w obu typach skali.
+Klasy obiektow i skale pomiarowe to zagadnienia, ktore sie ze soba
+lacza. Zmienne, ktore sa w skalach ciaglych powinny miec klase
+`numeric`. Zmienne w skalach dyskretnych powinny byc zakodowane jako
+klasy `character` lub `factor`. W zaleznosci od przypadku klasa
+`integer` moze byc odpowednia dla zmiennych w obu typach skali.
 
 1.  Sprawdz klase danej zmiennej uzywajac funckji `class()`
 
@@ -214,7 +240,8 @@ is.character(gat)
 
 ```
 
-3.  Zmien klase obieku uzywajac funckji `as.XXX()`. Zwroc uwage, ze obiekt musi byc nadpisany w srodowisku
+3.  Zmien klase obieku uzywajac funckji `as.XXX()`. Zwroc uwage, ze
+    obiekt musi byc nadpisany w srodowisku
 
 ```{r}
 
@@ -254,11 +281,13 @@ print(gat) # utrata informacji
 
 ```
 
-> TIP: Nieodpowiednia klasa obieku w srodowisku to jeden z najczestrzych powodow, dla ktorych studenci nie sa w stanie wykonac dane zadanie!
+> TIP: Nieodpowiednia klasa obieku w srodowisku to jeden z najczestrzych
+> powodow, dla ktorych studenci nie sa w stanie wykonac dane zadanie!
 
 ## Pomocy!
 
-1.  Nie ignoruj tego co dzieje sie w konsoli. Jezeli R cos nie pasuje, to R to komunikuje.
+1.  Nie ignoruj tego co dzieje sie w konsoli. Jezeli R cos nie pasuje,
+    to R to komunikuje.
 
 ```{r}
 
@@ -266,7 +295,9 @@ h + x
 
 ```
 
-> TIP: Bledy i komunikaty ostrzegawcze czesto sa niezrozumiale, zwlaszcza na poczatkowym etapie nauki. W tych wypadkach internet jest Twoim przyjacielem.
+> TIP: Bledy i komunikaty ostrzegawcze czesto sa niezrozumiale,
+> zwlaszcza na poczatkowym etapie nauki. W tych wypadkach internet jest
+> Twoim przyjacielem.
 
 2.  Blad ≠ Komunikat ostrzegawczy
 
@@ -282,11 +313,17 @@ galmed <- 'Gallinago media
 
 ```
 
-W konsoli pojawia sie `+`. Informuje nas o tym, ze formula nie jest skonczona. Np. brakuje zamknietego nazwiasu, albo jak w tym przypadku cudzyslowa. Probowanie wyzwalania kolejnych funckji bedzie kumulowalo skutki tego bledu. Zeby to rozwiazac wejdz w konsole i albo dopisz brakujacy znak (tutaj ') i wyzwol. Albo wejdz w konsole, klikjni ESC, aby zakonczyc zadanie, popraw formule kodu i pusc jeszcze raz.
+W konsoli pojawia sie `+`. Informuje nas o tym, ze formula nie jest
+skonczona. Np. brakuje zamknietego nazwiasu, albo jak w tym przypadku
+cudzyslowa. Probowanie wyzwalania kolejnych funckji bedzie kumulowalo
+skutki tego bledu. Zeby to rozwiazac wejdz w konsole i albo dopisz
+brakujacy znak (tutaj ') i wyzwol. Albo wejdz w konsole, klikjni ESC,
+aby zakonczyc zadanie, popraw formule kodu i pusc jeszcze raz.
 
 4.  Help
 
-Każda pakiet i zawarte w nich fukcje sa dokladnie opisane w ich dokumentacji. Mozna ja wywolac uzywajac `?` przed nazwa danej funckji
+Każda pakiet i zawarte w nich fukcje sa dokladnie opisane w ich
+dokumentacji. Mozna ja wywolac uzywajac `?` przed nazwa danej funckji
 
 ```{r}
 
@@ -298,7 +335,9 @@ Każda pakiet i zawarte w nich fukcje sa dokladnie opisane w ich dokumentacji. M
 
 ## Cofnij?
 
-1.  W kodowaniu komenda cofinij nie istnieje, a CTRL + Z tylko usunie ostatnio napisany kod (jak Backspace). Robienie wszelkich poprawek polega na nadpisywaniu.
+1.  W kodowaniu komenda cofinij nie istnieje, a CTRL + Z tylko usunie
+    ostatnio napisany kod (jak Backspace). Robienie wszelkich poprawek
+    polega na nadpisywaniu.
 
 ```{r}
 
@@ -338,11 +377,20 @@ rm(list = ls())
 
 ```
 
-Czy taki zabieg zniweczyl caladotychczasowa prace? Jezeli korzystasz ze skryptu i od czasu do czasu go zapisujesz, to abolutnie NIE! Aby otworzyc dane elementy srodowiska wystarczy puscic kod od poczatku, oczywiscie w odpowiedniej kolejnosci.
+Czy taki zabieg zniweczyl caladotychczasowa prace? Jezeli korzystasz ze
+skryptu i od czasu do czasu go zapisujesz, to abolutnie NIE! Aby
+otworzyc dane elementy srodowiska wystarczy puscic kod od poczatku,
+oczywiscie w odpowiedniej kolejnosci.
 
 4.  A co jezeli nie pracujesz w skrypcie, tylko w konsoli?
 
-Po pierwsze - nie polecam. Po drugie - w trakcie dzialania danej sesji mozesz zawsze odniesc sie do historii. Postaw kursor w konsoli i kilknij strzelke w gore (nawet pare razy). Mozesz spobowac tez uzyc skrotu klawiszowego CTRL + arrow up aby zobaczyc wiekszy przeglad. Ostatecznie calosc historii znajdziesz w zakladce 'History' w tym samym panelu, w ktorym znajduje sie srodowisko. Kliknij dwa razy aby przywolac dana komende do konsoli.
+Po pierwsze - nie polecam. Po drugie - w trakcie dzialania danej sesji
+mozesz zawsze odniesc sie do historii. Postaw kursor w konsoli i kilknij
+strzelke w gore (nawet pare razy). Mozesz spobowac tez uzyc skrotu
+klawiszowego CTRL + arrow up aby zobaczyc wiekszy przeglad. Ostatecznie
+calosc historii znajdziesz w zakladce 'History' w tym samym panelu, w
+ktorym znajduje sie srodowisko. Kliknij dwa razy aby przywolac dana
+komende do konsoli.
 
 ## Cwiczenia
 
@@ -362,7 +410,10 @@ Jaka jest roznica?
 
 <summary>ODP 1</summary>
 
-Nie ma zadnej w znaczeniu kodu. Znaki takie jak spacja i enter wiekszosci przypadkow sa 'pomijane' przy egzekwowaniu kodu. Wstawianie tych znakow sprawia, ze kod jest bardziej czytelny. Dobra praktyka jest 'pozwolic kodowi oddychac'.
+Nie ma zadnej w znaczeniu kodu. Znaki takie jak spacja i enter
+wiekszosci przypadkow sa 'pomijane' przy egzekwowaniu kodu. Wstawianie
+tych znakow sprawia, ze kod jest bardziej czytelny. Dobra praktyka jest
+'pozwolic kodowi oddychac'.
 
 </details>
 
@@ -384,13 +435,16 @@ x < - 2
 
 <summary>ODP 2</summary>
 
-Nie wszystkie znaki mozna rozdzilic spacja. Np. rozdzielane spacja operatory przypisania `<-` i potokowy `%>%` (o ktorym bedzie pozniej) sprawi, ze nie beda one dzialaly poprawnie
+Nie wszystkie znaki mozna rozdzilic spacja. Np. rozdzielane spacja
+operatory przypisania `<-` i potokowy `%>%` (o ktorym bedzie pozniej)
+sprawi, ze nie beda one dzialaly poprawnie
 
 </details>
 
 ### CW 3
 
-Wklej ponizszy kod do swojego skryptu. Podazaj za tekstem i poleceniami opisanymi komentarzami
+Wklej ponizszy kod do swojego skryptu. Podazaj za tekstem i poleceniami
+opisanymi komentarzami
 
 ```{r}
 # ----- LAB 1 --------
@@ -467,7 +521,8 @@ my_varıable
 
 <summary>ODP 5</summary>
 
-Jedna literka roznicy sprawia, ze R nie jest w stanie znalezc takiej zmiennej. Nie istnieje ona w srodowisku
+Jedna literka roznicy sprawia, ze R nie jest w stanie znalezc takiej
+zmiennej. Nie istnieje ona w srodowisku
 
 </details>
 
@@ -479,7 +534,8 @@ Jakiego symbolu uzylbys, aby dodac komentarz w swoim kodzie?
 
 <summary>ODP 6</summary>
 
-Aby skomentowac swoj kod bez naruszania pozostalej jego czesci, nalezy uzyc hashtagu #.
+Aby skomentowac swoj kod bez naruszania pozostalej jego czesci, nalezy
+uzyc hashtagu #.
 
 </details>
 
@@ -487,7 +543,8 @@ Aby skomentowac swoj kod bez naruszania pozostalej jego czesci, nalezy uzyc hash
 
 Stworz zmienna o nazwie: g \<- 'Gdansk'
 
-Jaka jest roznica miedzy 'puszczeniem' (CTRL + ENTER / RUN) g a `print(g)`?
+Jaka jest roznica miedzy 'puszczeniem' (CTRL + ENTER / RUN) g a
+`print(g)`?
 
 ```{r}
 g <- 'Gdansk'
@@ -537,9 +594,11 @@ Cztery rodzaje zmiennych to:
 
 <li>integer: moze to byc tylko liczba calkowita</li>
 
-<li>text: moze to byc dowolna litera, ale zazwyczaj bardziej intuicyjne jest laczenie liter w celu utworzenia slow</li>
+<li>text: moze to byc dowolna litera, ale zazwyczaj bardziej intuicyjne
+jest laczenie liter w celu utworzenia slow</li>
 
-<li>factor: moze to byc cokolwiek, zostanie wtedy zakodowane jako kategoria</li>
+<li>factor: moze to byc cokolwiek, zostanie wtedy zakodowane jako
+kategoria</li>
 
 </ul>
 
@@ -577,13 +636,20 @@ is.character(color)
 
 ```
 
-is.XXXX zwraca odpowiedz TRUE lub FALSE. Jesli odpowiedz jest TRUE, oznacza to, ze zmienna rzeczywiscie pochodzi z klasy reprezentowanej przez XXXX, w przeciwnym razie nie pochodzi. Do tego zadania mozna rowniez uzyc funckji `class()`.
+is.XXXX zwraca odpowiedz TRUE lub FALSE. Jesli odpowiedz jest TRUE,
+oznacza to, ze zmienna rzeczywiscie pochodzi z klasy reprezentowanej
+przez XXXX, w przeciwnym razie nie pochodzi. Do tego zadania mozna
+rowniez uzyc funckji `class()`.
 
 </details>
 
 ### CW 9.2
 
-W poprzednim cwiczeniu nb4 zostalo sklasyfikowane jako zmienna numeryczna, a kolor jako zmienna tekstowa. Chcielibysmy jednak, aby nb4 bylo traktowane jako liczba calkowita, a „kolor” jako czynnik (kategoria). Mozna to osiagnac poprzez zmiane klasy naszego obiektu. Jak to zrobic?
+W poprzednim cwiczeniu nb4 zostalo sklasyfikowane jako zmienna
+numeryczna, a kolor jako zmienna tekstowa. Chcielibysmy jednak, aby nb4
+bylo traktowane jako liczba calkowita, a „kolor” jako czynnik
+(kategoria). Mozna to osiagnac poprzez zmiane klasy naszego obiektu. Jak
+to zrobic?
 
 <details>
 
@@ -604,13 +670,17 @@ is.factor(colornew)
 
 ### CW 9.3
 
-W zadaniu 9.2 zdecydowalismy sie nadac przeksztalconym zmiennym inne nazwy: nb4 stalo sie nb4new, a color stalo sie colornew. Jakie bylyby konsekwencje, gdybysmy zdecydowali sie zachowac te same nazwy dla przeksztalconych zmiennych?
+W zadaniu 9.2 zdecydowalismy sie nadac przeksztalconym zmiennym inne
+nazwy: nb4 stalo sie nb4new, a color stalo sie colornew. Jakie bylyby
+konsekwencje, gdybysmy zdecydowali sie zachowac te same nazwy dla
+przeksztalconych zmiennych?
 
 <details>
 
 <summary>ODP 9.3</summary>
 
-W jezyku R nie ma funkcji 'cofnij', wiec jesli uzyjemy tej samej nazwy zmiennej, poprzednia zmienna zostanie nadpisana.
+W jezyku R nie ma funkcji 'cofnij', wiec jesli uzyjemy tej samej nazwy
+zmiennej, poprzednia zmienna zostanie nadpisana.
 
 </details>
 
@@ -643,9 +713,13 @@ wektor.minus <- wektor.r.2 - 3
 print(wektor.minus)
 ```
 
-> TIP: Czy zauwazyles mozliwosc autouzupelniania? Kiedy R pokazuje podpowada nam obiekt ze srodowiska / funkcje mozesz uzyc strzalek do ich wyboru i TAB do zaakceptowania.
+> TIP: Czy zauwazyles mozliwosc autouzupelniania? Kiedy R pokazuje
+> podpowada nam obiekt ze srodowiska / funkcje mozesz uzyc strzalek do
+> ich wyboru i TAB do zaakceptowania.
 
-3.  Stworz wektory za pomoca operatora `:`, ktory sluzy do generowania sekwencji. Sprawdz dlugosc wektora, tzn. liczbe jego elementow, uzywajac funckji `length()`
+3.  Stworz wektory za pomoca operatora `:`, ktory sluzy do generowania
+    sekwencji. Sprawdz dlugosc wektora, tzn. liczbe jego elementow,
+    uzywajac funckji `length()`
 
 ```{r}
 
@@ -676,7 +750,9 @@ w1 - w2
 
 5.  Wykonanie operacji na dwoch wektorach roznej dlugosc
 
-W takim wypadku, krotszy wektor zostaje uzyty cyklicznie. Jezeli dlugosc krotszego nie jest wielokrotnoscia dlugosci dluzszego, wyswietlany jest komunikat ostrzegawczy
+W takim wypadku, krotszy wektor zostaje uzyty cyklicznie. Jezeli dlugosc
+krotszego nie jest wielokrotnoscia dlugosci dluzszego, wyswietlany jest
+komunikat ostrzegawczy
 
 ```{r}
 
@@ -696,7 +772,8 @@ print(pory)
 
 ## Dostep do elementow wektora
 
-Aby dostac sie do danych elementow wektora na konretnej pozycji uzywa sie operatora indeksowani/podzbioru `[]`
+Aby dostac sie do danych elementow wektora na konretnej pozycji uzywa
+sie operatora indeksowani/podzbioru `[]`
 
 1.  Dostan sie do elementu na danej pozycji wektora
 
@@ -729,9 +806,11 @@ w1[c(1:3, 5)]
 
 ## `NA` - Braki danych
 
-`NA` - Not Available. To wartosc logiczna, ktora reprezentuje brak danych
+`NA` - Not Available. To wartosc logiczna, ktora reprezentuje brak
+danych
 
-1.  Porownaj wektor zawierajacy `NA` z takim, ktory nie ma brakujacych danych. Uzyj funckji `is.na()` i `mean()`
+1.  Porownaj wektor zawierajacy `NA` z takim, ktory nie ma brakujacych
+    danych. Uzyj funckji `is.na()` i `mean()`
 
 ```{r}
 
@@ -762,7 +841,9 @@ mean(masa, na.rm = TRUE) # ominac wartosci NA w obliczeniu sredniej
 
 ## Ramki danych
 
-Ramki danych to podstawowa forma przechowywania danych. To inaczej tabela zlozona z kolumn (zmiennych) i wierszy (przypadkow). Wszystkie zmienne dzialaja jak wektory o tej samej dlugosci
+Ramki danych to podstawowa forma przechowywania danych. To inaczej
+tabela zlozona z kolumn (zmiennych) i wierszy (przypadkow). Wszystkie
+zmienne dzialaja jak wektory o tej samej dlugosci
 
 1.  Stworz ramke danych z wektorow uzywajac funkcji `data.frame()`
 
@@ -807,7 +888,8 @@ summary(rok)
 
 ```
 
-> TIP: `str()` moze byc jedna z najbardziej przydatnych fukcji na poczatkowych etapach eksploracji danych.
+> TIP: `str()` moze byc jedna z najbardziej przydatnych fukcji na
+> poczatkowych etapach eksploracji danych.
 
 3.  Dostan sie do konrentych elementow ramki danych za pomoca `[,]`
 
@@ -822,7 +904,8 @@ rok[c(2,4),]
 rok[ , 2:3]
 ```
 
-4.  Dostan sie do konkretnych wektorow w ramce danych za pomoca operatora `$`
+4.  Dostan sie do konkretnych wektorow w ramce danych za pomoca
+    operatora `$`
 
 ```{r}
 
@@ -878,13 +961,15 @@ str(iris)
 
 Pomaga to uzyskac ogolny obraz danych.
 
-Jakiego polecenia mozna uzyc, aby wyswietlic pierwsze wiersze tego zestawu danych?
+Jakiego polecenia mozna uzyc, aby wyswietlic pierwsze wiersze tego
+zestawu danych?
 
 <details>
 
 <summary>ODP 1</summary>
 
-Mozesz uuzyc nastepujacego polecenia. Wyswietli ono pierwsze szesc wierszy danych.
+Mozesz uuzyc nastepujacego polecenia. Wyswietli ono pierwsze szesc
+wierszy danych.
 
 ```{r}
 head(iris)
@@ -908,13 +993,20 @@ iris[, 2]
 
 <summary>ODP 2</summary>
 
-Liczba przed przecinkiem w [x,x] odnosi się do wiersza; liczba po przecinku odnosi się do kolumny ramki danych.
+Liczba przed przecinkiem w [x,x] odnosi się do wiersza; liczba po
+przecinku odnosi się do kolumny ramki danych.
 
 <details>
 
 ### CW 3
 
-Jak postepowac z wartoscami nieistniejącymi (`NA`): Podczas pracy z rzeczywistymi danymi czasami zdarzaja się braki poszczegolnych wartosci. Na przykład mierzymy dlugosc skrzydla ptakow, ale jeden ptak pierzy sie lub ma zlamane lotki. Nadal mozemy zapisac pozostale pomiary tego osobnika, ale bedzie nam brakowac jego dlugosci skrzydla. Symulujemy to tutaj na przykladzie dlugosci dzialek kielicha `Sepal.Length`. Ustaw wartosc w dziesiatym przypadku na „NA”?
+Jak postepowac z wartoscami nieistniejącymi (`NA`): Podczas pracy z
+rzeczywistymi danymi czasami zdarzaja się braki poszczegolnych wartosci.
+Na przykład mierzymy dlugosc skrzydla ptakow, ale jeden ptak pierzy sie
+lub ma zlamane lotki. Nadal mozemy zapisac pozostale pomiary tego
+osobnika, ale bedzie nam brakowac jego dlugosci skrzydla. Symulujemy to
+tutaj na przykladzie dlugosci dzialek kielicha `Sepal.Length`. Ustaw
+wartosc w dziesiatym przypadku na „NA”?
 
 <details>
 
@@ -948,7 +1040,9 @@ mean(iris$Sepal.Length, na.rm=TRUE)  # The NAs must be actively removed.
 
 ### CW 5.1
 
-Stworz wlasna ramke danych (podobnej do tej z irysami). Najpierw utworz jeden wektor dla Boba, który pokazuje czasy (w sekundach) jego osmiu biegów na 100 m.
+Stworz wlasna ramke danych (podobnej do tej z irysami). Najpierw utworz
+jeden wektor dla Boba, który pokazuje czasy (w sekundach) jego osmiu
+biegów na 100 m.
 
 <details>
 
@@ -962,7 +1056,8 @@ Bob <- c(62, 85, 92, 59, 68, 72, 67, 74)
 
 ### CW 5.2
 
-Teraz Eva chce sprawdzić, jak dobrze sobie radzi z bieganiem. Utworz kolejny wektor z jej wynikami?
+Teraz Eva chce sprawdzić, jak dobrze sobie radzi z bieganiem. Utworz
+kolejny wektor z jej wynikami?
 
 <details>
 
@@ -986,7 +1081,10 @@ O nie, w danych jest błąd. Popraw wpis dotyczący drugiego biegu Boba.
 Bob[2] <- 54
 ```
 
-Bob jest wektorem, a nie ramką danych ani macierzą, więc nie można używać indeksowania, takiego jak Bob[, 2]. R traktuje wektor Bob jako jednowymiarowy, więc można nim manipulować tylko za pomocą pojedynczego indeksu.
+Bob jest wektorem, a nie ramką danych ani macierzą, więc nie można
+używać indeksowania, takiego jak Bob[, 2]. R traktuje wektor Bob jako
+jednowymiarowy, więc można nim manipulować tylko za pomocą pojedynczego
+indeksu.
 
 </details>
 
@@ -1015,7 +1113,8 @@ Teraz utworz trzy wektory:
 
 <li>w2, ktory zawiera sekwencje liczb od 1 do 6</li>
 
-<li>w3, ktory zawiera nastepujacy tekst:'blue','pink','blue','red','yellow'</li>
+<li>w3, ktory zawiera nastepujacy
+tekst:'blue','pink','blue','red','yellow'</li>
 
 </ul>
 
@@ -1047,7 +1146,9 @@ df1 <- data.frame(w1,w2,w3)
 
 ### CW 6.3
 
-Otrzymujemy nastepujacy komunikat o bledzie: 'Blad w data.frame(w1,w2,w3): argumenty sugeruja rozna liczbe wierszy: 6, 5'. Jakiej funkcji mozna uzyc, aby okreslic dlugosc kazdego wektora?
+Otrzymujemy nastepujacy komunikat o bledzie: 'Blad w
+data.frame(w1,w2,w3): argumenty sugeruja rozna liczbe wierszy: 6, 5'.
+Jakiej funkcji mozna uzyc, aby okreslic dlugosc kazdego wektora?
 
 <details>
 
@@ -1063,13 +1164,16 @@ length(w3)
 
 ```
 
-Widzimy, ze wektor w3 jest krotszy niz wektory w1 i w2. Jesli chcesz polaczyc je w jedna ramke danych, wszystkie wektory musza miec te sama dlugosc podczas tworzenia tabeli na podstawie wektorow.
+Widzimy, ze wektor w3 jest krotszy niz wektory w1 i w2. Jesli chcesz
+polaczyc je w jedna ramke danych, wszystkie wektory musza miec te sama
+dlugosc podczas tworzenia tabeli na podstawie wektorow.
 
 </details>
 
 ### CW 6.4
 
-Dodajmy kolor zielony do wektora w3 i nazwijmy ten wektor w3new. Jak to zrobic?
+Dodajmy kolor zielony do wektora w3 i nazwijmy ten wektor w3new. Jak to
+zrobic?
 
 <details>
 
@@ -1081,13 +1185,17 @@ w3new <- c('blue','pink','blue','red','yellow','green')
 
 ```
 
-Pamietaj, aby umiescic slowo 'green' w nawiasach, poniewaz jest to obiek typu `character`. Jesli o tym zapomnisz, pojawi sie komunikat o bledzie. R bedzie szukac obiektu w Twoim srodowisku, ale poniewaz nie ma obiektu 'green', wyswietli komunikat o bledzie.
+Pamietaj, aby umiescic slowo 'green' w nawiasach, poniewaz jest to obiek
+typu `character`. Jesli o tym zapomnisz, pojawi sie komunikat o bledzie.
+R bedzie szukac obiektu w Twoim srodowisku, ale poniewaz nie ma obiektu
+'green', wyswietli komunikat o bledzie.
 
 </details>
 
 ### CW 6.5
 
-Sprobujmy ponownie utworzyc ramke danych, ale tym razem z wektorem w3new z dodanym kolorem zielonym.
+Sprobujmy ponownie utworzyc ramke danych, ale tym razem z wektorem w3new
+z dodanym kolorem zielonym.
 
 <details>
 
@@ -1103,9 +1211,12 @@ Great! You made it.
 
 ### CW 6.6
 
-<p>Teraz, gdy mamy juz naszą ramke danych, mozemy ja obejrzec. Mozna to zrobic za pomoca nastepujacej funkcji:`head(df1)` lub klikajac nazwy tabel w panelu Srodowisko po prawej stronie.</p>
+<p>Teraz, gdy mamy juz naszą ramke danych, mozemy ja obejrzec. Mozna to
+zrobic za pomoca nastepujacej funkcji:`head(df1)` lub klikajac nazwy
+tabel w panelu Srodowisko po prawej stronie.</p>
 
-<p>Jak widac, w tabeli znajduje sie wartosc NA. Jak uzyskac dostep do tej wartosci NA??</p>
+<p>Jak widac, w tabeli znajduje sie wartosc NA. Jak uzyskac dostep do
+tej wartosci NA??</p>
 
 <details>
 
@@ -1115,7 +1226,9 @@ Great! You made it.
 df1[4,1]
 ```
 
-Aby uzyskac dostep do pozycji NA w ramce danych, nalezy sprawdzic jej pozycje w wierszu [4,], a nastepnie pozycje w kolumnie [,1], poniewaz ramki danych w porownaniu z wektorami sa dwuwymiarowe.
+Aby uzyskac dostep do pozycji NA w ramce danych, nalezy sprawdzic jej
+pozycje w wierszu [4,], a nastepnie pozycje w kolumnie [,1], poniewaz
+ramki danych w porownaniu z wektorami sa dwuwymiarowe.
 
 </details>
 
@@ -1123,11 +1236,17 @@ Aby uzyskac dostep do pozycji NA w ramce danych, nalezy sprawdzic jej pozycje w 
 
 ## Pakiety
 
-Pakiety rozszerzają podstawowe możliwości w R. Zawierają funkcje, dane, dokumentacje ...
+Pakiety rozszerzają podstawowe możliwości w R. Zawierają funkcje, dane,
+dokumentacje ...
 
-Znaczna wiekszosc pakietow mozna zanalezc na repozytrium [CRAN](https://cran.r-project.org/).
+Znaczna wiekszosc pakietow mozna zanalezc na repozytrium
+[CRAN](https://cran.r-project.org/).
 
-Jezeli dany pakiet nie byl nigdy uzywany na danym komputerze, nalezy go najpierw zainstalowac uzywajac funkcji `install.packages()`. **Wystarczy to zrobic jeden raz!** Pozniej, kazdorazowo przy rozpoczeciu sesji w R nalezy wywolac wszystkie pakiety, ktorych chcemy uzyc. Sluzy do tego funkcja `library()`
+Jezeli dany pakiet nie byl nigdy uzywany na danym komputerze, nalezy go
+najpierw zainstalowac uzywajac funkcji `install.packages()`. **Wystarczy
+to zrobic jeden raz!** Pozniej, kazdorazowo przy rozpoczeciu sesji w R
+nalezy wywolac wszystkie pakiety, ktorych chcemy uzyc. Sluzy do tego
+funkcja `library()`
 
 ```{r}
 
@@ -1142,7 +1261,9 @@ library(tidyverse)
 
 ## Wczytywanie danych
 
-Do R mozemy wgrac dane w wielu roznych formatach, stowrzac z nich np. ramki danych/ tabele / wektory dostepne w srodowisku. Aby to zrobic trzeba wskazac, gdzie 'mieszkaja' nasze dane, czyli podac sciezke.
+Do R mozemy wgrac dane w wielu roznych formatach, stowrzac z nich np.
+ramki danych/ tabele / wektory dostepne w srodowisku. Aby to zrobic
+trzeba wskazac, gdzie 'mieszkaja' nasze dane, czyli podac sciezke.
 
 1.  Wskazanie konkretnego pliku
 
@@ -1155,7 +1276,8 @@ wroble <- read_excel("C:/Users/marta/OneDrive - University of Gdansk/Dydaktyka/B
 
 ```
 
-2.  Wskazanie folderu roboczego (ang. working directory) i pozniejsze wskazanie pliku w jego obrebie
+2.  Wskazanie folderu roboczego (ang. working directory) i pozniejsze
+    wskazanie pliku w jego obrebie
 
 ```{r}
 
@@ -1166,7 +1288,10 @@ wrbl <- read_excel('Sparrows.xlsx') # wskazanie samego pliku znajdujacego sie w 
 
 ```
 
-> TIP: Ustawianie WD jest bardzo dobrym zwyczajem, zwlaszcza przy pracy na wiecej niz jednym pliku. Ponadto, nie musi to byc tylko zrodlo plikow dla R, ale tez miejsce zapisywania elementow wygenerowanych w R (np. wykresow).
+> TIP: Ustawianie WD jest bardzo dobrym zwyczajem, zwlaszcza przy pracy
+> na wiecej niz jednym pliku. Ponadto, nie musi to byc tylko zrodlo
+> plikow dla R, ale tez miejsce zapisywania elementow wygenerowanych w R
+> (np. wykresow).
 
 3.  Dane cwiczeniowe czesto sa zawarte w pakietach. Obejrzyj
 
@@ -1180,7 +1305,9 @@ View(starwars) # dane dostepne w ramach pakietu, zwroc uwage, ze nie znajduja si
 
 ## Selekcjonowanie
 
-Polega na wybieraniu poszczegolnych kolumn w ramce danych. Sluzy do tego np. funkcja `select()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+Polega na wybieraniu poszczegolnych kolumn w ramce danych. Sluzy do tego
+np. funkcja `select()`, nalezaca do pakietu `dplyr` bedacego czescia
+`tidyverse`.
 
 W ramce danych `wroble` zostaw tylko kolumne `species`
 
@@ -1221,7 +1348,8 @@ wrbl3 <- select(wroble, -bill)
 
 ```
 
-Stworz ramke danych `sprrows`, ktora bedzie zawierala kolumny `species` , `sex`, `wing` i `mass` pochodzace z ramki danych `wroble`.
+Stworz ramke danych `sprrows`, ktora bedzie zawierala kolumny `species`
+, `sex`, `wing` i `mass` pochodzace z ramki danych `wroble`.
 
 ```{r}
 
@@ -1234,13 +1362,17 @@ str(sparrows)
 
 ## Filtrowanie
 
-Polega na wybieraniu wierszy spelniajacych pewne cechy. Sluzy do tego np. funkcja `filter()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+Polega na wybieraniu wierszy spelniajacych pewne cechy. Sluzy do tego
+np. funkcja `filter()`, nalezaca do pakietu `dplyr` bedacego czescia
+`tidyverse`.
 
 ### Operatory porownawcze
 
-`==` - rowna sie; `!=` - nie rowna sie, `<` - mniejsze od, `<=` - mniejsze rowne od, `>` wieksze od, `>=` wieksze rowne od.
+`==` - rowna sie; `!=` - nie rowna sie, `<` - mniejsze od, `<=` -
+mniejsze rowne od, `>` wieksze od, `>=` wieksze rowne od.
 
-1.  Stowrz ramke danych, ktora bedzie zawierala dane tylko o samicach wrobli.
+1.  Stowrz ramke danych, ktora bedzie zawierala dane tylko o samicach
+    wrobli.
 
 ```{r}
 
@@ -1254,7 +1386,8 @@ unique(wrbl_F$sex) # tu pozostalo tylko F
 
 ```
 
-2.  Stworz ramke danych, ktora bedzie zbierala dane tylko o wroblach o skrzydla (`wing`) dlugosci 60 mm.
+2.  Stworz ramke danych, ktora bedzie zbierala dane tylko o wroblach o
+    skrzydla (`wing`) dlugosci 60 mm.
 
 ```{r}
 
@@ -1274,7 +1407,8 @@ nrow(wrbl_60) # zlicza wiersze
 
 ```
 
-3.  Stworz ramke danych, ktora bedzie zawierala wroble o masie (`mass`) ponizej sredniej.
+3.  Stworz ramke danych, ktora bedzie zawierala wroble o masie (`mass`)
+    ponizej sredniej.
 
 ```{r}
 
@@ -1293,7 +1427,8 @@ max(wrbl_lekkie$mass) # podaje najwyzsza wartosc ze zbioru
 
 ```
 
-4.  Stworz ramke danych, ktora nie bedzie zawierala ptakow o minimalnej wartosci dlugosci dziolba (`bill)`
+4.  Stworz ramke danych, ktora nie bedzie zawierala ptakow o minimalnej
+    wartosci dlugosci dziolba (`bill)`
 
 ```{r}
 
@@ -1315,9 +1450,13 @@ min(wrbl_duze$bill)
 
 `|` - lub, `&` - i / oraz, `!` - nie
 
-![Complete set of boolean operations. x is the left-hand circle, y is the right-hand circle, and the shaded region show which parts each operator selects.](https://r4ds.had.co.nz/diagrams/transform-logical.png){width="563"}
+![Complete set of boolean operations. x is the left-hand circle, y is
+the right-hand circle, and the shaded region show which parts each
+operator
+selects.](https://r4ds.had.co.nz/diagrams/transform-logical.png){width="563"}
 
-1.  Stworz ramke danych, ktora bedzie zawierala tylko osobniki o minimalnej i maksymalnej masie.
+1.  Stworz ramke danych, ktora bedzie zawierala tylko osobniki o
+    minimalnej i maksymalnej masie.
 
 ```{r}
 
@@ -1331,7 +1470,8 @@ wrbl_skrajne <- filter(wroble, mass == 16.5 | mass == 26.5)
 
 ```
 
-2.  Stworz ramke danych, ktora bedzie zabierala osobniki o minimalnej masie i bedzie w wieku juv.
+2.  Stworz ramke danych, ktora bedzie zabierala osobniki o minimalnej
+    masie i bedzie w wieku juv.
 
 ```{r}
 
@@ -1342,7 +1482,8 @@ wrbl4 <- filter(wroble, mass == 16.5 & age == 'juv')
 
 ```
 
-3.  Stworz ramke danych, w ktorej ptaki nie beda ciezsze niz 20 g i nie beda mialy samcami.
+3.  Stworz ramke danych, w ktorej ptaki nie beda ciezsze niz 20 g i nie
+    beda mialy samcami.
 
 ```{r}
 
@@ -1356,7 +1497,8 @@ wrbl6 <- filter(wroble, mass <= 20 & sex == 'F')
 
 ```
 
-4.  Stworz ramke danych, w ktorej beda znajodwac sie ptaki o masie 20 i 25 g. Uzyj operatora dopasowania `%in%` .
+4.  Stworz ramke danych, w ktorej beda znajodwac sie ptaki o masie 20 i
+    25 g. Uzyj operatora dopasowania `%in%` .
 
 ```{r}
 
@@ -1366,7 +1508,8 @@ wrbl7 <- filter(wroble, mass %in% c(20, 25))
 
 ```
 
-5.  Stworz ramke danych, w ktorej ptaki beda mialy mase wieksza niz 18.2 i mniejsza niz 19.2. Uzyj funckji `between()` .
+5.  Stworz ramke danych, w ktorej ptaki beda mialy mase wieksza niz 18.2
+    i mniejsza niz 19.2. Uzyj funckji `between()` .
 
 ```{r}
 
@@ -1374,7 +1517,8 @@ wrbl.between <- filter(wroble, between(mass, 18.2, 19.2))
 
 ```
 
-6.  Stworz ramke danych, w ktorej nie bedzie samcow i osobnikow z gatunku P. montanus
+6.  Stworz ramke danych, w ktorej nie bedzie samcow i osobnikow z
+    gatunku P. montanus
 
 ```{r}
 
@@ -1384,13 +1528,16 @@ wrbl8 <- filter(wroble, sex != 'M' & species != 'montanus')
 
 ```
 
-> TIP: Zauwaz, ze mimo tego, ze filtorwanie zbiory odbylo sie z uzyciem warunkow z dwoch roznych kolumn, uzyto operatora & nie \|. Jest to zwiazane z prawami De Morgana, ktore stanowia, ze:
+> TIP: Zauwaz, ze mimo tego, ze filtorwanie zbiory odbylo sie z uzyciem
+> warunkow z dwoch roznych kolumn, uzyto operatora & nie \|. Jest to
+> zwiazane z prawami De Morgana, ktore stanowia, ze:
 >
 > -   `!(A & B)` to samo co `!A | !B`
 >
 > -   `!(A | B)` to samo co `!A & !B`
 >
-> W skrocie przy pojedynczych wykluczeniach, operatory & i \| dzialaja inaczej niz przy wlaczeniach.
+> W skrocie przy pojedynczych wykluczeniach, operatory & i \| dzialaja
+> inaczej niz przy wlaczeniach.
 
 7.  Stworz ramke danych, gdzie nie bedzie mlodych samic.
 
@@ -1423,7 +1570,9 @@ wrbl.10.1 <- filter(wroble, !(sex == 'F' | age == 'juv'))
 
 ## Sortowanie
 
-Zmienianie kolejnosci przypadkow wg. wybranej zasady. Sluzy do tego np. funkcja `arrange()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+Zmienianie kolejnosci przypadkow wg. wybranej zasady. Sluzy do tego np.
+funkcja `arrange()`, nalezaca do pakietu `dplyr` bedacego czescia
+`tidyverse`.
 
 1.  Posortuj dane od najlzejszego do najciezszego ptaka.
 
@@ -1442,7 +1591,8 @@ wrbl.ar.des.mass <- arrange(wroble, desc(mass))
 
 ```
 
-3.  Posortuj dane rosnaco pod wzgledem dlugosci skoku i w odwrotnej kolejnosci alfabetycznej gatunku.
+3.  Posortuj dane rosnaco pod wzgledem dlugosci skoku i w odwrotnej
+    kolejnosci alfabetycznej gatunku.
 
 ```{r}
 
@@ -1450,7 +1600,8 @@ wrb.ar.tar.spec <- arrange(wroble, tarsus, desc(species))
 
 ```
 
-4.  Posortuj dane w odwrotnej kolejnosci alfabetycznej gatunku i rosnaco pod wzgledem skoku
+4.  Posortuj dane w odwrotnej kolejnosci alfabetycznej gatunku i rosnaco
+    pod wzgledem skoku
 
 ```{r}
 
@@ -1460,9 +1611,12 @@ wrbl.ar.spec.tar <- arrange(wroble, desc(species), tarsus)
 
 ## Operator potokowy `%>%`
 
-`%>%` rowniez jest czescia pakietu `dyplr`. Doslownie oznacza 'i potem'. Sluzy to tworzenia ciagow nastepujacych po sobie akcji.
+`%>%` rowniez jest czescia pakietu `dyplr`. Doslownie oznacza 'i potem'.
+Sluzy to tworzenia ciagow nastepujacych po sobie akcji.
 
-Stworz ramke danych, gdzie bedzie zawierala dane tylko o samicach o dlugosci skoku pomiedzy 21 a 23 mm, bez kolumny okreslajacej ich gatunek i z danymi posortowanymi rosnaco wg ich masy.
+Stworz ramke danych, gdzie bedzie zawierala dane tylko o samicach o
+dlugosci skoku pomiedzy 21 a 23 mm, bez kolumny okreslajacej ich gatunek
+i z danymi posortowanymi rosnaco wg ich masy.
 
 ```{r}
 
@@ -1474,7 +1628,8 @@ wrbl.potok1 <- wroble %>%  # oznacza: wez obiekt wroble i potem
 
 ```
 
-Stowrz ramke danych, ktora nie bedzie miala ptakow o masie wiekszej niz 21 g i bedzie zawierala tylko informacje o biometrii.
+Stowrz ramke danych, ktora nie bedzie miala ptakow o masie wiekszej niz
+21 g i bedzie zawierala tylko informacje o biometrii.
 
 ```{r}
 
@@ -1520,7 +1675,9 @@ library(palmerpenguins)
 
 ### CW 2.1
 
-Dane sa dostepne w ramach pakietu, ale nalezy pamietac, ze nie znajdują się one jeszcze w srodowisku. Czy mozesz je pobrac i zapisac jako „starwars” w srodowisku?
+Dane sa dostepne w ramach pakietu, ale nalezy pamietac, ze nie znajdują
+się one jeszcze w srodowisku. Czy mozesz je pobrac i zapisac jako
+„starwars” w srodowisku?
 
 ```{r}
 View(starwars)
@@ -1536,13 +1693,17 @@ Wskazowka: najpierw nalezy wywolac pakiet „dplyr”.
 starwars <- dplyr::starwars
 ```
 
-Zapis z podowjnym dwukropkiem, czyli `pakiet::funkcja`, to w jezyku R tzw. operator dostępu do przestrzeni nazw (namespace access operator). Pozwala on uzyc konkretnej funkcji z danego pakietu bez konieczności ladowania calego pakietu za pomocą `library()`.
+Zapis z podowjnym dwukropkiem, czyli `pakiet::funkcja`, to w jezyku R
+tzw. operator dostępu do przestrzeni nazw (namespace access operator).
+Pozwala on uzyc konkretnej funkcji z danego pakietu bez konieczności
+ladowania calego pakietu za pomocą `library()`.
 
 </details>
 
 ### CW 2.2
 
-W jezyku R mozesz poprosic o pomoc. Otworz strone pomocy dla zbioru danych `starwars`. Mozna to zrobic na kilka sposobow.
+W jezyku R mozesz poprosic o pomoc. Otworz strone pomocy dla zbioru
+danych `starwars`. Mozna to zrobic na kilka sposobow.
 
 <details>
 
@@ -1552,7 +1713,8 @@ W jezyku R mozesz poprosic o pomoc. Otworz strone pomocy dla zbioru danych `star
 ?starwars
 ```
 
-Inna ocpja jest otwarcie strony pomocy (Help) w prawym dolnym rogu i wpisanie nazwy „starwars” w wyszukiwarce.
+Inna ocpja jest otwarcie strony pomocy (Help) w prawym dolnym rogu i
+wpisanie nazwy „starwars” w wyszukiwarce.
 
 <details>
 
@@ -1573,13 +1735,15 @@ starwars3 <- select(starwars, -films, -vehicles, -starships)
 
 <summary>ODP 2.3</summary>
 
-W opcji a wybieramy kolumny „filmy”, „pojazdy” i „statki kosmiczne”. W opcji b usuwamy te trzy kolumny.
+W opcji a wybieramy kolumny „filmy”, „pojazdy” i „statki kosmiczne”. W
+opcji b usuwamy te trzy kolumny.
 
 <details>
 
 ### CW 2.4
 
-Czy możesz zaznaczyć wszystkie kolumny od „name” do „birth_year” i zapisać je jako „cleaned_starwars”?
+Czy możesz zaznaczyć wszystkie kolumny od „name” do „birth_year” i
+zapisać je jako „cleaned_starwars”?
 
 <details>
 
@@ -1594,7 +1758,10 @@ cleaned_starwars <- select(starwars, name:birth_year)
 
 ### CW 2.5
 
-Funkcja unique() w języku R służy do wyodrębniania unikalnych wartości z wektora, ramki danych lub innych struktur danych. Pomaga ona w identyfikowaniu odrbnych wpisow, usuwajac duplikaty z danych. Wyprobuj, aby zobaczyc roznorodnosc kolorow skory postaci z Gwiezdnych Wojen.
+Funkcja unique() w języku R służy do wyodrębniania unikalnych wartości z
+wektora, ramki danych lub innych struktur danych. Pomaga ona w
+identyfikowaniu odrbnych wpisow, usuwajac duplikaty z danych. Wyprobuj,
+aby zobaczyc roznorodnosc kolorow skory postaci z Gwiezdnych Wojen.
 
 <details>
 
@@ -1608,7 +1775,8 @@ unique(cleaned_starwars$skin_color)
 
 ### CW 2.6
 
-Zrób to samo dla kolumny wysokości. Jakie problemy dostrzegasz, patrząc na dane?
+Zrób to samo dla kolumny wysokości. Jakie problemy dostrzegasz, patrząc
+na dane?
 
 <details>
 
@@ -1618,7 +1786,8 @@ Zrób to samo dla kolumny wysokości. Jakie problemy dostrzegasz, patrząc na da
 unique(cleaned_starwars$height)
 ```
 
-Mamy kilka wartości NA, które spowodują problemy na przykład podczas obliczania średniej.
+Mamy kilka wartości NA, które spowodują problemy na przykład podczas
+obliczania średniej.
 
 <details>
 
@@ -1634,13 +1803,15 @@ Oblicz średnią dla kolumny „wzrost” i zapisz ją w swoim środowisku.
 height_mean <- mean(cleaned_starwars$height)
 ```
 
-Napotkaliśmy problem. Jak widzielismy wczesniej, w zbiorze danych wystepuja wartosci NA.
+Napotkaliśmy problem. Jak widzielismy wczesniej, w zbiorze danych
+wystepuja wartosci NA.
 
 <details>
 
 ### CW 2.8
 
-Oblicz mediane i srednia dla kolumny „wzrost”, ale pamietaj, aby pominac NA.
+Oblicz mediane i srednia dla kolumny „wzrost”, ale pamietaj, aby pominac
+NA.
 
 <details>
 
@@ -1655,7 +1826,8 @@ height_median <- median(cleaned_starwars$height, na.rm = TRUE)
 
 ### CW 3
 
-Bedziemy pracować z zestawem danych „friends”. Ten zestaw danych zawiera nastepujace informacje:
+Bedziemy pracować z zestawem danych „friends”. Ten zestaw danych zawiera
+nastepujace informacje:
 
 <ul>
 
@@ -1673,9 +1845,12 @@ Bedziemy pracować z zestawem danych „friends”. Ten zestaw danych zawiera na
 
 ### CW 3.1
 
-Pobierz zbior danych „friends” dostepny na nastepujacej stronie GitHub: <https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
+Pobierz zbior danych „friends” dostepny na nastepujacej stronie GitHub:
+<https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
 
-Zbior danych konczy sie rozszerzeniem „.csv”; w tym przypadku nalezy uzyc funkcji „read.csv()”. Dziala ona podobnie jak funkcja „read_excel()” opisana w punkcie 2 „Wczytywanie danych” laboratorium 3.
+Zbior danych konczy sie rozszerzeniem „.csv”; w tym przypadku nalezy
+uzyc funkcji „read.csv()”. Dziala ona podobnie jak funkcja
+„read_excel()” opisana w punkcie 2 „Wczytywanie danych” laboratorium 3.
 
 </ul>
 
@@ -1683,7 +1858,10 @@ Zbior danych konczy sie rozszerzeniem „.csv”; w tym przypadku nalezy uzyc fu
 
 <summary>ODP 3.1</summary>
 
-Aby uzyskac dostep do katalogu roboczego, przejdz do panelu: Session \> Set Working Directory \> Choose Directory ... Spowoduje to otwarcie okna folderow, w ktorym nalezy wybrac folder, w ktorym zapisano plik friends.csv pobrany z serwisu GitHub.
+Aby uzyskac dostep do katalogu roboczego, przejdz do panelu: Session \>
+Set Working Directory \> Choose Directory ... Spowoduje to otwarcie okna
+folderow, w ktorym nalezy wybrac folder, w ktorym zapisano plik
+friends.csv pobrany z serwisu GitHub.
 
 ```{r}
 setwd("C:/your_computer_directories")
@@ -1695,7 +1873,8 @@ friends <- read.csv("friends.csv")
 
 ### CW 3.2
 
-Ktora funkcje nalezy uzyc, aby uzyskac przeglad struktury zbioru danych i wyswietlic go?
+Ktora funkcje nalezy uzyc, aby uzyskac przeglad struktury zbioru danych
+i wyswietlic go?
 
 <details>
 
@@ -1707,7 +1886,12 @@ View(friends)
 
 ```
 
-Byc moze zauwazylez, ze zestaw danych nie wyswietla sie poprawnie; wszystko jest zapisane w jednej kolumnie. Aby to poprawic, musimy okreslic separator uzywany w naszym pliku, aby kolumny wyswietlaly sie poprawnie. W tym przypadku separatorem wydaje sie byc „;”. Aby dane wyswietlaly sie poprawnie, musimy wiec uzyc nastepujacego kod przy wczytywaniu danych:
+Byc moze zauwazylez, ze zestaw danych nie wyswietla sie poprawnie;
+wszystko jest zapisane w jednej kolumnie. Aby to poprawic, musimy
+okreslic separator uzywany w naszym pliku, aby kolumny wyswietlaly sie
+poprawnie. W tym przypadku separatorem wydaje sie byc „;”. Aby dane
+wyswietlaly sie poprawnie, musimy wiec uzyc nastepujacego kod przy
+wczytywaniu danych:
 
 ```{r}
 
@@ -1718,7 +1902,9 @@ friends <- read.csv("friends.csv", sep = ";")
 
 ### CW 3.3
 
-Teraz, gdy nasz zbior danych wyswietla sie poprawnie, chcielibysmy zobaczyc unikalne obserwacje dla nastepujacych kategorii: kolor oczu, kolor wlosow i wiek.
+Teraz, gdy nasz zbior danych wyswietla sie poprawnie, chcielibysmy
+zobaczyc unikalne obserwacje dla nastepujacych kategorii: kolor oczu,
+kolor wlosow i wiek.
 
 <details>
 
@@ -1741,7 +1927,9 @@ unique(friends$Age)
 
 ### CW 3.4
 
-Chcielibysmy utworzyc dwie oddzielne ramki danych: jedna zawierajaca wylacznie informacje o przyjaciolkach, a druga zawierajaca wylacznie informacje o przyjaciolach. Jak to zrobic?
+Chcielibysmy utworzyc dwie oddzielne ramki danych: jedna zawierajaca
+wylacznie informacje o przyjaciolkach, a druga zawierajaca wylacznie
+informacje o przyjaciolach. Jak to zrobic?
 
 <details>
 
@@ -1764,13 +1952,17 @@ male_tab1 <- filter(friends, Sex != "F")
 
 ```
 
-Mozesz utworzyc tabele na wiele sposobow, korzystajac z funkcji biblioteki tidyverse. Powyzej przedstawiono dwie opcje dla kazdej metody.
+Mozesz utworzyc tabele na wiele sposobow, korzystajac z funkcji
+biblioteki tidyverse. Powyzej przedstawiono dwie opcje dla kazdej
+metody.
 
 </details>
 
 ### CW 3.5
 
-Nie potrzebujemy juz kolumny „Plec” w kazdej tabeli, poniewaz wszystkie osoby w tabeli male_tab1 to mezczyzni, to samo dotyczy tabeli female_tab1. Jak usunac kolumne „Plec”?
+Nie potrzebujemy juz kolumny „Plec” w kazdej tabeli, poniewaz wszystkie
+osoby w tabeli male_tab1 to mezczyzni, to samo dotyczy tabeli
+female_tab1. Jak usunac kolumne „Plec”?
 
 <details>
 
@@ -1786,13 +1978,18 @@ male_tab2 <- select(male_tab1,c("Friend","Eyes_color","Hair_color","Age"))
 
 ```
 
-Mozesz utworzyc tabele na wiele sposobow, korzystajac z funkcji biblioteki tidyverse. Powyzej przedstawiono dwie opcje.
+Mozesz utworzyc tabele na wiele sposobow, korzystajac z funkcji
+biblioteki tidyverse. Powyzej przedstawiono dwie opcje.
 
 </details>
 
 ### CW 3.6
 
-Wiek naszych przyjaciól nie jest uporzadkowany. Chcielibysmy, aby kobiety byly uporzadkowane od najmlodszej do najstarszej, a mezczyzni od najstarszego do najmlodszego. Po wykonaniu tej czynnosci chcielibysmy sprawdzic, czy kobiety w naszej grupie przyjaciol sa srednio mlodsze od mezczyzn. Jak zakodowac te informacje?
+Wiek naszych przyjaciól nie jest uporzadkowany. Chcielibysmy, aby
+kobiety byly uporzadkowane od najmlodszej do najstarszej, a mezczyzni od
+najstarszego do najmlodszego. Po wykonaniu tej czynnosci chcielibysmy
+sprawdzic, czy kobiety w naszej grupie przyjaciol sa srednio mlodsze od
+mezczyzn. Jak zakodowac te informacje?
 
 <details>
 
@@ -1818,7 +2015,11 @@ mean(male_tab2$Age)
 
 ### CW 3.7
 
-Chcemy sprawdzic w jednym fragmencie kodu, ktorzy z naszych znajomych maja brazowe oczy i blond wlosy. Jednak informacje te interesuja nas tylko w przypadku osob powyzej 20 roku zycia. Nie interesuje nas identyfikator znajomego, wiec chcemy usunac te kolumne z naszej ostatecznej tabeli.
+Chcemy sprawdzic w jednym fragmencie kodu, ktorzy z naszych znajomych
+maja brazowe oczy i blond wlosy. Jednak informacje te interesuja nas
+tylko w przypadku osob powyzej 20 roku zycia. Nie interesuje nas
+identyfikator znajomego, wiec chcemy usunac te kolumne z naszej
+ostatecznej tabeli.
 
 <details>
 
@@ -1840,21 +2041,29 @@ friends_Q7 <- friends %>%
 
 ## Statystyki opisowe
 
-Celem statystyk opisowych jest podsumowanie i przedstawianie infomracji ze zbioru danych. Dwie glowne kategorie to miary polozenia (wsrod nich przedewszystkim miary tendencji centralnej) i miary rozrzutu. Kilka przykladow:
+Celem statystyk opisowych jest podsumowanie i przedstawianie infomracji
+ze zbioru danych. Dwie glowne kategorie to miary polozenia (wsrod nich
+przedewszystkim miary tendencji centralnej) i miary rozrzutu. Kilka
+przykladow:
 
 -   Miary tendencji centralnej
 
     -   srednia (np. arytmetyczna, wazona)
 
-    -   mediana - dzieli obserwacje na dwie rowne polowy i wskazuje wartosc od ktorej 50% obserwacji jest mniejsze, a drugie 50% wieksze
+    -   mediana - dzieli obserwacje na dwie rowne polowy i wskazuje
+        wartosc od ktorej 50% obserwacji jest mniejsze, a drugie 50%
+        wieksze
 
     -   dominanta/moda - najczesciej wystepujaca wartosc w zbiorze
 
 -   Miary rozrzutu
 
-    -   odchylenie standardowe - mowi o tym o ile srednio rozni sie wynik od sredniej arytmetycznej
+    -   odchylenie standardowe - mowi o tym o ile srednio rozni sie
+        wynik od sredniej arytmetycznej
 
-    -   rozstep kwartlowy - roznica miedzy trzecim (75%) a pierwszym kwartylem (25%). Kwartle dzialaja tak jak mediana, w zasadzie mediana jest rowniez rodzajem kwartyla, tzw. srodowym (50%)
+    -   rozstep kwartlowy - roznica miedzy trzecim (75%) a pierwszym
+        kwartylem (25%). Kwartle dzialaja tak jak mediana, w zasadzie
+        mediana jest rowniez rodzajem kwartyla, tzw. srodowym (50%)
 
     -   zakres - roznica miedzy wartoscia minimalna a maksymalna
 
@@ -1914,13 +2123,20 @@ Metadane:
 |  3  | ścięte drzewo z powalonym pniem |
 |  4  | pniak po ścietym drzewie        |
 
-![Drzewo uszkodzone przez bobra. Zdjęcie: Adrian Zwolicki](images/uszkodz.jpg){width="413"}
+![Drzewo uszkodzone przez bobra. Zdjęcie: Adrian
+Zwolicki](images/uszkodz.jpg){width="413"}
 
 ## Grupowanie i podsumowywanie danych
 
-Dwie funckje `group_by()` i `summarise()` nalezace do pakietu `dplyr` sa absolutnie fundamentalne podczas eksploracji danych. `group_by()` nie zmienia struktury ramki danych, ale tworzy 'wirtulane' grupy wewnatrz jej struktury, na podstawie wybranej zmiennej lub zmiennych. `summarise()` redukuje wiele przypadkow do jednego podsumowania/ statystyki opisowej.
+Dwie funckje `group_by()` i `summarise()` nalezace do pakietu `dplyr` sa
+absolutnie fundamentalne podczas eksploracji danych. `group_by()` nie
+zmienia struktury ramki danych, ale tworzy 'wirtulane' grupy wewnatrz
+jej struktury, na podstawie wybranej zmiennej lub zmiennych.
+`summarise()` redukuje wiele przypadkow do jednego podsumowania/
+statystyki opisowej.
 
-1.  Oblicz srednia i odchylenie standardowe z `SR` oddzielnie dla kazdego gatunku drzew
+1.  Oblicz srednia i odchylenie standardowe z `SR` oddzielnie dla
+    kazdego gatunku drzew
 
 ```{r}
 
@@ -1947,13 +2163,19 @@ bobry %>%
 
 ```
 
-> TIP: Poniewaz NA jest wartoscia logiczna, filtowanie typu `filter(SR != NA)` nie zadziala.
+> TIP: Poniewaz NA jest wartoscia logiczna, filtowanie typu
+> `filter(SR != NA)` nie zadziala.
 >
-> Zadziala natomiast wykluczenie za pomoca `!` wartosci, ktore daja odpowiedz `TRUE`, czy zapytaniu czy dana wartosc `is.na()`
+> Zadziala natomiast wykluczenie za pomoca `!` wartosci, ktore daja
+> odpowiedz `TRUE`, czy zapytaniu czy dana wartosc `is.na()`
 >
-> Mozna tez zastosowac funkcje `na.omit()` , ktora pomija wszystkie wartosci `NA` w danym zbiorze danych. Funkcje trzeba jednak stosowac z **duza rozwaga!!** poniewaz wykluczeniu podlegaja cale wiersze danych, nie pojedyncze wartosci.
+> Mozna tez zastosowac funkcje `na.omit()` , ktora pomija wszystkie
+> wartosci `NA` w danym zbiorze danych. Funkcje trzeba jednak stosowac z
+> **duza rozwaga!!** poniewaz wykluczeniu podlegaja cale wiersze danych,
+> nie pojedyncze wartosci.
 
-W przypadku tej ramki danych, uzycie funkcji `na.omit()` daje takie same wyniki:
+W przypadku tej ramki danych, uzycie funkcji `na.omit()` daje takie same
+wyniki:
 
 ```{r}
 
@@ -1964,7 +2186,8 @@ bobry %>% na.omit() %>%
 
 ```
 
-Dlaczego w odchyleniu standardowym nadal widnieja wartosci `NA`? Odopowiedzia jest liczba danych, z ktorych ta statystyka jest wyliczona.
+Dlaczego w odchyleniu standardowym nadal widnieja wartosci `NA`?
+Odopowiedzia jest liczba danych, z ktorych ta statystyka jest wyliczona.
 
 2.  Dodaj jeszcze jedna statystyke opisowa, jaka jest liczba przypadkow.
 
@@ -1981,7 +2204,10 @@ bobry %>%
 
 Nie da sie wyliczyc SD ze zbioru o n = 1.
 
-3.  Uzywanie `group_by()` i `summarise()` generuje obiekt tabelaryczny, tzw. tibble. Mozna nim manipulowac tak jak ramka danych. Z powstalego podsumowania pozbadz sie gatunkow o liczebnosc = 1 i posortuj malejaco wzgledem sredniej.
+3.  Uzywanie `group_by()` i `summarise()` generuje obiekt tabelaryczny,
+    tzw. tibble. Mozna nim manipulowac tak jak ramka danych. Z
+    powstalego podsumowania pozbadz sie gatunkow o liczebnosc = 1 i
+    posortuj malejaco wzgledem sredniej.
 
 ```{r}
 
@@ -1998,7 +2224,9 @@ bobry %>%
 
 ```
 
-4.  Zapoznaj sie z innymi statystykami opisowymi. Wylicz mediane, rozstep kwartylowy, wartosci minimalne i maksymalne z dystansu od cigu wodnego dla drzew o stopniu uszkodzenia od 0 do 3
+4.  Zapoznaj sie z innymi statystykami opisowymi. Wylicz mediane,
+    rozstep kwartylowy, wartosci minimalne i maksymalne z dystansu od
+    cigu wodnego dla drzew o stopniu uszkodzenia od 0 do 3
 
 ```{r}
 
@@ -2013,7 +2241,10 @@ bobry %>%
 
 ```
 
-5.  Wyboraz sobie, ze jednak chcesz zmienic nazwe kolumny w tabeli powstalej w poprzednim podpunkcie (z ROZSTEP na IQR). Sluzy do tego funckja `rename()`, ktora mozesz zastosowac zarowno tutaj jak i do innych ramkek danych.
+5.  Wyboraz sobie, ze jednak chcesz zmienic nazwe kolumny w tabeli
+    powstalej w poprzednim podpunkcie (z ROZSTEP na IQR). Sluzy do tego
+    funckja `rename()`, ktora mozesz zastosowac zarowno tutaj jak i do
+    innych ramkek danych.
 
 ```{r}
 
@@ -2031,7 +2262,9 @@ bobry %>%
 
 ```
 
-6.  Sprawdz ile roznych gatunkow drzew stwierdzono w danej klasie uszkodzenia. Ustaw wyniki w tabeli od klasy uszkodzenia o najmniejszej do najwiekszej liczbie gatunkow drzew .
+6.  Sprawdz ile roznych gatunkow drzew stwierdzono w danej klasie
+    uszkodzenia. Ustaw wyniki w tabeli od klasy uszkodzenia o
+    najmniejszej do najwiekszej liczbie gatunkow drzew .
 
 ```{r}
 
@@ -2043,7 +2276,9 @@ bobry %>%
 
 ```
 
-7.  Pogrupuj dane pod wzgledem uszkodzenia i gatunku drzew, uwzgledniajac tylko gatunki 'Ps' i 'Bs'. Nastepnie oblicz wartosc srednia i odchylenie standardowe ze srednicy (SR).
+7.  Pogrupuj dane pod wzgledem uszkodzenia i gatunku drzew,
+    uwzgledniajac tylko gatunki 'Ps' i 'Bs'. Nastepnie oblicz wartosc
+    srednia i odchylenie standardowe ze srednicy (SR).
 
 ```{r}
 
@@ -2058,7 +2293,8 @@ bobry %>%
 
 ```
 
-8.  Sprawdz jaka bedzie roznica, jezeli wykonasz podpunkt 7 ustawiajac argumenty grupujace w odwrotnej kolejnosci.
+8.  Sprawdz jaka bedzie roznica, jezeli wykonasz podpunkt 7 ustawiajac
+    argumenty grupujace w odwrotnej kolejnosci.
 
 ```{r}
 
@@ -2073,7 +2309,8 @@ bobry %>%
 
 ```
 
-9.  Zapisz tabele stworzona w punkcie 8 w srodowisku, objerzyj wyniki uzywajac funkcji `View()`.
+9.  Zapisz tabele stworzona w punkcie 8 w srodowisku, objerzyj wyniki
+    uzywajac funkcji `View()`.
 
 ```{r}
 
@@ -2094,9 +2331,14 @@ View(tabela.z.wynikami)
 
 ### CW 1
 
-Mediana to to samo co srodkowy kwartyl (50%). Sprawdz, czy tak jest wyliczajac mediane i srodowy kwartyl (uzywajac funckji `quantile()`) dla zmiennej Petal.Width oddzielnie dla 3 gatunkow irysow, o ktorych dane dostepne sa w bazie iris.
+Mediana to to samo co srodkowy kwartyl (50%). Sprawdz, czy tak jest
+wyliczajac mediane i srodowy kwartyl (uzywajac funckji `quantile()`) dla
+zmiennej Petal.Width oddzielnie dla 3 gatunkow irysow, o ktorych dane
+dostepne sa w bazie iris.
 
-Wskazowka: funkcja `quantile()` ma dwa argumenty: wektor, z ktorego wyliczana jest ta statystyka opisowa oraz kwartyl nam chodzi (np. drugi kwartyl to 0.25).
+Wskazowka: funkcja `quantile()` ma dwa argumenty: wektor, z ktorego
+wyliczana jest ta statystyka opisowa oraz kwartyl nam chodzi (np. drugi
+kwartyl to 0.25).
 
 <details>
 
@@ -2116,7 +2358,8 @@ iris %>%
 
 ### CW 1.2
 
-Oblicz srednia i odchylenie standardowe dla dlugosci dzialek kielicha osobno dla kazdego gatunku kwiatu.
+Oblicz srednia i odchylenie standardowe dla dlugosci dzialek kielicha
+osobno dla kazdego gatunku kwiatu.
 
 <details>
 
@@ -2135,7 +2378,8 @@ iris %>%
 
 ### CW 1.3
 
-Czy pamiętasz funkcje, które pokaże Ci, jakie gatunki znajdują się w zbiorze danych?
+Czy pamiętasz funkcje, które pokaże Ci, jakie gatunki znajdują się w
+zbiorze danych?
 
 <details>
 
@@ -2151,7 +2395,10 @@ unique(iris$Species)
 
 ### CW 1.4
 
-Czy mozna wykluczyc jeden gatunek kwiatu (dowolny) za pomocą polecenia „filter”? Oblicz srednia i odchylenie standardowe z Petal.Width oddzielnie dla pozostałych dwoch gatunkow kwiatow, ktorepozostały w zbiorze danych.
+Czy mozna wykluczyc jeden gatunek kwiatu (dowolny) za pomocą polecenia
+„filter”? Oblicz srednia i odchylenie standardowe z Petal.Width
+oddzielnie dla pozostałych dwoch gatunkow kwiatow, ktorepozostały w
+zbiorze danych.
 
 <details>
 
@@ -2171,7 +2418,10 @@ iris %>%
 
 ### CW 1.5
 
-Teraz chcemy wykluczyć duże kwiaty. Czy możesz przefiltrować zbiór danych dla wszystkich wartości Sepal.Width mniejszych niż 5 i obliczyć średnią dla każdego gatunku? Minęło trochę czasu, ale czy pamiętasz, jak zapisać wyniki w swoim środowisku?
+Teraz chcemy wykluczyć duże kwiaty. Czy możesz przefiltrować zbiór
+danych dla wszystkich wartości Sepal.Width mniejszych niż 5 i obliczyć
+średnią dla każdego gatunku? Minęło trochę czasu, ale czy pamiętasz, jak
+zapisać wyniki w swoim środowisku?
 
 <details>
 
@@ -2190,7 +2440,8 @@ small_petal <- iris %>%
 
 ### CW 1.6
 
-Czy ten etap filtrowania bylkonieczny? Jak mozemy sprawdzic, czy mamy dane dla Sepal.Width wieksze niz 5?
+Czy ten etap filtrowania bylkonieczny? Jak mozemy sprawdzic, czy mamy
+dane dla Sepal.Width wieksze niz 5?
 
 <details>
 
@@ -2207,7 +2458,8 @@ iris %>%
 
 ### CW 2
 
-Kontynuujmy pracę z zestawem danych „friends”. Ten zestaw danych zawiera następujące informacje:
+Kontynuujmy pracę z zestawem danych „friends”. Ten zestaw danych zawiera
+następujące informacje:
 
 <ul>
 
@@ -2223,9 +2475,12 @@ Kontynuujmy pracę z zestawem danych „friends”. Ten zestaw danych zawiera na
 
 </ul>
 
-Pobierz dostępny zestaw danych z następującej strony GitHub: <https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
+Pobierz dostępny zestaw danych z następującej strony GitHub:
+<https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
 
-Pamietaj, aby zapisac plik „friends.csv” w latwo dostepnym folderze. Najpierw ustaw katalog roboczy, a nastepnie przeslij plik za pomoca nastepujacego polecenia:
+Pamietaj, aby zapisac plik „friends.csv” w latwo dostepnym folderze.
+Najpierw ustaw katalog roboczy, a nastepnie przeslij plik za pomoca
+nastepujacego polecenia:
 
 ```{r}
 
@@ -2238,7 +2493,13 @@ friends<-read.csv(„friends.csv”, sep=";" )
 
 ### CW 2.1
 
-Policzmy troche statystyk na temat naszych znajomych. W poprzednim laboratorium zobaczylismy, jak obliczyc srednia wieku naszych znajomych plci zenskiej i meskiej w kilku krokach. Teraz powinienes byc w stanie obliczyc srednia wieku obu grup w jednej funkcji. Jak obliczylbys srednia wieku i odchylenie standardowe (SD) zarowno dla mezczyzn, jak i kobiet? Czy moglbys rowniez uwzglednic liczbe mezczyzn i kobiet obecnych w zbiorze danych?
+Policzmy troche statystyk na temat naszych znajomych. W poprzednim
+laboratorium zobaczylismy, jak obliczyc srednia wieku naszych znajomych
+plci zenskiej i meskiej w kilku krokach. Teraz powinienes byc w stanie
+obliczyc srednia wieku obu grup w jednej funkcji. Jak obliczylbys
+srednia wieku i odchylenie standardowe (SD) zarowno dla mezczyzn, jak i
+kobiet? Czy moglbys rowniez uwzglednic liczbe mezczyzn i kobiet obecnych
+w zbiorze danych?
 
 </ul>
 
@@ -2256,17 +2517,23 @@ AgeFMFriend <- friends %>% group_by(Sex) %>% summarise(
 )
 ```
 
-`counts = n()` \# zlicza, ilu przyjaciól jest kobietami, a ilu mezczyzna.
+`counts = n()` \# zlicza, ilu przyjaciól jest kobietami, a ilu
+mezczyzna.
 
 `mean_age = mean(Age)` \# oblicza srednia wieku kobiet lub mezczyzn.
 
-`sd_age = sd(Age)` \# oblicza odchylenie standardowe sredniej wieku kobiet lub mezczyzn.
+`sd_age = sd(Age)` \# oblicza odchylenie standardowe sredniej wieku
+kobiet lub mezczyzn.
 
 </details>
 
 ### CW 2.2
 
-W rzeczywistosci niektorzy z naszych znajomych z naszego zbioru danych farbują wlosy na niebiesko, fioletowo lub rozowo. Chcemy sprawdzic, czy sa oni srednio mlodsi od znajomych, ktorzy nie farbuja wlosow. (Wskazowka: aby wykonac to cwiczenie mozna utworzyc dwie rozne ramki danych).
+W rzeczywistosci niektorzy z naszych znajomych z naszego zbioru danych
+farbują wlosy na niebiesko, fioletowo lub rozowo. Chcemy sprawdzic, czy
+sa oni srednio mlodsi od znajomych, ktorzy nie farbuja wlosow.
+(Wskazowka: aby wykonac to cwiczenie mozna utworzyc dwie rozne ramki
+danych).
 
 <details>
 
@@ -2285,13 +2552,17 @@ NotDyed
 
 ```
 
-Srednio osoby farbujace wlosy sa mlodsze (22,5 lat) niz osoby, ktore nie farbuja wlosow (23,4 lat).
+Srednio osoby farbujace wlosy sa mlodsze (22,5 lat) niz osoby, ktore nie
+farbuja wlosow (23,4 lat).
 
 </details>
 
 ### CW 2.3
 
-Jestesmy ciekawi koloru oczu naszych znajomych, ktorzy nie farbuja wlosow. Ilu z nich ma niebieskie oczy, a ilu brazowe? Jaki jest najmlodszy i najstarszy wiek osob o niebieskich i brazowych oczach? Jaka jest ich srednia wieku?
+Jestesmy ciekawi koloru oczu naszych znajomych, ktorzy nie farbuja
+wlosow. Ilu z nich ma niebieskie oczy, a ilu brazowe? Jaki jest
+najmlodszy i najstarszy wiek osob o niebieskich i brazowych oczach? Jaka
+jest ich srednia wieku?
 
 <details>
 
@@ -2311,15 +2582,22 @@ Q3 <- friends %>%
 print(Q3)
 ```
 
-`filter(!Hair_color %in% c("Pink","Purple",„Blue”))` \# wybierz znajomych z wlosami niefarbowanymi, poniewaz dodalismy wykrzyknik przed „Hair_color”, zachowane zostaną wszystkie kolory oprócz rozowego, fioletowego i niebieskiego.
+`filter(!Hair_color %in% c("Pink","Purple",„Blue”))` \# wybierz
+znajomych z wlosami niefarbowanymi, poniewaz dodalismy wykrzyknik przed
+„Hair_color”, zachowane zostaną wszystkie kolory oprócz rozowego,
+fioletowego i niebieskiego.
 
-`filter(Eyes_color %in% c("Brown","Blue"))` \# wybierz znajomych o brazowych lub niebieskich oczach. group_by(Eyes_color) \# oblicz wiek na podstawie koloru oczu.
+`filter(Eyes_color %in% c("Brown","Blue"))` \# wybierz znajomych o
+brazowych lub niebieskich oczach. group_by(Eyes_color) \# oblicz wiek na
+podstawie koloru oczu.
 
 </details>
 
 ### CW 2.4
 
-Nasz pelny zbior danych zawiera wiele roznych kombinacji kolorow oczu i wlosow. Jak moge sprawdzic, ile ich jest? Jak moge policzyc liczbe konkretnych kombinacji kolorow wlosow i oczu?
+Nasz pelny zbior danych zawiera wiele roznych kombinacji kolorow oczu i
+wlosow. Jak moge sprawdzic, ile ich jest? Jak moge policzyc liczbe
+konkretnych kombinacji kolorow wlosow i oczu?
 
 <details>
 
@@ -2345,9 +2623,12 @@ print(Q4)
 
 ## Palmer Penguins - ramka danych
 
-Do zadan uzyta zostanie cwiczeniowa baza danych dostepna w pakiecie `palmerpenguins`. Metadane sa dostepne pod `?penguins` lub `?penguins_raw` .
+Do zadan uzyta zostanie cwiczeniowa baza danych dostepna w pakiecie
+`palmerpenguins`. Metadane sa dostepne pod `?penguins` lub
+`?penguins_raw` .
 
-![Meet the Plamer penguins! Artwork by \@allison_horst”](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
+![Meet the Plamer penguins! Artwork by
+\@allison_horst”](https://allisonhorst.github.io/palmerpenguins/reference/figures/lter_penguins.png)
 
 1.  Wczytaj pakiet i zapisz dane w srodowisku.
 
@@ -2368,9 +2649,11 @@ str(pingwiny)
 
 ## Tworzenie nowych zmiennych
 
-Słuzy do tego np. funckja `mutate()`, nalezaca do pakietu `dplyr` bedacego czescia `tidyverse`.
+Słuzy do tego np. funckja `mutate()`, nalezaca do pakietu `dplyr`
+bedacego czescia `tidyverse`.
 
-1.  Stworz nowa zmiena 'kondycja', ktora bedzie masa ciala pingiwnow podzielona przez dlugosc skrzydla.
+1.  Stworz nowa zmiena 'kondycja', ktora bedzie masa ciala pingiwnow
+    podzielona przez dlugosc skrzydla.
 
 ```{r}
 
@@ -2380,7 +2663,10 @@ ping.kond <- pingwiny %>%
 
 ```
 
-2.  Stworz trzy nowe zmienne 'bill.vol', ktora bedzie ilorazem dlugosci dzioba i grubosci dzioba, 'body_mass_kg', ktora bedzie masa ptakow wyrazona w kilogramach i residual.cond, ktora bedzie roznica miedzy srednia kondycja wszystkich pingiwnow a kondycja danego osobnika.
+2.  Stworz trzy nowe zmienne 'bill.vol', ktora bedzie ilorazem dlugosci
+    dzioba i grubosci dzioba, 'body_mass_kg', ktora bedzie masa ptakow
+    wyrazona w kilogramach i residual.cond, ktora bedzie roznica miedzy
+    srednia kondycja wszystkich pingiwnow a kondycja danego osobnika.
 
 ```{r}
 
@@ -2393,9 +2679,15 @@ pingw2 <- ping.kond %>%
 
 ## Jeżeli...
 
-Do warunkowania loginczego w R moze sluzyc funkcja `ifelse()`. Ta funkcja ma trzy argumenty: 1) test logiczny, ktory daje odpowiedz TRUE/FALSE; 2) wartosci zwracane jezeli odpowiedz jest TRUE; 3) wartosci zwracane jezeli odpowiedz jest FALSE.
+Do warunkowania loginczego w R moze sluzyc funkcja `ifelse()`. Ta
+funkcja ma trzy argumenty: 1) test logiczny, ktory daje odpowiedz
+TRUE/FALSE; 2) wartosci zwracane jezeli odpowiedz jest TRUE; 3) wartosci
+zwracane jezeli odpowiedz jest FALSE.
 
-1.  Stworz nowa ramke danych zawierajaca tylko pingwiny Adelie. W obrebie tej ramki danych stworz nowa zmienna 'size', gdzie pojawi sie wartosc 'small' jezeli dlugosc skrzydla jest mniejsza niz srednia lub wartosc 'large' dla pozostalych przypadkow.
+1.  Stworz nowa ramke danych zawierajaca tylko pingwiny Adelie. W
+    obrebie tej ramki danych stworz nowa zmienna 'size', gdzie pojawi
+    sie wartosc 'small' jezeli dlugosc skrzydla jest mniejsza niz
+    srednia lub wartosc 'large' dla pozostalych przypadkow.
 
 ```{r}
 
@@ -2406,9 +2698,11 @@ adelie <- pingwiny %>% filter(species == 'Adelie') %>%
 
 ```
 
-Funkcje jezeli mozna zagniezdzac, wtedy kolejne `ifelse()` nalezy wstawic w miejsce argumentu niespelniajacego warnku (FALSE).
+Funkcje jezeli mozna zagniezdzac, wtedy kolejne `ifelse()` nalezy
+wstawic w miejsce argumentu niespelniajacego warnku (FALSE).
 
-2.  Stworz nowa ramke danych, ktora nazwiesz `endangared`. Stworz nowa kolumne o tej samej nazwie, gdzie:
+2.  Stworz nowa ramke danych, ktora nazwiesz `endangared`. Stworz nowa
+    kolumne o tej samej nazwie, gdzie:
 
 -   dla Adelie, ktore sa na wyspie Biscoe pojawi sie wartosc 'safe'
 
@@ -2416,7 +2710,8 @@ Funkcje jezeli mozna zagniezdzac, wtedy kolejne `ifelse()` nalezy wstawic w miej
 
 -   dla wszystkich Chinstrap pojawi sie wartosc 'action needed'
 
--   dla pozostalych pingiwnow w roznych lokalizacjach pojawi sie wartosc 'not known'
+-   dla pozostalych pingiwnow w roznych lokalizacjach pojawi sie wartosc
+    'not known'
 
 ```{r}
 
@@ -2434,15 +2729,24 @@ endangared <- pingwiny %>%
 
 Alternatywa dla funkcji `ifelse()` jest funkcja `case_when()`.
 
-![Jak uzywac case_when(). Credits: [Allison Horst](https://allisonhorst.com/allison-horst)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6ffcd6d6-c783-4087-ae76-99aa851663ed_rw_1920.png?h=5f67935d69c92e1fda9074d00dfea972)
+![Jak uzywac case_when(). Credits: [Allison
+Horst](https://allisonhorst.com/allison-horst)](https://cdn.myportfolio.com/45214904-6a61-4e23-98d6-b140f8654a40/6ffcd6d6-c783-4087-ae76-99aa851663ed_rw_1920.png?h=5f67935d69c92e1fda9074d00dfea972)
 
-Chcemy poklasyfikowac pingwiny ze wzgledu na ich mase na 6 kategorii, gdzie oznaczymy nietypowo niskie i wysokie wartosci dla masy. Jednym ze sposobow opisania nietypowych pomiarow (tzw. odstajacych) jest uzycie odchylenia standardowego. Jezeli masa wypada ponizej lub powyzej granicy wyznaczonej przez +/- 2\* SD od sredniej mozemy taki pomiar uznac za nietypowy. Pingwiny przydzielimy do kategorii:
+Chcemy poklasyfikowac pingwiny ze wzgledu na ich mase na 6 kategorii,
+gdzie oznaczymy nietypowo niskie i wysokie wartosci dla masy. Jednym ze
+sposobow opisania nietypowych pomiarow (tzw. odstajacych) jest uzycie
+odchylenia standardowego. Jezeli masa wypada ponizej lub powyzej granicy
+wyznaczonej przez +/- 2\* SD od sredniej mozemy taki pomiar uznac za
+nietypowy. Pingwiny przydzielimy do kategorii:
 
--   small female, large female, small male, large male - dla nietypowych oberwacji, gdzie masa bedzie wieksza lub mniejsza od +/- 2\*SD od sredniej masy
+-   small female, large female, small male, large male - dla nietypowych
+    oberwacji, gdzie masa bedzie wieksza lub mniejsza od +/- 2\*SD od
+    sredniej masy
 
 -   no info on mass, no info on sex - dla brakujacych danych
 
--   not extreme - dla ptakow o typowej masie mieszczacych sie w zakresie +/- 2\*SD od sredniej masy
+-   not extreme - dla ptakow o typowej masie mieszczacych sie w zakresie
+    +/- 2\*SD od sredniej masy
 
 ```{r}
 
@@ -2490,7 +2794,9 @@ pingw3 %>% group_by(mass_cat) %>%
 
 ### CW 1.1
 
-Uzwyajac ramki danych `pingwiny`, stworz nowa zmienna `cooridnates`, gdzie podasz informacje tekstową o koordynatach dla wszystkich 3 wysp. Uzyj funkcji `ifelse()`
+Uzwyajac ramki danych `pingwiny`, stworz nowa zmienna `cooridnates`,
+gdzie podasz informacje tekstową o koordynatach dla wszystkich 3 wysp.
+Uzyj funkcji `ifelse()`
 
 -   Dream: -64.730419, -64.247602
 
@@ -2536,7 +2842,9 @@ pingw_coord <- pingwiny %>%
 
 ### CW 2
 
-Załaduj trzy znane Ci biblioteki, zbior danych dotyczacych pingwinow, zmien jego nazwę na „pingwiny” i zapoznaj sie ze struktura tego zbioru danych.
+Załaduj trzy znane Ci biblioteki, zbior danych dotyczacych pingwinow,
+zmien jego nazwę na „pingwiny” i zapoznaj sie ze struktura tego zbioru
+danych.
 
 <details>
 
@@ -2556,7 +2864,10 @@ str(pingwiny)
 
 ### CW 2.1
 
-Utwórz nowa kolumne o nazwie „Species_Island”, w ktorej wkleisz gatunek, znak podkreslenia i wyspę dla każdego wiersza. Użyj funkcji `paste()`. Pamietaj, ze mozesz skorzystać z funkcji pomocy, aby dowiedzieć sie, jak uzywać nowej funckji.
+Utwórz nowa kolumne o nazwie „Species_Island”, w ktorej wkleisz gatunek,
+znak podkreslenia i wyspę dla każdego wiersza. Użyj funkcji `paste()`.
+Pamietaj, ze mozesz skorzystać z funkcji pomocy, aby dowiedzieć sie, jak
+uzywać nowej funckji.
 
 <details>
 
@@ -2574,7 +2885,9 @@ pingwiny$Species_Island <- paste(pingwiny$species, sep = "_", pingwiny$island)
 
 ### CW 2.2
 
-Zgrupuj zbior danych wedlug nowo utworzonej kolumny Species_Island i podsumuj (n) dla kazdej z nich. Czy na podstawie podsumowania mozesz stwierdzic, czy wszystkie gatuneki wystepuja na kazdej wyspie?
+Zgrupuj zbior danych wedlug nowo utworzonej kolumny Species_Island i
+podsumuj (n) dla kazdej z nich. Czy na podstawie podsumowania mozesz
+stwierdzic, czy wszystkie gatuneki wystepuja na kazdej wyspie?
 
 <details>
 
@@ -2610,7 +2923,9 @@ pingw2 <- pingwiny %>%
 
 ### CW 2.4
 
-Czy mozesz utworzyc nowa ramkę danych na podstawie danych dotyczacych pingwinow i pogrupowac je wedlug gatunkow, wysp i plci? Nastepnie chcialbym podsumowac srednia i odchylenie standardowe długosci pletw.
+Czy mozesz utworzyc nowa ramkę danych na podstawie danych dotyczacych
+pingwinow i pogrupowac je wedlug gatunkow, wysp i plci? Nastepnie
+chcialbym podsumowac srednia i odchylenie standardowe długosci pletw.
 
 <details>
 
@@ -2629,7 +2944,9 @@ pingw3 <- pingwiny %>%
 
 ### CW 2.5
 
-Chcialabym porownac srednia dlugosc pletw u samic i samcow. Czy mozesz je dla mnie lepiej uporzadkowac i usunac wartosci NA? Uzyj operatora pipe i utworz nowy zestaw danych, ktory zostanie zapisany w srodowisku.
+Chcialabym porownac srednia dlugosc pletw u samic i samcow. Czy mozesz
+je dla mnie lepiej uporzadkowac i usunac wartosci NA? Uzyj operatora
+pipe i utworz nowy zestaw danych, ktory zostanie zapisany w srodowisku.
 
 <details>
 
@@ -2649,7 +2966,8 @@ pingw4 <- pingwiny %>% na.omit() %>% # pomin NA
 
 ### CW 2.6
 
-Czy mozesz podsumowac srednia mase ciala w kg dla kazdego gatunku i plci?
+Czy mozesz podsumowac srednia mase ciala w kg dla kazdego gatunku i
+plci?
 
 <details>
 
@@ -2668,7 +2986,10 @@ pingw5 <- pingwiny %>% na.omit() %>% # pomin NA
 
 ### CW 2.7
 
-Nie podoba mi się, że zmienne w kolumnie „sex” sa zakodowana slownie. Chcialabym miec literę „m” dla samocw i „f” dla samic. Czy mozna to zmienic za pomoca funkcji „mapvalues”? Najpierw naley pobrać i zaladowac biblioteke „plyr”.
+Nie podoba mi się, że zmienne w kolumnie „sex” sa zakodowana slownie.
+Chcialabym miec literę „m” dla samocw i „f” dla samic. Czy mozna to
+zmienic za pomoca funkcji „mapvalues”? Najpierw naley pobrać i zaladowac
+biblioteke „plyr”.
 
 <details>
 
@@ -2684,21 +3005,27 @@ unique(pingw5$sex)
 
 ```
 
-> TIP: Użycie operatora `::` sluzy do wywolywania konretnej funkcji z danego pakietu, bez konecznosci wczytywania calej biblioteki. Jest to przydatne, jezeli chcemy uzyc tylko jednej jego funckji.
+> TIP: Użycie operatora `::` sluzy do wywolywania konretnej funkcji z
+> danego pakietu, bez konecznosci wczytywania calej biblioteki. Jest to
+> przydatne, jezeli chcemy uzyc tylko jednej jego funckji.
 
 </details>
 
 ### CW 3
 
-Nalezy pobrac zbior danych "Penguins_fulldata.csv" ktory jest dostepny na nastepujacej stronie GitHub: <https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
+Nalezy pobrac zbior danych "Penguins_fulldata.csv" ktory jest dostepny
+na nastepujacej stronie GitHub:
+<https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main>
 
 Ten zbior zawiera tabele z 344 wierszami i 17 zmiennymi:
 
 <ul>
 
-<li>studyName: Wyprawa badawcza, podczas ktorej zebrano dane, wygenerowano informacje itp.</li>
+<li>studyName: Wyprawa badawcza, podczas ktorej zebrano dane,
+wygenerowano informacje itp.</li>
 
-<li>Sample Number: liczba calkowita oznaczająca ciagla sekwencje numeracji dla kazdej probki</li>
+<li>Sample Number: liczba calkowita oznaczająca ciagla sekwencje
+numeracji dla kazdej probki</li>
 
 <li>Species: gatunek pingwina</li>
 
@@ -2708,15 +3035,20 @@ Ten zbior zawiera tabele z 344 wierszami i 17 zmiennymi:
 
 <li>Stage: etap reprodukcyjny w momencie pobierania próbek</li>
 
-<li>Individual ID: unikalny identyfikator kazdego osobnika w zbiorze danych</li>
+<li>Individual ID: unikalny identyfikator kazdego osobnika w zbiorze
+danych</li>
 
-<li>Clutch Completion: czy badane gniazdo mialo pelny leg, tj. 2 jaja</li>
+<li>Clutch Completion: czy badane gniazdo mialo pelny leg, tj. 2
+jaja</li>
 
-<li>Date Egg: data oznaczajaca date obserwacji gniazda z 1 jajkiem (próbka)</li>
+<li>Date Egg: data oznaczajaca date obserwacji gniazda z 1 jajkiem
+(próbka)</li>
 
-<li>Culmen Length: dlugosc grzbietowego wyrostka dzioba ptaka (w milimetrach)</li>
+<li>Culmen Length: dlugosc grzbietowego wyrostka dzioba ptaka (w
+milimetrach)</li>
 
-<li>Culmen Depth: lgruboscgrzbietowego wyrostka dzioba ptaka (w milimetrach)</li>
+<li>Culmen Depth: lgruboscgrzbietowego wyrostka dzioba ptaka (w
+milimetrach)</li>
 
 <li>Flipper Length: ldlugosc pletwy pingwina (w milimetrach)</li>
 
@@ -2732,7 +3064,8 @@ Ten zbior zawiera tabele z 344 wierszami i 17 zmiennymi:
 
 </ul>
 
-Zanim przejrzysz ponizsze rozwiazanie, sprobuj samodzielnie pobrac dane i poprawic typ separatora.
+Zanim przejrzysz ponizsze rozwiazanie, sprobuj samodzielnie pobrac dane
+i poprawic typ separatora.
 
 <details>
 
@@ -2750,23 +3083,31 @@ Penguinsfulldata <- read.csv("Penguins_fulldata.csv",sep=",",dec=".", h=T)
 
 ```
 
-sep = "," : separatorem w pliku csv jest przecinek, więc przecinek powinien zostać zamieniony na separator kolumn.
+sep = "," : separatorem w pliku csv jest przecinek, więc przecinek
+powinien zostać zamieniony na separator kolumn.
 
 dec = ".": separatorem dziesiętnym jest kropka.
 
-h = "T": header, czy naglowek w pliku csv powinien byx odczytywany jako nazwa kolumny (TRUE), czy nie (FALSE). Domyslnie jest ustawiony na TRUE, co oznacza, że jesli zapomnisz wkleic argument do funkcji read.csv(), zostanie on automatycznie uznany za TRUE.
+h = "T": header, czy naglowek w pliku csv powinien byx odczytywany jako
+nazwa kolumny (TRUE), czy nie (FALSE). Domyslnie jest ustawiony na TRUE,
+co oznacza, że jesli zapomnisz wkleic argument do funkcji read.csv(),
+zostanie on automatycznie uznany za TRUE.
 
 </details>
 
 ### CW 3.1
 
-Na następnych zajęciach nauczymy się wizualizować dane za pomoca `ggplot`. Zanim jednak to zrobimy, musimy oczyscic nasz zbior danych, aby nadawal sie do tworzenia wykresow.
+Na następnych zajęciach nauczymy się wizualizować dane za pomoca
+`ggplot`. Zanim jednak to zrobimy, musimy oczyscic nasz zbior danych,
+aby nadawal sie do tworzenia wykresow.
 
 1)  Jak uzyskac przeglad aktualnego zbioru danych?
 
-2)  Jak sprawdzic, ile unikalnych kategorii istnieje dla zmiennych: Species and Sex?
+2)  Jak sprawdzic, ile unikalnych kategorii istnieje dla zmiennych:
+    Species and Sex?
 
-3)  Chcielibysmy zmienic nazwy zmiennych 'Species' i 'Sex' w następujący sposób:
+3)  Chcielibysmy zmienic nazwy zmiennych 'Species' i 'Sex' w następujący
+    sposób:
 
     <ul>
 
@@ -2782,7 +3123,8 @@ Na następnych zajęciach nauczymy się wizualizować dane za pomoca `ggplot`. Z
 
 </ul>
 
-4)  Usun nastepujace kolumny z tabeli: Sample.Number, Region, Stage, Date.Egg, Comments, Sex and Species.
+4)  Usun nastepujace kolumny z tabeli: Sample.Number, Region, Stage,
+    Date.Egg, Comments, Sex and Species.
 
 <details>
 
@@ -2813,9 +3155,14 @@ Penguins_clean <- Penguinsfulldata %>% mutate(SEX = case_when(Sex == "MALE" ~ "M
 
 ### CW 3.2
 
-W poprzednim zadaniu widzielismy, ze kolumna "SEX" zawierala wartosc NA. Jednak uwzglednienie ososobnikow o nieznanej plci nie dostarczy nam zadnych uzytecznych informacji. Zdecydowalismy sie usunac wiersze zawierajace wartosc NA. Mozna to zrobic na kilka sposobow. Czym roznia się te dwa kody?
+W poprzednim zadaniu widzielismy, ze kolumna "SEX" zawierala wartosc NA.
+Jednak uwzglednienie ososobnikow o nieznanej plci nie dostarczy nam
+zadnych uzytecznych informacji. Zdecydowalismy sie usunac wiersze
+zawierajace wartosc NA. Mozna to zrobic na kilka sposobow. Czym roznia
+się te dwa kody?
 
-Penguins_clean1 \<- Penguins_clean %\>% filter(if_all(.cols = c(1:12), \~ !is.na(.x)))
+Penguins_clean1 \<- Penguins_clean %\>% filter(if_all(.cols = c(1:12),
+\~ !is.na(.x)))
 
 Penguins_clean2 \<- Penguins_clean %\>% filter(!is.na(SEX))
 
@@ -2837,7 +3184,12 @@ Penguins_clean2 <- Penguins_clean %>% filter(!is.na(SEX))
 
 ### CW 3.3
 
-Korzystajac z pliku "Penguins_clean1" utworzonego w poprzednim zadaniu, chcemy zbadac zmienna "Clutch.Completion" i utworzyc nowa klasyfikacje. Jesli leg jest okreslony jako "No", chcemy odnotowac to jako zly rok dla pingwina, ale jesli jest okreslona jako "Yes", nalezy to uznać za dobry rok. Nastepnie sprawdz, ile obserwacji mamy dla kazdej kategorii ("good year" i "bad year").
+Korzystajac z pliku "Penguins_clean1" utworzonego w poprzednim zadaniu,
+chcemy zbadac zmienna "Clutch.Completion" i utworzyc nowa klasyfikacje.
+Jesli leg jest okreslony jako "No", chcemy odnotowac to jako zly rok dla
+pingwina, ale jesli jest okreslona jako "Yes", nalezy to uznać za dobry
+rok. Nastepnie sprawdz, ile obserwacji mamy dla kazdej kategorii ("good
+year" i "bad year").
 
 <details>
 
@@ -2862,23 +3214,35 @@ Penguins_clean_Yearquality %>% group_by(Quality) %>% summarise(counts = n())
 
 # Lab 6
 
-Do zadan wykorzystamy dane o paramterach snu ssakow, ktore sa zawarte w `msleep` dostepnym jako cwiczeniowa baza danych w `ggplot` bedacycm czescia `tidyverse`. [Metadane](https://ggplot2.tidyverse.org/reference/msleep.html)
+Do zadan wykorzystamy dane o paramterach snu ssakow, ktore sa zawarte w
+`msleep` dostepnym jako cwiczeniowa baza danych w `ggplot` bedacycm
+czescia `tidyverse`.
+[Metadane](https://ggplot2.tidyverse.org/reference/msleep.html)
 
 ## Wykresy rozkładu
 
-Sluza do zobrazowania czestosci wystepowania poszczegolnych wartosci zmiennej w skali ciaglej w zbiorze danych. Jest to jeden z najwazniejszych typow wykresow diagnotycznych, ktore sa niezbedne np. podczas wyboru odpowiedniego typu testu statystycznego. Pozwalaja ocenic najbardziej przecietne wartosci i rozrzut w zbiorze, jak rowniez zidentyfikowac pomiary odstajace.
+Sluza do zobrazowania czestosci wystepowania poszczegolnych wartosci
+zmiennej w skali ciaglej w zbiorze danych. Jest to jeden z
+najwazniejszych typow wykresow diagnotycznych, ktore sa niezbedne np.
+podczas wyboru odpowiedniego typu testu statystycznego. Pozwalaja ocenic
+najbardziej przecietne wartosci i rozrzut w zbiorze, jak rowniez
+zidentyfikowac pomiary odstajace.
 
 ![](https://media.licdn.com/dms/image/v2/D4D22AQG0q1LVAgCD3g/feedshare-shrink_2048_1536/feedshare-shrink_2048_1536/0/1701610583868?e=2147483647&v=beta&t=dFuYGv2sjexAJr0uF_dyvk786Kru6czaPlWXL-rSTks)
 
 Rozklad mozna zwizualizowac za pomoca dwoch glownych typow wykresow:
 
--   Histogram - wykres slupkowy, gdzie dany slupek reprezentuje przedzial zmiennej ciaglej, a jego wyskosc mowi o liczbie obserwacji z danego przedzialu
+-   Histogram - wykres slupkowy, gdzie dany slupek reprezentuje
+    przedzial zmiennej ciaglej, a jego wyskosc mowi o liczbie obserwacji
+    z danego przedzialu
 
--   Wykres gestosci - wygladzona funkcja obliczana przy uzyciu metody KDE.
+-   Wykres gestosci - wygladzona funkcja obliczana przy uzyciu metody
+    KDE.
 
 ### Histogramy
 
-1.  Stworz histogram obrazujacy rozklad czasu spedzonego na snie `sleep_total` u ssakow.
+1.  Stworz histogram obrazujacy rozklad czasu spedzonego na snie
+    `sleep_total` u ssakow.
 
 ```{r}
 msleep %>% 
@@ -2901,7 +3265,8 @@ msleep %>%
 
 ```
 
-> TIP: Inne metody ustawiania szerokosci slupka to np. Regula Sturgesa (`nclass.Sturges()`) i Regula Freedmana-Diaconisa (`nclass.FD()`).
+> TIP: Inne metody ustawiania szerokosci slupka to np. Regula Sturgesa
+> (`nclass.Sturges()`) i Regula Freedmana-Diaconisa (`nclass.FD()`).
 
 3.  Zmien graficzne elementy geomu
 
@@ -2950,7 +3315,8 @@ msleep %>%
 
 ```
 
-6.  Zmien wypelnienie pod wykresem, tak aby bylo innego koloru dla zwierzat z innych klas pokarmowych.
+6.  Zmien wypelnienie pod wykresem, tak aby bylo innego koloru dla
+    zwierzat z innych klas pokarmowych.
 
 ```{r}
 
@@ -2961,7 +3327,9 @@ msleep %>%
 
 ```
 
-7.  Zwieksz przejrzystosc wykresu poprzez wykluczenie ssakow z brakiem danych w grupie pokarmowej. Ustaw przezroczystosc dla elementow wykresu.
+7.  Zwieksz przejrzystosc wykresu poprzez wykluczenie ssakow z brakiem
+    danych w grupie pokarmowej. Ustaw przezroczystosc dla elementow
+    wykresu.
 
 ```{r}
 msleep %>%
@@ -2971,7 +3339,11 @@ msleep %>%
 
 ```
 
-8.  Te kolory nie sa zbyt fajne. Sprobuj ustawic inne kolory dla kazdej grupy uzywajac funckji `scale_fill_manual()` . A kolorow jest 'do wyboru do koloru' 😉🌈 Sprawdz [kolor w R](https://derekogle.com/NCGraphing/img/colorbynames.png) , lub uzyj [Hex kody kolorow w HTML](https://htmlcolorcodes.com/) .
+8.  Te kolory nie sa zbyt fajne. Sprobuj ustawic inne kolory dla kazdej
+    grupy uzywajac funckji `scale_fill_manual()` . A kolorow jest 'do
+    wyboru do koloru' 😉🌈 Sprawdz [kolor w
+    R](https://derekogle.com/NCGraphing/img/colorbynames.png) , lub uzyj
+    [Hex kody kolorow w HTML](https://htmlcolorcodes.com/) .
 
 ```{r}
 
@@ -2996,7 +3368,9 @@ msleep %>%
 
 ```
 
-9.  Przy zmianie kolorow mozesz tez skorzystac z wielu sprawdzonych palet kolorow, wiele z nich wymaga sciagniecia i wywolania dodatkowych pakietow.
+9.  Przy zmianie kolorow mozesz tez skorzystac z wielu sprawdzonych
+    palet kolorow, wiele z nich wymaga sciagniecia i wywolania
+    dodatkowych pakietow.
 
 ```{r}
 msleep %>%
@@ -3023,7 +3397,8 @@ msleep %>%
 
 ```
 
-11. Zmodyfikuj motyw (czyli elementy wykresu, ktore nie sa zwiazane z danymi).
+11. Zmodyfikuj motyw (czyli elementy wykresu, ktore nie sa zwiazane z
+    danymi).
 
 ```{r}
 
@@ -3047,10 +3422,13 @@ msleep %>%
 
 ## Wykresy ramka-wasy (tzw. boxploty)
 
-Sluza do pokazywania polozenia miar tendencji centralnej, innych miar polozenia oraz miar rozrzutu. Wykorzystuje sie je przedwszystkim przy porownywaniu grup miedzy soba. W klasycznym ukladzie zmienna zalezna y jest w skali ciaglej, a zmienna niezalezna x w skali dyskretnej.
+Sluza do pokazywania polozenia miar tendencji centralnej, innych miar
+polozenia oraz miar rozrzutu. Wykorzystuje sie je przedwszystkim przy
+porownywaniu grup miedzy soba. W klasycznym ukladzie zmienna zalezna y
+jest w skali ciaglej, a zmienna niezalezna x w skali dyskretnej.
 
-1.  Stowrz boxplot, ktory porowna czas obudzenia miedzy zwierzetami o roznych kategoriach statusach ochrony.
- 
+1.  Stowrz boxplot, ktory porowna czas obudzenia miedzy zwierzetami o
+    roznych kategoriach statusach ochrony.
 
 ```{r}
 
@@ -3075,7 +3453,9 @@ wykres1A <- msleep %>%
 
 ```
 
-3.  Stworz drugi wykres porownujacy ssaki o roznym statusie ochronnym pod wzgledem calkowitej masy mozgu. Dodaj do niego tytul i etykiete B. Zapisz wykres w srodowisku
+3.  Stworz drugi wykres porownujacy ssaki o roznym statusie ochronnym
+    pod wzgledem calkowitej masy mozgu. Dodaj do niego tytul i
+    etykiete B. Zapisz wykres w srodowisku
 
 ```{r}
 
@@ -3088,7 +3468,8 @@ wykres1B <- msleep %>%
 
 ```
 
-4.  Polacz wykres 1A i 1B. Wykorzystaj do tego funkcje pakietu `patchwork`
+4.  Polacz wykres 1A i 1B. Wykorzystaj do tego funkcje pakietu
+    `patchwork`
 
 ```{r}
 
@@ -3103,9 +3484,11 @@ wykres1A / wykres1B
 
 ## Wykresy rozrzutu z liniowym modelem zaleznosci
 
-Sluzy do obrazowania umiejscowienia kazdej obserwacji wzgledem jej dwoch cech i zaleznosci miedzy dwoma zmiennymi o charakterze ciaglym.
+Sluzy do obrazowania umiejscowienia kazdej obserwacji wzgledem jej dwoch
+cech i zaleznosci miedzy dwoma zmiennymi o charakterze ciaglym.
 
-Stworz wykres rozrzutu dla dlugosci snu zestawionej z dlugoscia fazy rem.
+Stworz wykres rozrzutu dla dlugosci snu zestawionej z dlugoscia fazy
+rem.
 
 ```{r}
 
@@ -3116,7 +3499,8 @@ msleep %>%
 
 ```
 
-Dodaj funkcje liniowa obrazujaca zaleznosc miedzy dlugoscia fazy rem a calkowita dlugoscia snu
+Dodaj funkcje liniowa obrazujaca zaleznosc miedzy dlugoscia fazy rem a
+calkowita dlugoscia snu
 
 ```{r}
 
@@ -3128,9 +3512,16 @@ msleep %>%
 
 ```
 
-> TIP: Sprobuj uzyc funkcji `na.omit()` i zobacz jak wiele punkto zostaje wykluczonych z wykresu, tylko dlatego ze w innych kolumnach, ktore nie sa uzyte podczas jego towrzenia wystepuja wartosci `NA`
+> TIP: Sprobuj uzyc funkcji `na.omit()` i zobacz jak wiele punkto
+> zostaje wykluczonych z wykresu, tylko dlatego ze w innych kolumnach,
+> ktore nie sa uzyte podczas jego towrzenia wystepuja wartosci `NA`
 
-Zmien [ksztalt](https://www.sthda.com/sthda/RDoc/figure/graphs/r-plot-pch-symbols-points-in-r.png), wielkosc i przezroczystosc punktow. Zmien tez ich kolor w zaleznosci od rzedu taksonomicznego, do ktorego nalezy dany punkt. Uwaga: niektore ksztalty maja tylko kolor, inne maja zarowno kolor jak i wypelenienie. Dodaj tytul i usun legende. Zapisz ten element w srodowisku.
+Zmien
+[ksztalt](https://www.sthda.com/sthda/RDoc/figure/graphs/r-plot-pch-symbols-points-in-r.png),
+wielkosc i przezroczystosc punktow. Zmien tez ich kolor w zaleznosci od
+rzedu taksonomicznego, do ktorego nalezy dany punkt. Uwaga: niektore
+ksztalty maja tylko kolor, inne maja zarowno kolor jak i wypelenienie.
+Dodaj tytul i usun legende. Zapisz ten element w srodowisku.
 
 ```{r}
 
@@ -3158,9 +3549,12 @@ wykres2 | (wykres1A/wykres1B)
 
 ## Wykresy frekwencji
 
-Sluza do obrazowania czestosci wystepowania danej kategorii zmiennej miedzy kategoriami innej zmiennej. Jednym z typow takich wykresow jest wykres slupkowy
+Sluza do obrazowania czestosci wystepowania danej kategorii zmiennej
+miedzy kategoriami innej zmiennej. Jednym z typow takich wykresow jest
+wykres slupkowy
 
-Stworz wykres slupkowy obrazujacy czestosc wystepowania danego status ochrony w danej grupie pokarmowej.
+Stworz wykres slupkowy obrazujacy czestosc wystepowania danego status
+ochrony w danej grupie pokarmowej.
 
 ```{r}
 
@@ -3184,7 +3578,8 @@ wykres3 <- msleep %>%
 
 ```
 
-Dolacz do pozostalych wykresow. Przygotowana grafike zapisz na komputerze.
+Dolacz do pozostalych wykresow. Przygotowana grafike zapisz na
+komputerze.
 
 ```{r}
 
@@ -3201,13 +3596,16 @@ ggsave('Rycina.jpg', # nazwa pliku razem z rozszerzeniem. Jezeli nie ma ustawion
 
 ```
 
-
 ## Pakiet `esquisse` na dobry poczatek pracy z `ggplot()`
 
-Kiedy zaczynasz nauke tworzenia wykresow w RStudio przy uzyciu biblioteki `library(ggplot2)`, moze byc trudno zrozumiec, jak napisac kod, gdzie umiescic zmienne, a takze gdzie umiescic parametry sluzace do dostosowania wykresu. 
+Kiedy zaczynasz nauke tworzenia wykresow w RStudio przy uzyciu
+biblioteki `library(ggplot2)`, moze byc trudno zrozumiec, jak napisac
+kod, gdzie umiescic zmienne, a takze gdzie umiescic parametry sluzace do
+dostosowania wykresu.
 
-Biblioteka `library(esquisse)` zostala stworzona, aby ulatwic pierwsze kroki w korzystaniu z biblioteki `library(ggplot2)`. Zobaczmy, jak to dziala
-
+Biblioteka `library(esquisse)` zostala stworzona, aby ulatwic pierwsze
+kroki w korzystaniu z biblioteki `library(ggplot2)`. Zobaczmy, jak to
+dziala
 
 Najpierw musisz zaimportowac zbior danych do swojego srodowiska
 
@@ -3228,20 +3626,25 @@ Na koniec otworz funkcje, ktora pomoże Ci stworzyc wykres danych
 Ta funkcja spowoduje otwarcie nastepujacego okna:
 ![](../assets/Screenshot_1esquisse.png)
 
-Nastepnie mozesz kliknac „Importuj dane” – rozne zmienne dostepne w Twoim zbiorze danych pojawia sie teraz w gornej czesci funkcji `esquisser()`, w polu **zmienna**:
+Nastepnie mozesz kliknac „Importuj dane” – rozne zmienne dostepne w
+Twoim zbiorze danych pojawia sie teraz w gornej czesci funkcji
+`esquisser()`, w polu **zmienna**:
 ![](../assets/Screenshot_2esquisse.png)
 
-
-
-Mozesz przeciagac zmienne do poszczegolnych pol: x, y, wypelnienie, kolor, rozmiar, grupa, aby utworzyc wykres:
+Mozesz przeciagac zmienne do poszczegolnych pol: x, y, wypelnienie,
+kolor, rozmiar, grupa, aby utworzyc wykres:
 ![](../assets/Screenshot_3esquisse.png)
 
-Mozesz zmienic sposóob wyswietlania etykiet, tytulow, osi i wykresu, dostosowujac ustawienia znajdujące sie na dole funkcji `esquisser()`
+Mozesz zmienic sposóob wyswietlania etykiet, tytulow, osi i wykresu,
+dostosowujac ustawienia znajdujące sie na dole funkcji `esquisser()`
 
-Na koniec mozesz wygenerowac kod i sprawdzic, jak wygladalby on w przypadku bezposredniego uzycia biblioteki ggplot, klikajac sekcje „Kod” w prawym dolnym rogu funkcji `esquisser()`
+Na koniec mozesz wygenerowac kod i sprawdzic, jak wygladalby on w
+przypadku bezposredniego uzycia biblioteki ggplot, klikajac sekcje „Kod”
+w prawym dolnym rogu funkcji `esquisser()`
 ![](../assets/Screenshot_4esquisse.png)
 
 To swietny moment, zeby to wyprobowac
+
 ```{r}
 
 ## Najpierw musisz zaimportowac zbior danych do swojego srodowiska
@@ -3257,31 +3660,33 @@ library(esquisse)
 esquisse::esquisser() 
 ```
 
-
-
 ## Cwiczenia
 
 ### CW 1
 
-Teraz zaimportujemy zbior danych zawierajacy dane do ponizszych cwiczen o nazwie „birth_places_uni.csv”? Znajdziesz je na GitHubie.
+Teraz zaimportujemy zbior danych zawierajacy dane do ponizszych cwiczen
+o nazwie „birth_places_uni.csv”? Znajdziesz je na GitHubie.
 
 <details>
 
 <summary>ODP 1</summary>
 
-Mozesz uzyc ponizszego polecenia, ale musisz zastąpic katalog roboczy nazwami folderów, w których zapisujesz swoje pliki:
+Mozesz uzyc ponizszego polecenia, ale musisz zastąpic katalog roboczy
+nazwami folderów, w których zapisujesz swoje pliki:
 
 ```{r}
 birth_places_uni <- read.csv("C:/Users/XXX/BBB/birth_places_uni.csv")
 ```
 
-Innym sposobem jest uzycie przycisku „sesja”, wybranie katalogu roboczego, przejscie do zakladki plikow i przeslanie go stamtad.
+Innym sposobem jest uzycie przycisku „sesja”, wybranie katalogu
+roboczego, przejscie do zakladki plikow i przeslanie go stamtad.
 
 </details>
 
 ### CW 1.2
 
-Czy mozesz sprawdzićcstrukturę danych? Co jest nie tak? Czy cos nalezy zmienic/dostosowac?
+Czy mozesz sprawdzićcstrukturę danych? Co jest nie tak? Czy cos nalezy
+zmienic/dostosowac?
 
 ```{r}
 str(birth_places_uni)
@@ -3291,13 +3696,15 @@ str(birth_places_uni)
 
 <summary>ODP 1.2</summary>
 
-Będziemy musieli zmienic „Sex” i „Distance” odpowiednio na czynnik i wartosc liczbowa.
+Będziemy musieli zmienic „Sex” i „Distance” odpowiednio na czynnik i
+wartosc liczbowa.
 
 <details>
 
 ### CW 1.3
 
-Zmienmy dwie kolumny, ktore opisalam w odpowiedzi, tak aby odpowiadaly naszym potrzebom.
+Zmienmy dwie kolumny, ktore opisalam w odpowiedzi, tak aby odpowiadaly
+naszym potrzebom.
 
 <details>
 
@@ -3314,7 +3721,9 @@ birth_places_uni$Distance.to.University..km. <- as.numeric(birth_places_uni$Dist
 
 ### CW 1.4
 
-Czy potrafisz stworzyc histogram przy uzyciu `ggplot()`, ktorego nauczylismy się podczas zajec? Chcemy zobaczyc rozklad danych liczbowych dotyczących odleglosci, w jakiej ludzie mieszkają od uniwersytetu.
+Czy potrafisz stworzyc histogram przy uzyciu `ggplot()`, ktorego
+nauczylismy się podczas zajec? Chcemy zobaczyc rozklad danych liczbowych
+dotyczących odleglosci, w jakiej ludzie mieszkają od uniwersytetu.
 
 Czy mozesz nadac mu ladny kolor (podajac nazwe koloru lub kod HTML Hex)?
 
@@ -3334,7 +3743,8 @@ ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
 
 ### CW 1.5
 
-Obecnie nie mamy zbyt ładnych opisów osi. Czy mozesz je zmienic, aby wykres wygladal lepiej?
+Obecnie nie mamy zbyt ładnych opisów osi. Czy mozesz je zmienic, aby
+wykres wygladal lepiej?
 
 <details>
 
@@ -3353,7 +3763,8 @@ labs(title = "Histogram of Distances people need to travel to University",
 
 ### CW 1.6
 
-Czy wiesz, co pokazuje ten wykres? Czym rozni sie ten kod od poprzedniego?
+Czy wiesz, co pokazuje ten wykres? Czym rozni sie ten kod od
+poprzedniego?
 
 ```{r}
 ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
@@ -3369,7 +3780,9 @@ labs(title = "Histogram of Distances to University",
 
 <summary>ODP 1.6</summary>
 
-Najpierw dodaliśmy fragment kodu, ktory tworzy dwa oddzielne wykresy dla studentów plci meskiej i zenskiej oraz odpowiednie odleglosci miedzy ich miejscem urodzenia a uczelnia.
+Najpierw dodaliśmy fragment kodu, ktory tworzy dwa oddzielne wykresy dla
+studentów plci meskiej i zenskiej oraz odpowiednie odleglosci miedzy ich
+miejscem urodzenia a uczelnia.
 
 <details>
 
@@ -3381,7 +3794,9 @@ Zmieniaj wartosc „binwidth”. Jakie zmiany zachodzą na wykresie?
 
 <summary>ODP 1.7</summary>
 
-W tym przypadku zmienilismy szerokosc przedziału, aby uzyskac lepsza wizualizacje ndaych. Teraz mozemy lepiej dostrzec roznice miedzy odleglosciami dla mezczyzn i kobiet.
+W tym przypadku zmienilismy szerokosc przedziału, aby uzyskac lepsza
+wizualizacje ndaych. Teraz mozemy lepiej dostrzec roznice miedzy
+odleglosciami dla mezczyzn i kobiet.
 
 ```{r}
 ggplot(birth_places_uni, aes(x = Distance.to.University..km.)) +
@@ -3395,10 +3810,10 @@ labs(title = "Histogram of Distances to University",
 
 <details>
 
-
 ### CW 2.1
 
-W trakcie tej sesji cwiczeniowej bedziemy nadal korzystac z zestawu danych „penguin” i bedziemy musieli pobrac kilka pakietów
+W trakcie tej sesji cwiczeniowej bedziemy nadal korzystac z zestawu
+danych „penguin” i bedziemy musieli pobrac kilka pakietów
 
 ```{r}
 #install.packages("")
@@ -3412,7 +3827,8 @@ library(palmerpenguins)
 Penguins <- penguins_raw
 ```
 
-Obecnie nazwy kolumn nie sa zapisane w sposob sprzyjajacy kodowaniu, poniewaz zawieraja spacje i nawiasy.
+Obecnie nazwy kolumn nie sa zapisane w sposob sprzyjajacy kodowaniu,
+poniewaz zawieraja spacje i nawiasy.
 
 Zmienimy nazwy kolumn, aby ulatwic obsluge danych:
 
@@ -3448,17 +3864,22 @@ Penguins_clean <- Penguins %>% rename(Individual_ID = "Individual ID",
 
 ```
 
-Jak widac w ostatnim wierszu kodu, uzywamy `dplyr::select`. Wynika to z faktu, ze korzystamy z wielu roznych pakietów i wystepuje konflikt z co najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu wywolujemy te funkcje.
+Jak widac w ostatnim wierszu kodu, uzywamy `dplyr::select`. Wynika to z
+faktu, ze korzystamy z wielu roznych pakietów i wystepuje konflikt z co
+najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac
+wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu
+wywolujemy te funkcje.
 
 ### CW 2.1
 
-Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy dobry rok, w porownaniu z liczba osobnikow, ktore mialy zly rok?
+Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy
+dobry rok, w porownaniu z liczba osobnikow, ktore mialy zly rok?
 
 </ul>
 
 <details>
 
-<summary>ODP 2.1 </summary>
+<summary>ODP 2.1</summary>
 
 ```{r}
 ## Porownaj liczbe osob, ktore mialy dobry rok, z liczba osob, ktore mialy zly rok:
@@ -3474,15 +3895,17 @@ plot_amount1.1
 
 </details>
 
-### CW 2.2 
+### CW 2.2
 
-Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy dobry rok, w porownaniu z osobnikami, ktore mialy zly rok, z tym ze tym razem nalezaloby rowniez rozroznic poszczegolne gatunki pingwinow?
+Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy
+dobry rok, w porownaniu z osobnikami, ktore mialy zly rok, z tym ze tym
+razem nalezaloby rowniez rozroznic poszczegolne gatunki pingwinow?
 
 </ul>
 
 <details>
 
-<summary>ODP 2.2 </summary>
+<summary>ODP 2.2</summary>
 
 ```{r}
 ## Porownaj liczbe osobnikow, ktore mialy dobry rok, z liczba osobnikow, ktore mialy zly rok, dla kazdego gatunku:
@@ -3498,11 +3921,11 @@ plot_amount1.2
 
 </details>
 
-
 ### CW 3
 
-Czy potrafisz powiedziec, co przedstawiają wykresy `plot_proportions2opt1` i `plot_proportions2opt2`, oraz wyjasnic, na czym 
-polega roznica? Ktora czesc kodu odpowiada za te roznice?
+Czy potrafisz powiedziec, co przedstawiają wykresy
+`plot_proportions2opt1` i `plot_proportions2opt2`, oraz wyjasnic, na
+czym polega roznica? Ktora czesc kodu odpowiada za te roznice?
 
 ```{r}
 head(Penguins_clean)
@@ -3530,16 +3953,19 @@ plot_grid(plot_proportions2opt1,plot_proportions2opt2)
 
 <summary>ODP 3</summary>
 
-Oba wykresy pokazuja, czy dany rok byl dobry, czy zly dla poszczegolnych gatunkow pingwinow, a wynik ten przedstawiaja w procentach.
-Roznica miedzy tymi dwoma kodami polega na poleceniu `position=position_dodge()`. W przypadku plot_proportions1 slupki sa ulozone obok siebie, natomiast w przypadku plot_proportions2 sa ulozone jeden nad drugim.
+Oba wykresy pokazuja, czy dany rok byl dobry, czy zly dla poszczegolnych
+gatunkow pingwinow, a wynik ten przedstawiaja w procentach. Roznica
+miedzy tymi dwoma kodami polega na poleceniu
+`position=position_dodge()`. W przypadku plot_proportions1 slupki sa
+ulozone obok siebie, natomiast w przypadku plot_proportions2 sa ulozone
+jeden nad drugim.
 
 </details>
 
-
-
 ### CW 4.1
 
-Jak narysowalbys wykres przedstawiajacy rozklad masy ciala wylacznie u pingwinow Adeli?
+Jak narysowalbys wykres przedstawiajacy rozklad masy ciala wylacznie u
+pingwinow Adeli?
 
 <details>
 
@@ -3559,12 +3985,13 @@ plot_distribution3.1opt2 <- ggplot(Adelie, aes(Body_Mass_g, fill = SPECIES, colo
   geom_density(alpha = 0.5)
 plot_distribution3.1opt2
 ```
-</details>
 
+</details>
 
 ### CW 4.2
 
-Jak narysowalbys wykres, aby przedstawic mase ciala wylacznie u pingwinow Adeli, uwzgledniajac przy tym podzial wedlug plci?
+Jak narysowalbys wykres, aby przedstawic mase ciala wylacznie u
+pingwinow Adeli, uwzgledniajac przy tym podzial wedlug plci?
 
 <details>
 
@@ -3592,6 +4019,7 @@ plot_grid(plot_distribution3.2opt1,plot_distribution3.2opt2)
 
 
 ```
+
 </details>
 
 ### CW 5.1
@@ -3600,7 +4028,7 @@ Jak ocenilbys zaleznosc miedzy Delta_13C a Delta_15N?
 
 <details>
 
-<summary>ODP 5.1 </summary>
+<summary>ODP 5.1</summary>
 
 ```{r}
 ## Najpierw musimy usunac wartosci „brak danych” dla zmiennych Delta15N i Delta13C:
@@ -3614,15 +4042,21 @@ plot_xyrelationship1
 
 </details>
 
-
 ### CW 5.2
 
-Wlasciwie mozesz sie dobrze bawic, zmieniajac ksztalt, rozmiar i kolor punktow z poprzedniego wykresu, korzystajac z ponizszego linku:
+Wlasciwie mozesz sie dobrze bawic, zmieniajac ksztalt, rozmiar i kolor
+punktow z poprzedniego wykresu, korzystajac z ponizszego linku:
 
-<ul>   
-<li> kolor: https://www.sthda.com/english/wiki/colors-in-r </li>
-<li> ksztalt: https://stackoverflow.com/questions/46803260/assigning-40-shapes-or-more-in-scale-shape-manual </li>
-<li> rozmiar: https://www.statology.org/ggplot-point-size/#:~:text=by%20Zach%20Bobbitt%20Last%20updated,y=wt))%20+%20geom_point() </li>
+<ul>
+
+<li>kolor: <https://www.sthda.com/english/wiki/colors-in-r></li>
+
+<li>ksztalt:
+<https://stackoverflow.com/questions/46803260/assigning-40-shapes-or-more-in-scale-shape-manual></li>
+
+<li>rozmiar:
+<https://www.statology.org/ggplot-point-size/#>:\~:text=by%20Zach%20Bobbitt%20Last%20updated,y=wt))%20+%20geom_point()</li>
+
 </ul>
 
 Sprobuj zmienic rozmiar, kolor i ksztalt punktow w zaleznosci od gatunku
@@ -3638,10 +4072,9 @@ plot_xyrelationship4.2 <- ggplot(Penguins_delta) +
 plot_xyrelationship4.2
 ```
 
-
 <details>
 
-<summary>ODP 5.2 </summary>
+<summary>ODP 5.2</summary>
 
 ```{r}
 
@@ -3658,11 +4091,12 @@ plot_xyrelationship4.2
 
 ### CW 6
 
-Jak obliczylbys odchylenie standardowe od sredniej dla dlugosci pletw wszystkich gatunkow pingwinow?
+Jak obliczylbys odchylenie standardowe od sredniej dla dlugosci pletw
+wszystkich gatunkow pingwinow?
 
 <details>
 
-<summary>ODP 6 </summary>
+<summary>ODP 6</summary>
 
 ```{r}
 head(Penguins_clean)
@@ -3680,13 +4114,16 @@ plot_uncertainty5 <- ggplot(Flipper_Species, aes(x = SPECIES, y = mean_flipper, 
   
 plot_uncertainty5
 ```
+
 </details>
 
+### CW 7 - Not for the faint hearted ;)
 
-### CW 7 - Not for the faint hearted ;) 
-
-W tej czesci chcemy przede wszystkim pokazac, jak za pomocą ggplot tworzyc zlozone wykresy poprzez nakladanie na siebie roznych warstw.
-Mozesz skopiowac ten kod do swojego srodowiska RStudio i poeksperymentowac z parametrami sekcji `theme()`, aby zobaczyc, jak wplywaja one na ostateczny wyglad wykresu.
+W tej czesci chcemy przede wszystkim pokazac, jak za pomocą ggplot
+tworzyc zlozone wykresy poprzez nakladanie na siebie roznych warstw.
+Mozesz skopiowac ten kod do swojego srodowiska RStudio i
+poeksperymentowac z parametrami sekcji `theme()`, aby zobaczyc, jak
+wplywaja one na ostateczny wyglad wykresu.
 
 ```{r}
 
@@ -3746,28 +4183,268 @@ dev.off()
 
 ```
 
-
-
 # Lab 7
 
-I lack brain power to create the section on Markdown
+## R Markdown
+
+To nazedzie, ktore pozwala laczyc kod, jego wynik i tekst opisowy w
+jednym dokumencie (.html, .pdf, .docx, ...). W wielu przypadkach jest to
+znacznie wygodniejsze niz kopiowanie i przeklejanie wykresow stworzonych
+w R np. do Worda. Ta ksiazka, ktorej uzywasz jak zostala stworzona w R
+Markdown. W ramach tego kursy, wykorzystasz R Markdown do
+zaprezentowania wynikow swojego projketu zaliczeniowego. Wiele
+inspriacji znajdziesz na [repozytorium RPubs](https://rpubs.com/) .
+
+## Plik .Rmd
+
+1.  Otworz nowy typ pliku o rozszerzeniu .Rmd.
+
+Biala karta z plusem –\> R Markdown
+
+Juz w tym miejscu mozesz ustawic pewne rzeczy dla swojego pliku.
+Wszystko mozna tez zmienic/ dodac na pozniejszych etapach pracy. Smialo
+prowadz informacje dla dokumentu zgodnie ze swoimi preferencjami. Na
+poczatek ustaw renderowanie do HTML.
+
+W nowo powstalym pliku, oprocz informacji, ktore ustawiles (na poczatku
+dokumentu, odgrodzone - - -), znajduje sie templatka pokazujaca jak
+dziala R Markdown. Przeczytaj to jest napisane w templace, i sprobuj
+zrenderowac ten plik uzywajac przycisku Knit 🧶 (przy pierwszym
+kliknieciu nalezy wskazac miejsce zapisu pliku .Rmd jak i tego co bedzie
+z niego zrenderowane).
+
+```{r}
+
+# informacje nadane przy wlaczaniu pliku w naglowku YAML
+
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+
+# ``` odgradza bloki kody (tzw. 'chunks') od czesci tekstowej
+# ten ponizej ustawia globane wlasciwosci dla calego kodu
+  
+knitr::opts_chunk$set(echo = TRUE)
+
+## R Markdown
+
+This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+
+When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+
+summary(cars)
+
+## Including Plots
+
+You can also embed plots, for example:
+
+plot(pressure)
+
+Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+
+```
+
+2.  Usun wszystko oprocz naglowka YAML
+
+```{r}
+
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+
+```
+
+## Edytowanie tesktu
+
+3.  Ponizej stworz naglowek pierwszego rzedu (uzywajac pojedynczego \#)
+    i teskt. Zrenderuj (🧶) i zobacz efekt.
+
+```{r}
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+  
+# Naglowek pierwszego rzedu
+  
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend lorem vel tempor tempor. Suspendisse vitae lacus massa. Sed lobortis, nibh vitae suscipit euismod, diam risus aliquet ex, in vehicula nibh orci sed orci. Suspendisse massa elit, cursus vel viverra imperdiet, maximus ut mi.
+
+
+
+```
+
+4.  Stworz wiecej naglowkow nizszych rzedow uzywajac roznej liczby \#
+
+```{r}
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+  
+# Naglowek pierwszego rzedu
+
+## Podrozdzial 1 
+  
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend lorem vel tempor tempor. Suspendisse vitae lacus massa. Sed lobortis, nibh vitae suscipit euismod, diam risus aliquet ex, in vehicula nibh orci sed orci. Suspendisse massa elit, cursus vel viverra imperdiet, maximus ut mi.
+
+
+## Podrozdzial 2
+
+### Podpodrozdzial 2.1
+
+Nam eget eros non ligula malesuada condimentum. Sed eu ultricies augue. Cras vel eleifend justo, et molestie purus. Donec vitae cursus tellus. Ut ac turpis mauris.
+
+### Podpodrozdzial 2.2
+
+Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo, mattis accumsan diam. Fusce posuere suscipit tortor
+
+```
+
+3.  Edytuj teskt na pogrubiony, kursywe, pochylony.
+
+```{r}
+
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+
+# Naglowek pierwszego rzedu
+
+## Podrozdzial 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend lorem vel tempor tempor. Suspendisse vitae lacus massa. Sed lobortis, nibh vitae suscipit euismod, diam risus aliquet ex, in vehicula nibh orci sed orci. Suspendisse massa elit, cursus vel viverra imperdiet, maximus ut mi.
+
+## Podrozdzial 2
+
+### Podpodrozdzial 2.1
+
+Nam eget eros non ligula malesuada condimentum. Sed eu ultricies augue. Cras vel eleifend justo, et molestie purus. Donec vitae cursus tellus. Ut ac turpis mauris.
+
+### Podpodrozdzial 2.2
+
+Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo, mattis accumsan diam. Fusce posuere suscipit tortor
+
+**pogrubienie**
+
+*kursywa*
+
+[podkreslenie]{.underline}
+
+
+
+```
+
+4.  Wstaw link i ukryj go pod dowolnym tekstem.
+
+```{r}
+
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+
+# Naglowek pierwszego rzedu
+
+## Podrozdzial 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend lorem vel tempor tempor. Suspendisse vitae lacus massa. Sed lobortis, nibh vitae suscipit euismod, diam risus aliquet ex, in vehicula nibh orci sed orci. Suspendisse massa elit, cursus vel viverra imperdiet, maximus ut mi.
+
+## Podrozdzial 2
+
+### Podpodrozdzial 2.1
+
+Nam eget eros non ligula malesuada condimentum. Sed eu ultricies augue. Cras vel eleifend justo, et molestie purus. Donec vitae cursus tellus. Ut ac turpis mauris.
+
+### Podpodrozdzial 2.2
+
+Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo, mattis accumsan diam. Fusce posuere suscipit tortor
+
+**pogrubienie**
+
+*kursywa*
+
+[podkreslenie]{.underline}
+
+[Link na strone Wydzialu Biologii](https://biology.ug.edu.pl/)
+
+
+
+
+```
+
+5.  Stworz liste punktow. Oznacz kod zapisany w lini.
+
+```{r}
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+
+# Naglowek pierwszego rzedu
+
+## Podrozdzial 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend lorem vel tempor tempor. Suspendisse vitae lacus massa. Sed lobortis, nibh vitae suscipit euismod, diam risus aliquet ex, in vehicula nibh orci sed orci. Suspendisse massa elit, cursus vel viverra imperdiet, maximus ut mi.
+
+## Podrozdzial 2
+
+### Podpodrozdzial 2.1
+
+Nam eget eros non ligula malesuada condimentum. Sed eu ultricies augue. Cras vel eleifend justo, et molestie purus. Donec vitae cursus tellus. Ut ac turpis mauris.
+
+### Podpodrozdzial 2.2
+
+Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo, mattis accumsan diam. Fusce posuere suscipit tortor
+
+**pogrubienie**
+
+*kursywa*
+
+[podkreslenie]{.underline}
+
+[Link na strone Wydzialu Biologii](https://biology.ug.edu.pl/)
+
+-   do filtorowania uzywam funkcji `filter()`
+
+-   do tworzenia nowych zmiennych uzywam funkcji `mutate()`
+
+-   wizualizauje dane uzywajac funckji pakietu `ggplot`
+
+```
 
 # Lab 8
 
 ## Analiza frekwencji - teoria
 
-Analiza frekwencji służy do badania zależności między dwiema zmiennymi kategorycznymi. Sprawdza, czy obserwowane liczebności w tabeli krzyżowej różnią się od liczebności oczekiwanych, przy założeniu, że zmienne są od siebie niezależne. Jedna z najpopularniejszych typow analiz jest test $𝛘^2$ (Chi - kwadrat).
+Analiza frekwencji służy do badania zależności między dwiema zmiennymi
+kategorycznymi. Sprawdza, czy obserwowane liczebności w tabeli krzyżowej
+różnią się od liczebności oczekiwanych, przy założeniu, że zmienne są od
+siebie niezależne. Jedna z najpopularniejszych typow analiz jest test
+$𝛘^2$ (Chi - kwadrat).
 
--   Wartości obserwowane ($O_i$) - zebrane przez nas w trakcie eksperymentu/badania/obserwacji
+-   Wartości obserwowane ($O_i$) - zebrane przez nas w trakcie
+    eksperymentu/badania/obserwacji
 
--   Wartości oczekiwane ($E_i$)- takie, ktorych spodziewalibysmy sie przy braku istotnie statystycznej zaleznosci miedzy zmiennymi
+-   Wartości oczekiwane ($E_i$)- takie, ktorych spodziewalibysmy sie
+    przy braku istotnie statystycznej zaleznosci miedzy zmiennymi
 
 H0: $O_i = E_i$ - frewkencja jest losowa
 
-H1: $O_i ≠ E_i$ - frekwencja nie jest losowa i jest zależna od analizowanej zmiennej
+H1: $O_i ≠ E_i$ - frekwencja nie jest losowa i jest zależna od
+analizowanej zmiennej
 
 ## Analiza frewkencji - praktyka
-
 
 # Wizualizacja danych geoprzestrzennych
 
@@ -3786,7 +4463,8 @@ library(palmerpenguins)
 Penguins <- penguins_raw
 ```
 
-Obecnie nazwy kolumn nie są napisane w sposób sprzyjający kodowaniu, ponieważ zawierają spacje i nawiasy.
+Obecnie nazwy kolumn nie są napisane w sposób sprzyjający kodowaniu,
+ponieważ zawierają spacje i nawiasy.
 
 Zmienimy nazwy kolumn, aby ułatwić obsługę danych:
 
@@ -3822,13 +4500,23 @@ Penguins_clean <- Penguins %>% rename(Individual_ID = "Individual ID",
 
 ```
 
-Jak widac w ostatnim wierszu kodu, uzywamy `dplyr::select`. Wynika to z faktu, ze korzystamy z wielu roznych pakietów i wystepuje konflikt z co najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu wywolujemy te funkcje.
+Jak widac w ostatnim wierszu kodu, uzywamy `dplyr::select`. Wynika to z
+faktu, ze korzystamy z wielu roznych pakietów i wystepuje konflikt z co
+najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac
+wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu
+wywolujemy te funkcje.
 
-Mozemy polaczyc dane przestrzenne z danymi teledetekcyjnymi; w naszym przypadku laczymy je z danymi pochodzacymi z programu Copernicus, dostepnymi pod ponizszym linkiem: https://data.marine.copernicus.eu/product/SST_GLO_SST_L4_NRT_OBSERVATIONS_010_001/description
+Mozemy polaczyc dane przestrzenne z danymi teledetekcyjnymi; w naszym
+przypadku laczymy je z danymi pochodzacymi z programu Copernicus,
+dostepnymi pod ponizszym linkiem:
+<https://data.marine.copernicus.eu/product/SST_GLO_SST_L4_NRT_OBSERVATIONS_010_001/description>
 
-Aby lepiej zrozumiec dane, ktore pobierasz i ktore zamierzasz analizowac, warto zapoznac sie z instrukcja obslugi dostepna na stronie internetowej produktu.
+Aby lepiej zrozumiec dane, ktore pobierasz i ktore zamierzasz
+analizowac, warto zapoznac sie z instrukcja obslugi dostepna na stronie
+internetowej produktu.
 
-W instrukcji obsługi mozna zauwazyc, ze wartosc analysed_sst w pliku jest podana w kelwinach 
+W instrukcji obsługi mozna zauwazyc, ze wartosc analysed_sst w pliku
+jest podana w kelwinach
 
 ```{r}
 head(Penguins_clean)
@@ -3901,8 +4589,9 @@ plot_geospatial2
 
 ```
 
-Jesli korzystasz z danych z monitoringu GPS, mozesz wyodrebnic informacje z danych teledetekcyjnych dla konkretnej lokalizacji GPS i przedstawic wszystko na jednym wykresie
-
+Jesli korzystasz z danych z monitoringu GPS, mozesz wyodrebnic
+informacje z danych teledetekcyjnych dla konkretnej lokalizacji GPS i
+przedstawic wszystko na jednym wykresie
 
 ```{r}
 ## Stworzmy falszywa pozycje GPS w regionie Antwerpii:
