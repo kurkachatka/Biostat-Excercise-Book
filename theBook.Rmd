@@ -2937,7 +2937,9 @@ msleep %>%
 
 > TIP: Wyprobuj rozne opcje motywow z autouzupelniania po `theme_`
 
-5.  Stworz wykres rozrzutu, tym razme jako wykres gestosci.
+### Wykres gestosci
+
+5.  Stworz wykres rozrzutu, tym razem jako wykres gestosci.
 
 ```{r}
 
@@ -3006,7 +3008,7 @@ msleep %>%
 
 ```
 
-10. Nadal malo przejrzyscie? Sprobuj rozbic wykres na banele.
+10. Nadal malo przejrzyscie? Sprobuj rozbic wykres na panele.
 
 ```{r}
 
@@ -3048,7 +3050,7 @@ msleep %>%
 Sluza do pokazywania polozenia miar tendencji centralnej, innych miar polozenia oraz miar rozrzutu. Wykorzystuje sie je przedwszystkim przy porownywaniu grup miedzy soba. W klasycznym ukladzie zmienna zalezna y jest w skali ciaglej, a zmienna niezalezna x w skali dyskretnej.
 
 1.  Stowrz boxplot, ktory porowna czas obudzenia miedzy zwierzetami o roznych kategoriach statusach ochrony.
-2.  
+ 
 
 ```{r}
 
@@ -3199,6 +3201,64 @@ ggsave('Rycina.jpg', # nazwa pliku razem z rozszerzeniem. Jezeli nie ma ustawion
 
 ```
 
+
+## Pakiet `esquisse` na dobry poczatek pracy z `ggplot()`
+
+Kiedy zaczynasz nauke tworzenia wykresow w RStudio przy uzyciu biblioteki `library(ggplot2)`, moze byc trudno zrozumiec, jak napisac kod, gdzie umiescic zmienne, a takze gdzie umiescic parametry sluzace do dostosowania wykresu. 
+
+Biblioteka `library(esquisse)` zostala stworzona, aby ulatwic pierwsze kroki w korzystaniu z biblioteki `library(ggplot2)`. Zobaczmy, jak to dziala
+
+
+Najpierw musisz zaimportowac zbior danych do swojego srodowiska
+
+`library(palmerpenguins)`
+
+`Penguins <- penguins`
+
+Nastepnie zainstaluj i pobierz biblioteke
+
+`install.packages("esquisse")`
+
+`library(esquisse)`
+
+Na koniec otworz funkcje, ktora pomoże Ci stworzyc wykres danych
+
+`esquisse::esquisser()`
+
+Ta funkcja spowoduje otwarcie nastepujacego okna:
+![](../assets/Screenshot_1esquisse.png)
+
+Nastepnie mozesz kliknac „Importuj dane” – rozne zmienne dostepne w Twoim zbiorze danych pojawia sie teraz w gornej czesci funkcji `esquisser()`, w polu **zmienna**:
+![](../assets/Screenshot_2esquisse.png)
+
+
+
+Mozesz przeciagac zmienne do poszczegolnych pol: x, y, wypelnienie, kolor, rozmiar, grupa, aby utworzyc wykres:
+![](../assets/Screenshot_3esquisse.png)
+
+Mozesz zmienic sposóob wyswietlania etykiet, tytulow, osi i wykresu, dostosowujac ustawienia znajdujące sie na dole funkcji `esquisser()`
+
+Na koniec mozesz wygenerowac kod i sprawdzic, jak wygladalby on w przypadku bezposredniego uzycia biblioteki ggplot, klikajac sekcje „Kod” w prawym dolnym rogu funkcji `esquisser()`
+![](../assets/Screenshot_4esquisse.png)
+
+To swietny moment, zeby to wyprobowac
+```{r}
+
+## Najpierw musisz zaimportowac zbior danych do swojego srodowiska
+library(palmerpenguins)
+Penguins <- penguins
+
+
+## Następnie mozesz zainstalowac i pobrac biblioteke
+#install.packages("esquisse")
+library(esquisse)
+
+## Gdy bedziesz gotowy do wykreslenia wykresu danych, mozesz uruchomic ponizszy fragment kodu:
+esquisse::esquisser() 
+```
+
+
+
 ## Cwiczenia
 
 ### CW 1
@@ -3335,6 +3395,359 @@ labs(title = "Histogram of Distances to University",
 
 <details>
 
+
+### CW 2.1
+
+W trakcie tej sesji cwiczeniowej bedziemy nadal korzystac z zestawu danych „penguin” i bedziemy musieli pobrac kilka pakietów
+
+```{r}
+#install.packages("")
+library(dplyr) ## do czyszczenia zbioru danych => %>% , mutate(), case_when(), filter(), select()
+library(tidyr) ## do porzadkowania danych
+library(ragg) ## do eksportowania wykresow z mozliwoscia dostosowania rozmiaru tekstu
+library(ggplot2) ## do tworzenia wykresow
+library(cowplot) ## do laczenia roznych wykresow
+
+library(palmerpenguins)
+Penguins <- penguins_raw
+```
+
+Obecnie nazwy kolumn nie sa zapisane w sposob sprzyjajacy kodowaniu, poniewaz zawieraja spacje i nawiasy.
+
+Zmienimy nazwy kolumn, aby ulatwic obsluge danych:
+
+```{r}
+## Nazwy kolumn mozna zmieniac na rozne sposoby
+
+## Pierwszy sposob:
+#colnames(Penguins) <- gsub(" ", ".", colnames(Penguins)) ## replace the space by a dot
+#colnames(Penguins) <- gsub("\\s*\\([^\\)]+\\)", "", colnames(Penguins)) ## remove the (...)
+
+
+## Drugi sposob, z ktorego skorzystamy podczas tego szkolenia:
+## Utworz nazwe kolumny, ktora bedzie latwiejsza w uzyciu:
+Penguins_clean <- Penguins %>% rename(Individual_ID = "Individual ID", 
+                                Clutch_Completion= "Clutch Completion", 
+                                Date_Egg = "Date Egg", 
+                                Culmen_Length_mm = "Culmen Length (mm)",
+                                Culmen_Depth_mm = "Culmen Depth (mm)",
+                                Flipper_Length_mm = "Flipper Length (mm)",
+                                Body_Mass_g = "Body Mass (g)",
+                                Delta_15N_ooo = "Delta 15 N (o/oo)",
+                                Delta_13C_ooo = "Delta 13 C (o/oo)") %>%
+  # Utworz nowe zmienne, ktore wykorzystamy w naszej analizie:
+  mutate(SEX = case_when(Sex == "MALE" ~ "M",
+                         Sex == "FEMALE" ~ "F"),
+         SPECIES = case_when(Species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+                             Species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+                             Species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap"),
+         Quality = case_when(Clutch_Completion == "No" ~ "Bad year",
+                            Clutch_Completion == "Yes" ~ "Good year")) %>%
+   # Zachowaj tylko okreslona kolumne:
+    dplyr::select(SPECIES,SEX,Island,Quality,Date_Egg,Culmen_Length_mm,Culmen_Depth_mm,Flipper_Length_mm,Body_Mass_g,Delta_15N_ooo,Delta_13C_ooo)
+
+```
+
+Jak widac w ostatnim wierszu kodu, uzywamy `dplyr::select`. Wynika to z faktu, ze korzystamy z wielu roznych pakietów i wystepuje konflikt z co najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu wywolujemy te funkcje.
+
+### CW 2.1
+
+Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy dobry rok, w porownaniu z liczba osobnikow, ktore mialy zly rok?
+
+</ul>
+
+<details>
+
+<summary>ODP 2.1 </summary>
+
+```{r}
+## Porownaj liczbe osob, ktore mialy dobry rok, z liczba osob, ktore mialy zly rok:
+GoodvsBad <- Penguins_clean %>% group_by(Quality) %>% summarise(counts = n())
+GoodvsBad
+
+## Wykresl wyniki z funkcji GoodvsBad:
+plot_amount1.1 <- ggplot(data = GoodvsBad, aes(x = Quality, y = counts, fill = Quality)) +
+            geom_bar(stat = "identity")+
+            theme_bw()
+plot_amount1.1
+```
+
+</details>
+
+### CW 2.2 
+
+Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy dobry rok, w porownaniu z osobnikami, ktore mialy zly rok, z tym ze tym razem nalezaloby rowniez rozroznic poszczegolne gatunki pingwinow?
+
+</ul>
+
+<details>
+
+<summary>ODP 2.2 </summary>
+
+```{r}
+## Porownaj liczbe osobnikow, ktore mialy dobry rok, z liczba osobnikow, ktore mialy zly rok, dla kazdego gatunku:
+GoodvsBadSpecies <- Penguins_clean %>% group_by(Quality, SPECIES) %>% summarise(counts = n())
+GoodvsBadSpecies
+
+## Wykresl wyniki z funkcji GoodvsBadSpecies:
+plot_amount1.2 <- ggplot(data = GoodvsBadSpecies, aes(x = Quality, y = counts, fill = SPECIES)) +
+            geom_bar(stat = "identity", position=position_dodge())+
+            theme_bw()
+plot_amount1.2
+```
+
+</details>
+
+
+### CW 3
+
+Czy potrafisz powiedziec, co przedstawiają wykresy `plot_proportions2opt1` i `plot_proportions2opt2`, oraz wyjasnic, na czym 
+polega roznica? Ktora czesc kodu odpowiada za te roznice?
+
+```{r}
+head(Penguins_clean)
+
+GoodvsBadSpecies_perc <- Penguins_clean %>% group_by(Quality, SPECIES) %>% 
+  summarise(counts = n()) %>% 
+  mutate(perc_GoodBadSex=round(prop.table(counts) * 100))
+GoodvsBadSpecies_perc
+
+plot_proportions2opt1 <- ggplot(data = GoodvsBadSpecies_perc, aes(x = Quality, y = perc_GoodBadSex, fill = SPECIES)) +
+            geom_bar(stat = "identity", position=position_dodge())
+plot_proportions2opt1
+
+plot_proportions2opt2 <- ggplot(data = GoodvsBadSpecies_perc, aes(x = Quality, y = perc_GoodBadSex, fill = SPECIES)) +
+            geom_bar(stat = "identity")
+plot_proportions2opt2
+
+## Ten fragment kodu pozwoli Ci wyswietlic oba wykresy obok siebie:
+library(cowplot)
+plot_grid(plot_proportions2opt1,plot_proportions2opt2)
+
+```
+
+<details>
+
+<summary>ODP 3</summary>
+
+Oba wykresy pokazuja, czy dany rok byl dobry, czy zly dla poszczegolnych gatunkow pingwinow, a wynik ten przedstawiaja w procentach.
+Roznica miedzy tymi dwoma kodami polega na poleceniu `position=position_dodge()`. W przypadku plot_proportions1 slupki sa ulozone obok siebie, natomiast w przypadku plot_proportions2 sa ulozone jeden nad drugim.
+
+</details>
+
+
+
+### CW 4.1
+
+Jak narysowalbys wykres przedstawiajacy rozklad masy ciala wylacznie u pingwinow Adeli?
+
+<details>
+
+<summary>ODP 4.1</summary>
+
+```{r}
+
+## Rozwiazanie 1:
+plot_distribution3.1opt1 <- ggplot(subset(Penguins_clean, SPECIES == "Adelie"), aes(Body_Mass_g,fill = SPECIES, colour = SPECIES)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.1
+
+## Rozwiazanie 2:
+Adelie <- Penguins_clean %>% filter(SPECIES == "Adelie")
+
+plot_distribution3.1opt2 <- ggplot(Adelie, aes(Body_Mass_g, fill = SPECIES, colour = SPECIES)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.1opt2
+```
+</details>
+
+
+### CW 4.2
+
+Jak narysowalbys wykres, aby przedstawic mase ciala wylacznie u pingwinow Adeli, uwzgledniajac przy tym podzial wedlug plci?
+
+<details>
+
+<summary>ODP 4.2</summary>
+
+```{r}
+## Jesli zapomnisz usunac wartosc „NA”, otrzymasz nastepujacy wykres:
+Adelie <- Penguins_clean %>% filter(SPECIES == "Adelie")
+
+plot_distribution3.2opt1 <- ggplot(Adelie, aes(Body_Mass_g,fill = SEX, colour = SEX)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.2opt1
+
+## Najpierw musisz usunac wartosci „NA”, w przeciwnym razie pojawia sie one na wykresie:
+AdelieSex <- Penguins_clean %>% filter(SPECIES == "Adelie" & !is.na(SEX))
+
+## Wykres ten przedstawia mase ciala pingwinow Adeli, z jedna krzywa dla samic i jedna dla samcow:
+plot_distribution3.2opt2 <- ggplot(AdelieSex, aes(Body_Mass_g,fill = SEX, colour = SEX)) +
+  geom_density(alpha = 0.5)
+plot_distribution3.2opt2
+
+## Tutaj widac oba wykresy obok siebie:
+library(cowplot)
+plot_grid(plot_distribution3.2opt1,plot_distribution3.2opt2)
+
+
+```
+</details>
+
+### CW 5.1
+
+Jak ocenilbys zaleznosc miedzy Delta_13C a Delta_15N?
+
+<details>
+
+<summary>ODP 5.1 </summary>
+
+```{r}
+## Najpierw musimy usunac wartosci „brak danych” dla zmiennych Delta15N i Delta13C:
+Penguins_delta <- Penguins_clean %>% filter(!is.na(Delta_13C_ooo)) %>% filter(!is.na(Delta_15N_ooo))
+
+## Mozemy przyjrzec sie zaleznosci miedzy Delta15N a Delta13C
+plot_xyrelationship1 <- ggplot(Penguins_delta, aes(x = Delta_15N_ooo, y = Delta_13C_ooo)) +
+  geom_point(size = 1, shape = 21)
+plot_xyrelationship1
+```
+
+</details>
+
+
+### CW 5.2
+
+Wlasciwie mozesz sie dobrze bawic, zmieniajac ksztalt, rozmiar i kolor punktow z poprzedniego wykresu, korzystajac z ponizszego linku:
+
+<ul>   
+<li> kolor: https://www.sthda.com/english/wiki/colors-in-r </li>
+<li> ksztalt: https://stackoverflow.com/questions/46803260/assigning-40-shapes-or-more-in-scale-shape-manual </li>
+<li> rozmiar: https://www.statology.org/ggplot-point-size/#:~:text=by%20Zach%20Bobbitt%20Last%20updated,y=wt))%20+%20geom_point() </li>
+</ul>
+
+Sprobuj zmienic rozmiar, kolor i ksztalt punktow w zaleznosci od gatunku
+
+```{r}
+head(Penguins_delta)
+
+plot_xyrelationship4.2 <- ggplot(Penguins_delta) +
+  geom_point(aes(x = Delta_15N_ooo, y = Delta_13C_ooo, size = SPECIES, color = SPECIES, shape = SPECIES)) +
+  scale_size_manual(values=c(2,3,4)) +
+  scale_color_manual(values = c("pink4","purple3","darkblue")) +
+  scale_shape_manual(values=c(11,8,25))
+plot_xyrelationship4.2
+```
+
+
+<details>
+
+<summary>ODP 5.2 </summary>
+
+```{r}
+
+### Oto przyklad zmian wprowadzonych w parametrach:
+plot_xyrelationship4.2 <- ggplot(Penguins_delta) +
+  geom_point(aes(x = Delta_15N_ooo, y = Delta_13C_ooo, size = SPECIES, color = SPECIES, shape = SPECIES)) + # Twierdzisz tutaj, ze rozmiar, kolor i ksztalt pior powinny zalezec od gatunku pingwina
+  scale_size_manual(values=c(4,4,4)) + # poniewaz w naszym zbiorze danych znajduja sie trzy gatunki, musimy podac trzy wartosci 
+  scale_color_manual(values = c("dodgerblue3","lightblue4","cadetblue")) + # poniewaz w naszym zbiorze danych znajduja sie trzy gatunki, musimy podac trzy wartosci 
+  scale_shape_manual(values=c(97,99,103)) # poniewaz w naszym zbiorze danych znajduja sie trzy gatunki, musimy podac trzy wartosci 
+plot_xyrelationship4.2
+```
+
+</details>
+
+### CW 6
+
+Jak obliczylbys odchylenie standardowe od sredniej dla dlugosci pletw wszystkich gatunkow pingwinow?
+
+<details>
+
+<summary>ODP 6 </summary>
+
+```{r}
+head(Penguins_clean)
+
+## Obliczymy odchylenie standardowe od sredniej dla dlugosci pletw wszystkich gatunkow pingwinow:
+Flipper_Species <- Penguins_clean %>% group_by(SPECIES) %>% 
+  summarise(mean_flipper = mean(Flipper_Length_mm, na.rm=T),
+            sd_flipper = sd(Flipper_Length_mm, na.rm=T))
+
+
+## Oto sposob na wizualizacje tych wynikow za pomoca biblioteki ggplot:
+## Wizualizacja roznic w dlugosci pletw u poszczegolnych gatunkow pingwinow:
+plot_uncertainty5 <- ggplot(Flipper_Species, aes(x = SPECIES, y = mean_flipper, color = SPECIES)) +
+  geom_pointrange(aes(ymin=mean_flipper-sd_flipper, ymax=mean_flipper+sd_flipper))
+  
+plot_uncertainty5
+```
+</details>
+
+
+### CW 7 - Not for the faint hearted ;) 
+
+W tej czesci chcemy przede wszystkim pokazac, jak za pomocą ggplot tworzyc zlozone wykresy poprzez nakladanie na siebie roznych warstw.
+Mozesz skopiowac ten kod do swojego srodowiska RStudio i poeksperymentowac z parametrami sekcji `theme()`, aby zobaczyc, jak wplywaja one na ostateczny wyglad wykresu.
+
+```{r}
+
+## Usun wszystkie wartosci „NA” z zbioru danych:
+Penguins_allnarm <- Penguins_clean %>%
+  na.omit()
+
+## Zmien format mojej tabeli:
+library(tidyr) ## wymagane jest uzycie funkcji gather()
+Penguinslong <- gather(Penguins_allnarm, key="measure", value="value", c("Culmen_Length_mm", "Culmen_Depth_mm","Flipper_Length_mm","Body_Mass_g"))
+Penguinslong$measure <- as.factor(Penguinslong$measure)
+
+##  Zmien nazwy moich zmiennych, aby na koncowym wykresie pojawily sie ladniejsze nazwy:
+Penguinslong <- Penguinslong %>% mutate(measure = case_when(measure == "Culmen_Length_mm" ~ "Culmen length (mm)",
+                                                            measure == "Culmen_Depth_mm" ~ "Culmen depth (mm)",
+                                                            measure == "Flipper_Length_mm" ~ "Flipper length (mm)",
+                                                            measure == "Body_Mass_g" ~ "Body mass (g)"))
+
+
+
+
+## Opracuj fabule:
+Penguins_SpeciesIsland_plot <- ggplot(Penguinslong, aes(x = as.factor(SPECIES), y = value)) +
+  # Poszczegolne punkty
+  geom_point(aes(color = SPECIES),position = position_jitter(w = .15), alpha=0.5) +
+  scale_color_manual(values = c("dodgerblue3","lightblue4","cadetblue")) +
+  # Violon plot: dystrybucje
+  geom_violin(aes(fill = SPECIES), alpha = 0.5) + 
+  scale_fill_manual(values = c("dodgerblue3","lightblue4","cadetblue")) +
+  # Boxplot: dystrybucje
+  geom_boxplot(aes(fill = SPECIES),width = .25,outlier.shape = NA) +
+  # Utworz wykres fasetowy: polacz rozne zmienne na jednym wykresie
+  facet_grid(measure ~ Island, scales = "free", #  Funkcja facetingu z dowolnymi skalami osi Y, umozliwiająca ustawienie indywidualnych zakresow wartosci na osi Y dla kazdego wiersza
+             switch = "y") +  # zmien kolejnosc nazw zmiennych mierzonych z prawej na lewa
+  theme_bw() +  # Opcjonalnie: lepsza wizualizacja dzieki czystemu tlu
+  # Dostosuj wszystkie parametry wykresu wedlug wlasnego uznania
+  theme(
+    strip.text.x = element_text(size = 12),  # Dostosuj rozmiar tekstu dla filtrow dotyczących gatunkow
+    strip.text.y = element_text(size = 12),   # Dostosuj rozmiar tekstu dla elementow twarzy miary
+    axis.text = element_text(size=12, color = "black"), # Dostosuj tekst osi
+    axis.title = element_blank(),  # Zmien tytul osi
+    legend.title = element_text(size = 12), # Zmien tytul legendy 
+    legend.text = element_text(size = 12) # Dostosuj tekst legendy
+  ) +
+  scale_y_continuous("value", position = "right")  # Zmien skale osi Y po prawej stronie
+Penguins_SpeciesIsland_plot
+
+
+### Sprobuj wyeksportowac wykres bezposrednio z konsoli, zachowujac kontrole nad rozmiarem tekstu i linii:
+setwd("")
+library(ragg)
+## Scaling change the size of the text on my plot
+ragg::agg_png("Penguins_SpeciesIsland_plot_10x10_2.png", width = 10, height = 10, units = "in", res = 300, scaling = 2)
+Penguins_SpeciesIsland_plot
+dev.off()
+
+
+```
+
+
+
 # Lab 7
 
 I lack brain power to create the section on Markdown
@@ -3354,3 +3767,202 @@ H0: $O_i = E_i$ - frewkencja jest losowa
 H1: $O_i ≠ E_i$ - frekwencja nie jest losowa i jest zależna od analizowanej zmiennej
 
 ## Analiza frewkencji - praktyka
+
+
+# Wizualizacja danych geoprzestrzennych
+
+```{r}
+#install.packages("")
+library(dplyr) ## w celu oczyszczenia zbioru danych => %>% , mutate(), case_when(), filter(), select()
+library(tidyr) ## aby uporządkować dane
+library(ggplot2) ## wykreslic
+library(sf) ##  aby korzystac z okreslonej funkcji podczas pracy z danymi geoprzestrzennymi
+library(raster) ## aby pobrac pliki rastrowe w programie R
+library(rnaturalearth) ## aby uzyskac wielokat terenu
+library(ggspatial) ## wykreslanie danych geoprzestrzennych za pomoca ggplot
+library(stars) ##  w celu uporzadkowania danych geoprzestrzennych
+
+library(palmerpenguins)
+Penguins <- penguins_raw
+```
+
+Obecnie nazwy kolumn nie są napisane w sposób sprzyjający kodowaniu, ponieważ zawierają spacje i nawiasy.
+
+Zmienimy nazwy kolumn, aby ułatwić obsługę danych:
+
+```{r}
+## Nazwy kolumn mozna zmieniac na rozne sposoby
+
+## Pierwszy sposob:
+#colnames(Penguins) <- gsub(" ", ".", colnames(Penguins)) ## replace the space by a dot
+#colnames(Penguins) <- gsub("\\s*\\([^\\)]+\\)", "", colnames(Penguins)) ## remove the (...)
+
+
+## Drugi sposob, z ktorego skorzystamy podczas tego szkolenia:
+## Utworz nazwe kolumny, ktora bedzie latwiejsza w uzyciu:
+Penguins_clean <- Penguins %>% rename(Individual_ID = "Individual ID", 
+                                Clutch_Completion= "Clutch Completion", 
+                                Date_Egg = "Date Egg", 
+                                Culmen_Length_mm = "Culmen Length (mm)",
+                                Culmen_Depth_mm = "Culmen Depth (mm)",
+                                Flipper_Length_mm = "Flipper Length (mm)",
+                                Body_Mass_g = "Body Mass (g)",
+                                Delta_15N_ooo = "Delta 15 N (o/oo)",
+                                Delta_13C_ooo = "Delta 13 C (o/oo)") %>%
+  # Utworz nowe zmienne, ktore wykorzystamy w naszej analizie:
+  mutate(SEX = case_when(Sex == "MALE" ~ "M",
+                         Sex == "FEMALE" ~ "F"),
+         SPECIES = case_when(Species == "Adelie Penguin (Pygoscelis adeliae)" ~ "Adelie",
+                             Species == "Gentoo penguin (Pygoscelis papua)" ~ "Gentoo",
+                             Species == "Chinstrap penguin (Pygoscelis antarctica)" ~ "Chinstrap"),
+         Quality = case_when(Clutch_Completion == "No" ~ "Bad year",
+                            Clutch_Completion == "Yes" ~ "Good year")) %>%
+   # Zachowaj tylko okreslona kolumne:
+  dplyr::select(SPECIES,SEX,Island,Quality,Date_Egg,Culmen_Length_mm,Culmen_Depth_mm,Flipper_Length_mm,Body_Mass_g,Delta_15N_ooo,Delta_13C_ooo)
+
+```
+
+Jak widac w ostatnim wierszu kodu, uzywamy `dplyr::select`. Wynika to z faktu, ze korzystamy z wielu roznych pakietów i wystepuje konflikt z co najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu wywolujemy te funkcje.
+
+Mozemy polaczyc dane przestrzenne z danymi teledetekcyjnymi; w naszym przypadku laczymy je z danymi pochodzacymi z programu Copernicus, dostepnymi pod ponizszym linkiem: https://data.marine.copernicus.eu/product/SST_GLO_SST_L4_NRT_OBSERVATIONS_010_001/description
+
+Aby lepiej zrozumiec dane, ktore pobierasz i ktore zamierzasz analizowac, warto zapoznac sie z instrukcja obslugi dostepna na stronie internetowej produktu.
+
+W instrukcji obsługi mozna zauwazyc, ze wartosc analysed_sst w pliku jest podana w kelwinach 
+
+```{r}
+head(Penguins_clean)
+
+### Wspolrzedne trzech kolonii: najpierw szerokosc geograficzna, a nastepnie dlugosc geograficzna
+Dream <-c(-64.730419, -64.247602)
+Biscoe <- c(-66.286626, -67.033080) 
+Torgersen <- c(-64.765938, -64.082502)
+
+Colonies <- data.frame(Names =c("Dream","Biscoe","Torgersen"),
+                       Latitude = c (-64.730419, -66.286626,-64.765938),
+                       Longitude = c(-64.247602,-67.033080,-64.082502))
+
+## Wyodrebnij mape terenu obszaru, ktory nas interesuje
+library(rnaturalearth)
+antarctica <- ne_countries(scale = 10, returnclass = "sf", country = "Antarctica")
+plot(antarctica)
+
+## Prosze wyodrebnic tylko ten obszar, na ktorym chce sie skupic, a mianowicie region Antwerpii, w ktorym znajduja sie trzy wyspy:
+library(sf)
+anvers <- st_crop(antarctica$geometry, xmin = -70.4, xmax = -63, ymin = -66.5, ymax = -64.5) 
+plot(anvers)
+
+## Importowanie danych teledetekcyjnych:
+library(raster)
+## Najpierw musisz pobrać plik "20251214120000-UKMO-L4_GHRSST-SSTfnd-OSTIA-GLOB-v02.0-fv02.0.nc", ktory jest dostepny tutaj: https://github.com/kurkachatka/Biostat-Excercise-Book/tree/main/Additional%20datasets
+SST <- raster("~/YOUR_COMPUTER_DIRECTORIES/20251214120000-UKMO-L4_GHRSST-SSTfnd-OSTIA-GLOB-v02.0-fv02.0.nc")
+
+
+### Utworz bufor, aby wyodrebnic dane wylacznie z obszaru, ktory nas interesuje
+pr.e <- extent(-70.4, -63, -66.5, -64.5) # Anvers Region
+pr.SST <- crop(SST, pr.e)
+dfSST <- as.data.frame(pr.SST, xy = TRUE)
+str(dfSST)
+
+### Przelicz dane z kelwinow na stopnie Celsjusza i utworz strefy na podstawie temperatury powierzchni morza:
+dfSSTc <- dfSST %>% mutate(SST_celsius = analysed.sea.surface.temperature - 273.15) %>%
+  mutate(Zone = case_when(SST_celsius < 0 ~ "Very cold",
+                          SST_celsius >= 0 ~ "Cold"))
+  
+range(dfSSTc$SST_celsius, na.rm=T)
+unique(dfSSTc$SST_celsius, na.rm=T)
+
+
+### Mozemy przedstawic na wykresie wszystkie wstępne wyniki: w tym kolory kategorii stref, lokalizacje kolonii oraz mape wyspy
+library(ggspatial) ## konieczne jest uzycie funkcji  geom_spatial_point()
+plot_geospatial1 <- ggplot() +
+  geom_raster(data = dfSSTc, aes(x = x, y = y, fill = as.factor(Zone))) +
+  scale_fill_manual(name = "Sea Surface Zones", values = c("#33CCFF","#FFFFFF")) +
+  # Show the map:
+  geom_sf(data = anvers, fill = "bisque3", inherit.aes = FALSE) +
+  # Show the location of the three different colonies:
+  geom_spatial_point(data=Colonies,aes(x=Longitude,y=Latitude),
+                     size=3, crs=4326, shape = 21, stroke = 0.5, fill = c("#FF33CC")) +
+  labs(title = "Colonies and SST")
+plot_geospatial1
+
+### We can plot everything the first results: including the Zone category color, the colonies locations, and the map of the island
+library(viridis) ## konieczne jest uzycie funkcji scale_fill_viridis
+plot_geospatial2 <- ggplot() +
+  geom_raster(data = dfSSTc, aes(x = x, y = y, fill = SST_celsius)) +
+  scale_fill_viridis(option = "D") + ## mozesz wyprobowac rozne litery od A do H
+  # Pokaz mape:
+  geom_sf(data = anvers, fill = "bisque3", inherit.aes = FALSE) +
+  # Wskaz polozenie trzech roznych kolonii:
+  geom_spatial_point(data=Colonies,aes(x=Longitude,y=Latitude),
+                     size=3, crs=4326, shape = 21, stroke = 0.5, fill = c("#FF33CC")) +
+  labs(title = "Colonies and SST")
+plot_geospatial2
+
+```
+
+Jesli korzystasz z danych z monitoringu GPS, mozesz wyodrebnic informacje z danych teledetekcyjnych dla konkretnej lokalizacji GPS i przedstawic wszystko na jednym wykresie
+
+
+```{r}
+## Stworzmy falszywa pozycje GPS w regionie Antwerpii:
+bbox_lonlat <- st_bbox(c(xmin = -70.4, xmax = -63, ymin = -66.5, ymax = -64.5),
+                       crs = st_crs(4326))
+
+## Przeksztalc prostokat w wielokat:
+bbox_poly <- st_as_sfc(bbox_lonlat)
+
+## Probka z obszaru zainteresowania
+set.seed(123) ## Ustawiajac wartosc poczatkowa, zawsze generujemy ten sam punkt losowy
+sample_points <- st_sample(bbox_poly, size = 200)
+
+## Usun punkty probkowania, ktore mogly powstac na ladzie w tym obszarze:
+random_GPS_points <- sample_points[
+  !st_intersects(sample_points, anvers, sparse = FALSE)
+]
+
+## Zachowaj tylko 30 wygenerowanych losowo punktów
+random_GPS_points30 <- random_GPS_points[1:30]
+head(random_GPS_points30)
+random_GPS_points30df <- as.data.frame(st_coordinates(random_GPS_points30))
+
+## Przypisujemy losowo punkt GPS do konkretnego gatunku pingwina, przyjmujac wartosc X jako parametr klasyfikacyjny:
+random_GPS_points30df <- random_GPS_points30df %>% mutate(Species = case_when(X < -68 ~ "Adelie",
+                                                                              X > -69 & X < -64 ~ "Gentoo",
+                                                                              X > -65 ~ "Chinstrap"))
+
+## Sprawdz wzrokowo, czy utworzone wspolrzedne GPS sa prawidlowe i czy pokrywaja sie z obszarem badan:
+plot_geospatial3 <- ggplot() +
+  geom_raster(data = dfSSTc, aes(x = x, y = y, fill = as.factor(Zone))) +
+  scale_fill_manual(name = "Sea Surface Zones", values = c("#33CCFF","#FFFFFF")) +
+  # Pokaz mape:
+  geom_sf(data = anvers, fill = "bisque3", inherit.aes = FALSE) +
+  # Wskaz polozenie trzech roznych kolonii:
+  geom_spatial_point(data=Colonies,aes(x=Longitude,y=Latitude),
+                     size=3, crs=4326, shape = 21, stroke = 0.5, fill = c("#FF33CC")) +
+  # Pokaz lokalizacje punktow z falszywymi danymi GPS:
+  #geom_point(data = random_GPS_points30df, aes(x = X, y = Y), color = "black", shape = 21, size = 2, fill = c("#FFCCCC")) + # jesli nie chcesz rozrozniac gatunkow pingwinow
+  geom_point(data = random_GPS_points30df, aes(x = X, y = Y,  color = Species), size = 2) + # jesli chcesz pokolorowac pingwiny wedlug gatunku
+  labs(title = "Colonies and SST")
+plot_geospatial3
+
+
+### Dodaj SST do okreslonych wspolrzednych GPS:
+library(stars)
+## Przekonwertuj obiekt rastrowy SST do formatu stars:
+starsSST <- st_as_stars(pr.SST, crs = st_crs(4326))
+##  Upewnij sie, ze obiekt GPS ma ten sam format co obiekt SST:
+random_GPS_points30dfsf <- st_as_sf(random_GPS_points30df, coords = c("X", "Y"), crs = 4326)
+
+## Wyodrebnij wartosci komorek (wartosci SST) dla poszczegolnych punktow (wspolrzednych GPS)
+SSTextractGPS <- st_extract(starsSST, random_GPS_points30dfsf) %>% st_as_sf() 
+
+## Polacz pozycje GPS, dla ktorych dysponujemy danymi o pingwinach, z danymi dotyczacymi temperatury powierzchni morza (SST) uzyskanymi dla tych pozycji GPS
+GPSxySST <- cbind(random_GPS_points30dfsf, SSTextractGPS) 
+
+## Przekonwertuj geometrie kolumny na wspolrzedne X i Y, a nastepnie wyodrebnij ja
+GPSxySSTcoord <- st_coordinates(GPSxySST)
+## Dodaj wspolrzedne w formacie X i Y do naszej tabeli
+GPSSSTcombined <- cbind(GPSxySST, GPSxySSTcoord)
+GPSSSTcombined
+```
