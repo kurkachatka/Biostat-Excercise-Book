@@ -87,6 +87,14 @@ Why does my code not work? Can you correct it?
 
 Dlaczego mój kod nie działa? Czy możesz go poprawić?
 
+```{r}
+
+pingw2 <- pingwiny %>% 
+  group_by(Species, Island, Sex) %>% 
+  summarise(n())
+
+```
+
 <details>
 
 <summary>ODP 1.3</summary>
@@ -94,9 +102,10 @@ Dlaczego mój kod nie działa? Czy możesz go poprawić?
 ```{r}
 
 pingw2 <- pingwiny %>% 
-  group_by(Species, Island, Sex) %>% 
+  group_by(species, island, sex) %>% 
   summarise(n())
 
+# double-check the spelling of the column names
 ```
 
 </details>
