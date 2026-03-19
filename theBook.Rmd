@@ -3624,16 +3624,16 @@ Na koniec otworz funkcje, ktora pomoże Ci stworzyc wykres danych
 `esquisse::esquisser()`
 
 Ta funkcja spowoduje otwarcie nastepujacego okna:
-![](https://github.com/kurkachatka/Biostat-Excercise-Book/blob/main/assets/Screenshot_1esquisse.png)
+![](https://raw.githubusercontent.com/kurkachatka/Biostat-Excercise-Book/main/assets/Screenshot_1esquisse.png)
 
 Nastepnie mozesz kliknac „Importuj dane” – rozne zmienne dostepne w
 Twoim zbiorze danych pojawia sie teraz w gornej czesci funkcji
 `esquisser()`, w polu **zmienna**:
-![](https://github.com/kurkachatka/Biostat-Excercise-Book/blob/main/assets/Screenshot_2esquisse.png)
+![](https://raw.githubusercontent.com/kurkachatka/Biostat-Excercise-Book/main/assets/Screenshot_2esquisse.png)
 
 Mozesz przeciagac zmienne do poszczegolnych pol: x, y, wypelnienie,
 kolor, rozmiar, grupa, aby utworzyc wykres:
-![](https://github.com/kurkachatka/Biostat-Excercise-Book/blob/main/assets/Screenshot_3esquisse.png)
+![](https://raw.githubusercontent.com/kurkachatka/Biostat-Excercise-Book/main/assets/Screenshot_3esquisse.png)
 
 Mozesz zmienic sposóob wyswietlania etykiet, tytulow, osi i wykresu,
 dostosowujac ustawienia znajdujące sie na dole funkcji `esquisser()`
@@ -3641,7 +3641,7 @@ dostosowujac ustawienia znajdujące sie na dole funkcji `esquisser()`
 Na koniec mozesz wygenerowac kod i sprawdzic, jak wygladalby on w
 przypadku bezposredniego uzycia biblioteki ggplot, klikajac sekcje „Kod”
 w prawym dolnym rogu funkcji `esquisser()`
-![](https://github.com/kurkachatka/Biostat-Excercise-Book/blob/main/assets/Screenshot_4esquisse.png)
+![](https://raw.githubusercontent.com/kurkachatka/Biostat-Excercise-Book/main/assets/Screenshot_4esquisse.png)
 
 To swietny moment, zeby to wyprobowac
 
