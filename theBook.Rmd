@@ -4513,6 +4513,155 @@ analizowanej zmiennej
 
 ## Analiza frewkencji - praktyka
 
+
+1. Wczytaj potrzebne pakiety i dane o pierzeniu dubelta *Gallinago media* pochodzace z pliku MoultGM.xlsx.
+
+```{r}
+library(tidyverse)
+library(readxl)
+
+
+setwd('XXXX') # ustaw wlasne
+
+gm <- read_excel('MoultGM.xlsx')
+
+```
+2. Sprawdz strukture danych
+
+```{r}
+str(gm)
+
+```
+Place: miejsce, BL- Bialorus, PL - Polska
+Year: rok
+Period: pentada, 1 - pierwsza pentada maja
+Sex: plec
+PC1: wskznik wielkosci ciala
+SMI: wskaznik kondycji ciala
+moult.cat: kategoria stanu pierzenia, NS - nie zaczete, A - aktywne, S - zatrzymane
+is.moult: binarna zmienna o obecnosci oznak pierzenia pior
+pfmgAll: procentowy udzal masy nowych pior w upierzeniu
+
+3. Sprawdz czy w obu miejscach tak samo czesto lapie sie samce i samice dubleta.
+```{r}
+
+chisq.res <- chisq.test(gm$Place, gm$Sex) # przechowaj wyniki analizy Chi2 w obiekcie
+
+# sprawdz wartosci obserwowane
+
+chisq.res$observed
+
+# sprawdz wartosci oczekiwane (potwierdzajace H0)
+
+chisq.res$expected
+
+# zaokraglij do drugiego miejsca po przecinku dla wiekszej klarownosci
+
+round(chisq.res$expected, 2)
+
+# zobacz wartosci resztowe
+
+chisq.res$residuals
+
+
+# zobacz wynik analizy
+
+print(chisq.res)
+
+```
+Frewkencja wystepowania obu plci roznila sie istotnie statystycznie miedzy dwoma lokalizacjami (test $𝛘^2$, $𝛘^2$ = 11.218, p = 0.001). Na podstawie porownania wartosci oczekiwanych i obserowanych mozna stwierdzic, ze w Polsce frekwencja obu plci byla bardziej wyrownana, gdzie w Bialorusi znaczaca przewage w liczebnosci mialy samce.
+
+4. Zwizualizuj wyniki
+
+```{r}
+gm %>% 
+  mutate(Place = factor(Place, levels = c('BL', 'PL'), # zmienia skrotowe kody zawarte w zmiennej na nazwy widoczne na wykresie
+                        labels = c('Bialorus', 'Polska'))) %>% 
+  ggplot(aes(x = Place, fill = Sex)) +
+  geom_bar(position = 'fill') +
+  labs(y = 'Udzial % danej plci', x = 'Miejsce odlowu') +
+  theme_classic() +
+  theme(legend.position = 'bottom')
+
+
+
+
+```
+5. Sprawdz czy frewkencja obu plci jest taka sama w kazdej pentadzie.
+
+```{r}
+chi2.pent <- chisq.test(gm$Period, gm$Sex)
+
+# zwroc uwage na komunikat ostrzegawczy! Najczesciej wynika on z zbyt niskich wartosci oczekiwanych w ktorejs kategorii.
+
+
+chi2.pent$expected
+
+```
+6. Wykonaj test z uwzglednieniem zbyt niskiej liczebnosci oczekiwanej
+
+```{r}
+
+# Rozwiazanie 1: symulacja watosci p metoda Monte-Carlo. 
+
+chi2.pentMonteCarlo <- chisq.test(gm$Period, gm$Sex,
+                                  simulate.p.value = TRUE,
+                                  B = 1000) # ustawia ile powtorzen w symulacji ma byc wykonane 
+
+
+
+# Rozwizanie 2: wykonaj alternatywny test Fishera - czasem dziala, ale w tym wypadku liczebnosci sa zbyt male nawet dla tego testu. 
+
+fish.pent <- fisher.test(table(gm$Period, gm$Sex)) # nie zostanie wyliczona
+
+#mozna w nim rowniez ustawic symulacje wartosci p
+
+fish.pent <- fisher.test(table(gm$Period, gm$Sex),
+                         simulate.p.value =  TRUE,
+                         B = 1000)
+
+
+```
+
+7. Opisz i zwizualizuj wynik
+
+```{r}
+print(chi2.pentMonteCarlo)
+
+#lub
+
+print(fish.pent)
+
+
+gm %>% 
+  ggplot(aes(x = Period, fill = Sex)) +
+  geom_bar(position = 'fill')
+
+
+# Z wyniku wiemy, ze wystapily istotne statystycznie roznice, ale nie jest latwo odpowiedziec ktora konretnie grupa przyczynia sie do ich wystapienia.
+
+# Z pomoca moze przyjsc analiza wartosci resztowych (to bardzo duze wartosci resztowe odpowiadaja za wystapienie istotnych statystycznie roznic).
+# Pomocy moze tez byc mostaic plot z pakietu graphics
+
+# sprawdz reszty
+
+chi2.pentMonteCarlo$residuals
+
+
+# wykonaj mosaic plot
+# najpierw stworz tabele kontyngencji 
+
+tab1 <- table(gm$Period, gm$Sex)
+
+graphics::mosaicplot(tab1,
+           shade = T) #argument ustawia kolor dla kategorii o skrajnych wartosciach reszt
+           
+
+
+```
+Czestosc wystepowania obu plci roznila sie istotnie statystycze miedzy siedmioma pentadami (test $𝛘^2$, $𝛘^2$ = 38.425, p < 0.001). Roznice wystapily ze wzlgedu na duza liczebnosc samcow w pentadzie 2, oraz wieksza niz przecietna liczebnoscia samic w pentadach 5 i 6.
+
+
 # Wizualizacja danych geoprzestrzennych
 
 ```{r}
