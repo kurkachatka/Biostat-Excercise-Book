@@ -4187,7 +4187,7 @@ dev.off()
 
 ## R Markdown
 
-To nazedzie, ktore pozwala laczyc kod, jego wynik i tekst opisowy w
+To narzedzie, ktore pozwala laczyc kod, jego wynik i tekst opisowy w
 jednym dokumencie (.html, .pdf, .docx, ...). W wielu przypadkach jest to
 znacznie wygodniejsze niz kopiowanie i przeklejanie wykresow stworzonych
 w R np. do Worda. Ta ksiazka, ktorej uzywasz jak zostala stworzona w R
@@ -4422,6 +4422,73 @@ Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo,
 -   wizualizauje dane uzywajac funckji pakietu `ggplot`
 
 ```
+
+## Wstawianie aktywnego kodu
+
+1. Aby wstawic aktywny kod, ktory ma pojawic sie w dokumencie uzyj bloku kodu. Wprobuj skort klawiszowy CTRL + ALT + I
+
+```{r}
+
+# oczywiscie powinno byc wstawione bez #
+
+#```{r}
+
+
+#```
+
+
+```
+
+2. Wewnatrz `{r}` na poczatku bloku kodu mozna ustawic wiele parametrow wyswietlania kodu. Wydruk kodu moze byc pozbawiony komunikatow ostrzegawczych i dodatkowych wiadomosci poprzez manipulowanie arguemntami `messages` i `warnings`. Zobacz roznice np. podczas wywolywania pakietu `tidyverse`
+
+```{r}
+
+# ``` {r message=FALSE, warning=FALSE}
+
+library(tidyverse)
+
+# ```
+
+```
+
+3. Opcja `echo` pozwala schowac kod i pozostawic tylko jego efekt w dokumencie.
+
+```{r}
+#``` {r echo = F}
+
+library(tidyverse)
+
+iris %>% ggplot(aes(x = Petal.Length)) +
+  geom_density(aes(fill = Species)) +
+  facet_wrap(~Species)
+
+#```
+
+```
+
+4. Opcja `eval` okresla, czy dany kod jest ewaluowany w tym dokumencie.
+
+```{r}
+# ``` {r eval = F}
+
+iris %>% ggplot(aes(x = Petal.Length)) +
+  geom_density(aes(fill = Species)) +
+  facet_wrap(~Species)
+
+#```
+
+
+```
+
+5. Opcje z przedrostkiem `fig.` sluza do dodwania roznych elementow do elementow graficznych powstalych w danym bloku kodu.
+
+```{r}
+
+#``` {r fig.align = 'left', fig.cap = 'Fig.1. Podpis', fig.width = 4, fig.height = 4}
+
+
+```
+
 
 # Lab 8
 
