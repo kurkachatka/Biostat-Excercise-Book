@@ -4421,6 +4421,62 @@ Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo,
 
 -   wizualizauje dane uzywajac funckji pakietu `ggplot`
 
+
+
+
+
+```
+
+6.  Stworz tabele
+
+```{r}
+---
+title: "Moj pierwszy raport"
+author: "MWT"
+output: html_document
+---
+
+# Naglowek pierwszego rzedu
+
+## Podrozdzial 1
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eleifend lorem vel tempor tempor. Suspendisse vitae lacus massa. Sed lobortis, nibh vitae suscipit euismod, diam risus aliquet ex, in vehicula nibh orci sed orci. Suspendisse massa elit, cursus vel viverra imperdiet, maximus ut mi.
+
+## Podrozdzial 2
+
+### Podpodrozdzial 2.1
+
+Nam eget eros non ligula malesuada condimentum. Sed eu ultricies augue. Cras vel eleifend justo, et molestie purus. Donec vitae cursus tellus. Ut ac turpis mauris.
+
+### Podpodrozdzial 2.2
+
+Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo, mattis accumsan diam. Fusce posuere suscipit tortor
+
+**pogrubienie**
+
+*kursywa*
+
+[podkreslenie]{.underline}
+
+[Link na strone Wydzialu Biologii](https://biology.ug.edu.pl/)
+
+-   do filtorowania uzywam funkcji `filter()`
+
+-   do tworzenia nowych zmiennych uzywam funkcji `mutate()`
+
+-   wizualizauje dane uzywajac funckji pakietu `ggplot`
+
+
+| Imie    | Nazwisko | Pokoj |
+|---------|----------|-------|
+| Marta   | W        | C327  |
+| Maciej  | Sz       | C326  |
+| Pauline | B        | C325  |
+| Kristin | P        | C325  |
+
+: Tabela 1. Nauczyciele
+
+
 ```
 
 ## Wstawianie aktywnego kodu
@@ -4456,7 +4512,28 @@ library(tidyverse)
 
 ```
 
-3.  Opcja `echo` pozwala schowac kod i pozostawic tylko jego efekt w
+3.  Opcja `include` chowa kod i jego wynik, ale kod nadal dziala
+
+```{r}
+
+# ``` {r include = F}
+
+library(tidyverse)
+
+# ```
+
+# ``` {r include = F}
+
+iris %>% ggplot(aes(x = Petal.Length)) +
+  geom_density(aes(fill = Species)) +
+  facet_wrap(~Species)
+
+# ```
+
+
+```
+
+4.  Opcja `echo` pozwala schowac kod i pozostawic tylko jego efekt w
     dokumencie.
 
 ```{r}
@@ -4491,10 +4568,45 @@ iris %>% ggplot(aes(x = Petal.Length)) +
 
 ```{r}
 
-#``` {r fig.align = 'left', fig.cap = 'Fig.1. Podpis', fig.width = 4, fig.height = 4}
+#``` {r fig.align = 'centre', fig.cap = 'Fig.1. Podpis', fig.width = 4, fig.height = 4}
+
+iris %>% ggplot(aes(x = Petal.Length)) +
+  geom_density(aes(fill = Species)) +
+  facet_wrap(~Species)
+
+
+#```
+
+```
+
+6.  Stworz tabele z elementu tabelarycznego ze srodowiska wykorzystaniem
+    funkcji `kable()`
+
+```{r}
+
+#```
+
+podsum.tab <- iris %>% 
+  group_by(Species) %>% 
+  summarise(SR = mean(Petal.Length),
+            SD = sd(Petal.Length),
+            N = n())
+  
+
+knitr::kable(podsum.tab)
+
+
+knitr::kable(head(iris), caption = 'Tabela 2. Pierwsze wiersze bazy danych')
+
+
+#```
+
 
 
 ```
+
+> TIP: Wiecej opcji edycji mozna znalezc w [tej
+> sciadze](https://rstudio.github.io/cheatsheets/html/rmarkdown.html).
 
 # Lab 8
 
@@ -4777,7 +4889,7 @@ wszystkie 3 kategorie pierzenia wystepuja rownie czesto u obu plci.
 
 <details>
 
-<summary> ODP 2</summary>
+<summary>ODP 2</summary>
 
 ```{r}
 
@@ -4848,6 +4960,774 @@ przeprzecietnej ptakow, ktore nie rozpoczely pierzenia (NS). Natomiast w
 (S).
 
 </details>
+
+# Lab 9
+
+## Porownanie sredniej miedzy dwoma grupami - teoria
+
+### Test t-studenta dla prob niezaleznych
+
+Sluzy do porownania wartosci sredniej wybranej zmiennej zaleznej (w
+skali ciaglej) miedzy dwoma grupami.
+
+H0: $$\mu_1 = \mu_2$$ - srednie w obu grupach sa sobie rowne
+
+H1: $\mu_1 ≠ \mu_2$ - srednie w obu grupach nie sa sobie rowne
+
+Jako test parametryczny mozna go wykonac tylko jezeli spelnione sa
+najstepujace zalozenia:
+
+-   rozklad zmiennej zaleznej w obu grupach jest zblizony do rozkladu
+    normalnego
+
+-   wariancja w obu porownywanych grupach jest jednorodna
+
+W wypadku jezeli zalozenie o normalnosci rozkladu jest niespelnione
+nalezy wykonac nieparametryczny odpowiednik testu t studenta - test
+Manna Whitneya.
+
+W przypadku jezeli zalozenie o wariancji jest niespelnione nalezy
+wykonac poprawke o niejednorodna wariancje do testu, czyli test Cochrana
+Coxa.
+
+## Porownanie sredniej miedzy dwoma grupami - praktyka
+
+1.  Wykorzystaj baze danych `iris` dostepna w bazowym R. Sprawdz czy
+    gatunek versicolor i virginica roznia sie dlugoscia platkow korony.
+
+    1.1 Sprawdz rozklad dlugosci platkow korony dla obu gatunkow
+
+```{r}
+
+# na poczatku nalezy stqworzy ramke danych z danymi o 2 sposrod 3 gatunkow dostepnych w iris 
+
+iris.2gat <- iris %>% filter(Species == 'versicolor' | Species == 'virginica')
+
+
+iris.2gat %>% 
+  ggplot(aes(x = Petal.Length)) +
+  geom_density(aes(fill = Species)) +
+  facet_wrap(~Species)
+
+# w obu przypadkach dane nie odbiegaja ksztaltem zanczaco od rozkladu normalnego
+
+
+```
+
+1.2 Sprawdz jednorodnosc wariancji uzywajac funkcji `var.test()`
+
+```{r}
+
+var.test(data = iris.2gat,
+         Petal.Length ~ Species) # definiuje co jest zmienna zalezna a co niezalezna. Czytane jako: Dlugosc platkow korony zalezy od gatunku.
+
+
+
+```
+
+Brak istotnej roznicy miedzy wariancjami tych dwoch grup (test F, F =
+0.725, p = 0.26). Oznacza to, ze wariancja jest jednorodna.
+
+1.3. Poniewaz oba zalozenia nie sa naruszone, mozna wykonac test t
+studenta.
+
+```{r}
+
+t.test(data = iris.2gat, Petal.Length ~ Species)
+
+
+
+```
+
+Srednia dlugosc platkow kolorny rozni sie istotnie statystycznie miedzy
+dwoma gatunkami (test t Studneta, t = -12.604, p \< 0.001). Gatunek
+virignica mial srednio dluzsze platki niz gatunek versicolor.
+
+1.4. Przedstaw wyniki na wykresie.
+
+```{r}
+
+iris.2gat %>% 
+  ggplot(aes(x = Species, y = Petal.Length)) +
+  geom_boxplot() + 
+  theme_classic()
+
+```
+
+2.  Teraz porownaj ze soba dlugosc dzialek kielicha miedzy gatunkami
+    setoda i versicolor.
+
+2.1. Najpierw sprawdz zalozenia.
+
+```{r}
+
+iris.SetVer <- iris %>%
+  filter(Species %in% c('setosa', 'versicolor'))
+
+
+iris.SetVer %>% 
+  ggplot(aes(x = Sepal.Length)) +
+  geom_histogram(binwidth = 0.3) +
+  facet_wrap(~Species) #OK
+
+var.test(data = iris.SetVer, Sepal.Length~Species) # niejednorodna wariancja
+
+
+```
+
+2.2. Wykonaj analize poprawiajac o niejednorodnosc wariancji (test
+Cochrana-Coxa)
+
+```{r}
+
+t.test(data = iris.SetVer, Sepal.Length ~ Species,
+       var.equal = F) # domyslnie ustawione na TRUE
+
+
+
+```
+
+Dwa badane gatunki roznily sie istotnie statystycznie pod wzgledem
+sredniej dlugosci dzialek kielicha (test Cochrana Coxa, t' = -10.521, p
+\< 0.001). Versicolor mial srednio dluzsze dzialki kielicha niz setosa.
+
+2.3. Przedstaw statystyki opisowe i wyniki na wykresie.
+
+```{r}
+
+iris.SetVer %>% 
+  group_by(Species) %>% 
+  summarise(SR = mean(Sepal.Length),
+            SD = sd(Sepal.Length),
+            N = n())
+
+iris.SetVer %>% 
+  ggplot(aes(x = Species, y = Sepal.Length)) +
+  geom_boxplot() +
+  theme_classic()
+
+
+```
+
+> TIP: Zwroc uwage na szerokosc pudelek obu grup. To ich szerokosc jest
+> rozna jest wskaznikiem niejednorodnosci wariancji, ktora wyszla przy
+> tescie F.
+
+3.  Wykorzystaj ramke danych `msleep`. Porownaj mase mozgu miedzy
+    zwierzetami bliskimi zagrozenia (nt) i najmniejszej troski (lc)
+    
+3.1 Sprawdz zalozenia.
+
+```{r}
+
+msleep.conserv <- msleep %>% 
+    filter(conservation =='lc' | conservation =='nt')
+
+msleep.conserv %>% 
+  ggplot(aes(x = brainwt)) +
+  geom_density(fill = 'white') +
+  facet_wrap(~conservation)
+
+# rozklad odbiega od normalnego
+
+
+
+
+```
+
+3.2 Wykonaj test nieparametryczny (Manna-Whitneya)
+
+
+```{r}
+
+wilcox.test(data = msleep.conserv, brainwt ~ conservation)
+
+msleep.conserv %>% 
+  ggplot(aes(x = conservation, y = brainwt)) +
+  geom_boxplot()
+
+
+
+```
+
+Nie wykryto istotnych statystycznie roznic w przecietnej masie mozgu miedzy zwierzetami w kategroii zagrozenia LC a NT (test Manna-Whitneya, U = 17, p = 0.857)
+
+
+# Lab 10
+
+## ANOVA
+
+```{r}
+#ANOVA (analiza wariancji) jednoczynnikowa
+
+setwd("D:/M_Szewczyk_R")
+getwd()
+
+
+
+library(tidyverse)
+library(readxl)
+library(car)
+install.packages("FSA")
+library(FSA)
+
+bobry <- read_excel("D:/M_Szewczyk_R/BobryR.xlsx") #utworzenie obiektu "bobry" zawierającego nasze dane
+
+brzozy <- bobry %>%        #tworzymy obiekt "brzozy" zawierający tylko dane o stopniu uszkodzenia (USZKODZ) i srednicy (SR) dla gatunku "Bs"
+  filter(GAT == "Bs") %>% 
+  select(USZKODZ, SR)
+
+summary(brzozy)    #podsumowanie danych - średnie, kwartyle, liczba wartości brakujących (NA)
+
+brzozy <- brzozy %>%  #usunięcie NA
+  filter(!is.na(SR))
+
+summary(brzozy)
+
+ggplot(data = brzozy, aes(x = as.factor(USZKODZ), y = SR)) +    #wykres boxplot - średnica od kategorii uszkodzenia
+  geom_boxplot() +
+  theme_classic()
+
+aov() #funkcja do przeprowadzenia analizy wariancji
+
+brzozy_aov <- aov(data = brzozy, SR~as.factor(USZKODZ)) #przeprowadzamy ANOVA i zapisujemy wyniki jako obiekt "brzozy_aov"
+
+summary(brzozy_aov)  #podsumowanie wyników ANOVA funkcją summary()
+
+plot(brzozy_aov, 1)
+
+leveneTest(data = brzozy, SR~as.factor(USZKODZ)) #test Levena - sprawdzenie jednorodności wariancji
+
+kruskal.test(data = brzozy, SR~as.factor(USZKODZ)) #test Kruskala-Wallisa - nieparametryczny odpowiednik ANOVA
+
+pairwise.wilcox.test(brzozy$SR, brzozy$USZKODZ, p.adjust.method = "bonf") #test post-hoc pokazujący między którymi grupami są istotne różnice w średnicy
+
+dunnTest(data=brzozy, SR ~ as.factor(USZKODZ), method = "bonf") #test post-hoc - test Dunna
+
+ols <- bobry %>%        #tworzymy obiekt "ols" zawierający tylko dane o stopniu uszkodzenia (USZKODZ) i srednicy (SR) dla gatunku "Ag"
+  filter(GAT == "Ag") %>% 
+  select(USZKODZ, SR)
+
+summary(ols)    #podsumowanie danych - średnie, kwartyle, liczba wartości brakujących (NA)
+
+ols <- ols %>%  #usunięcie NA
+  filter(!is.na(SR))
+
+summary(ols)
+
+ggplot(data = ols, aes(x = as.factor(USZKODZ), y = SR)) +    #wykres boxplot - średnica od kategorii uszkodzenia
+  geom_boxplot() +
+  theme_classic()
+
+
+kruskal.test(data = ols, SR~as.factor(USZKODZ)) #test Kruskala-Wallisa - nieparametryczny odpowiednik ANOVA
+
+pairwise.wilcox.test(ols$SR, ols$USZKODZ, p.adjust.method = "bonf") #test post-hoc pokazujący między którymi grupami są istotne różnice w średnicy
+
+dunnTest(data=ols, SR ~ as.factor(USZKODZ), method = "bonf")
+
+
+#### ćw 10 - ANOVA dwuczynnikowa
+
+sikory <- read_excel("D:/M_Szewczyk_R/sikory.xlsx")
+
+sikory
+
+df1 <- sikory %>%  #podsumowanie - statystyki opisowe (średnie zniesienie, odch. stand., liczebność w grupach)
+  group_by(Gatunek) %>% 
+  summarise(mNjaj = mean(N_jaj), sdNjaj = sd(N_jaj), liczebn = n())
+
+model1 <- aov(data=sikory, N_jaj~Gatunek)  #ANOVA 1-czynnikowa - czy wielkość zniesienia zależy od gatunku
+summary(model1)
+
+leveneTest(data = sikory, N_jaj~Gatunek) #jednorodność wariancji
+
+
+model2 <- aov(data = sikory, N_jaj~Gatunek*Las) #ANOVA 2-czynnikowa - czy wielkość zniesienia zależy od gatunku i typu lasu
+summary(model2) #wyświetlenie wyników ANOVA
+
+df2 <-sikory %>%  #podsumowanie - statystyki opisowe (średnie zniesienie, odch. stand., liczebność w grupach)
+  group_by(Gatunek, Las) %>% 
+  summarise(mNjaj = mean(N_jaj), sdNjaj = sd(N_jaj), liczebn = n())
+
+
+
+
+
+```
+
+
+```{r}
+
+library(tidyverse)
+library(readxl)
+install.packages("car")
+library(car)
+setwd("C:\\Users\\user\\Documents\\biostatystyka")
+getwd()
+
+bobry<-read_excel("BobryR.xlsx")
+
+# Zadanie wykonaj analogiczną analizę dla "Ag" - olsza czarna
+
+ag <- bobry %>% 
+  filter(GAT == "Ag") %>% 
+  select (USZKODZ, SR) 
+
+summary(ag) 
+
+ag <- ag %>% 
+  mutate(USZKODZ = as.character(USZKODZ)) %>% 
+  filter(!is.na(SR))
+
+
+ag %>% 
+  ggplot(aes(USZKODZ, SR)) +
+  geom_boxplot(outliers = FALSE)+
+  geom_jitter(alpha = 0.3)
+
+model_ag <- aov(data = ag, SR ~ USZKODZ)
+summary(model_ag)
+
+# jednorodność wariancji
+plot(model_ag, 1)
+
+leveneTest(SR ~ factor(USZKODZ), data = ag)
+
+# normalność reszt
+plot(model_aov_ag, 2) 
+
+# normalność zmiennej zależnej
+hist(ag$SR) 
+hist(log(ag$SR+1))
+
+# anova nieparametryczna test Kruskalla-Wallisa  ====
+kruskal.test(data = ag, SR ~ USZKODZ)
+
+# Post-hoc test - non-parametric
+pairwise.wilcox.test(ag$SR, ag$USZKODZ, p.adjust.method = "bonf")
+
+# test Dunna, inny posób liczenie testu post-hoc
+install.packages("FSA")
+library(FSA)
+
+dunnTest(SR ~ USZKODZ, data = ag, method = "bonf")
+
+sikory <- read_excel("sikory.xlsx")
+
+sikory %>% 
+  ggplot(aes(Gatunek, N_jaj))+
+  geom_boxplot()
+
+model_sikory <- aov(data = sikory, N_jaj ~ Gatunek)
+summary(model_sikory)
+
+leveneTest(data = sikory, N_jaj ~ Gatunek)
+tuk <- TukeyHSD(model_sikory)
+tuk
+
+
+sum <- sikory %>% 
+  group_by(Gatunek, Las) %>% 
+  summarise(sr = mean(N_jaj), SD = sd(N_jaj), N = n())
+
+model_sikory_2 <- aov(data = sikory, N_jaj ~ Gatunek*Las)
+summary(model_sikory_2)
+
+```
+
+
+# Lab 11
+
+## Korelacja i regresja
+
+```{r}
+### Analiza korelacji, Regresja liniowa
+library(tidyverse)
+library(broom)
+
+iris # dane dostępne w R http://rstudio-pubs-static.s3.amazonaws.com/450733_9a472ce9632f4ffbb2d6175aaaee5be6.html
+
+View(iris)
+data("iris") # przypisanie danych do środowiska
+
+names(iris) # wywołanie nazw zmiennych
+
+pairs(iris[,1:4]) # macierzowy wykres rozrzutu
+
+#problem badawczy: zależność między zmiennymi ciągłymi
+# x = Sepal.Length, y = Sepal.Width
+
+# wykres rozrzutu dla ww. zmiennych
+
+iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  geom_smooth(colour = "red")+
+  theme_bw()
+
+# drugi sposób na diagnostyczny wykres rozrzutu - z pakietem "car"
+library(car)
+scatterplot(iris$Sepal.Length ~ iris$Sepal.Width)
+
+# założenie o liniowości niespełnione
+
+# drugie założenie - normalność rozkładu zmiennej zależnej
+
+hist(iris$Sepal.Width)
+qqnorm(iris$Sepal.Width)
+qqline(iris$Sepal.Width)
+
+# podobny wykres jw. z pakietem "car"
+qqPlot(iris$Sepal.Width)
+
+# test na normalność rozkładu - Shapiro-Wilk
+
+shapiro.test(iris$Sepal.Width)
+
+# test parametryczny - analiza korelacji Pearsona
+
+cor.test(iris$Sepal.Length, iris$Sepal.Width)
+
+# współczynnik korelacji nieistotny, 95% CI obejmują 0
+
+# analiza regresji - model liniowy (lm())
+# hipoteza zerowa - współczynnik regresji liniowej ax = 0
+
+lm_iris <- lm(data = iris, Sepal.Width~Sepal.Length)
+summary(lm_iris)
+
+# równanie regresji y = ax + b
+# współczynnik regresji liniowej nieistotny
+# równanie -> y = -0.062 + 3.42
+
+# wizualizacja danych z rozbiciem na gatunki
+
+iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width, col = Species))+
+           geom_point()+ 
+           theme_bw()
+
+# modele liniowe dla poszczególnych gatunków na jednym wykresie
+
+iris %>% 
+  ggplot(aes(x = Sepal.Length, y = Sepal.Width))+
+  geom_point(alpha = 0.5)+
+  geom_smooth(method = "lm")+
+  geom_smooth(colour = "red")+
+  facet_wrap(~Species, ncol = 3)+
+  theme_bw()
+
+# analiza dla gat. "setosa"
+
+df_set <- iris %>% 
+  filter(Species == "setosa")
+
+# sprawdzenie założenia o normalności rozkładu zmiennej zależnej
+
+hist(df_set$Sepal.Width)
+qqPlot(df_set$Sepal.Width)
+
+shapiro.test(df_set$Sepal.Width)         
+
+# analiza korelacji Pearsona
+
+cor.test(df_set$Sepal.Length, df_set$Sepal.Width)
+
+# współczynnik korelacji istotny statystycznie, przedział ufności nie przechodzi przez 0, p < 0.001
+# istnieje silna pozytywna korelacja między zmiennymi (cor ok. 0.75)
+
+# budowa modelu liniowego 
+
+lm_setosa <- lm(data = df_set, Sepal.Width ~ Sepal.Length)
+summary(lm_setosa)
+
+# równanie y = 0.799x - 0.569
+
+
+# gat virginica
+
+df_vir <- iris %>% 
+  filter(Species=="virginica")
+
+df_vir %>% 
+  ggplot(aes(x=Sepal.Length, y = Sepal.Width))+
+  geom_point()+
+  geom_smooth(method = "lm")+
+  geom_smooth(colour = "red")+
+  theme_bw()
+
+# zależność zbliżona do liniowej, choć są punkty odstające dla wyższych wartości x
+
+
+# sprawdzenie normalności
+
+hist(df_vir$Sepal.Width)
+qqnorm(df_vir$Sepal.Width)
+qqline(df_vir$Sepal.Width)
+qqPlot(df_vir$Sepal.Width)
+
+shapiro.test(df_vir$Sepal.Width)
+
+# założenia spełnione
+
+cor.test(df_vir$Sepal.Width, df_vir$Sepal.Length)
+
+# istotny współczynnik Pearsona - istnieje umiarkowana korelacja (wartość współczynnika ok. 0.46)
+
+lm_vir <- lm(data = df_vir, Sepal.Width ~ Sepal.Length)
+summary(lm_vir)
+
+# współczynnik regresji istotny (p = 0.0015)
+# y = 0.232x + 1.446
+
+
+
+```
+
+
+
+```{r}
+# budowa kilku osobnych modeli jednym poleceniem z pakietem "broom"
+library(tidyverse)
+library(broom)
+data("iris")
+view(iris)
+
+iris %>% 
+  group_by(Species) %>% 
+  do(tidy(lm(data = ., Sepal.Width ~ Sepal.Length)))
+
+
+# regresja wieloraka - dane gapminder
+# badanie wp�ywu wielu czynnik�w na d�ugo�� �ycia ludzi
+
+install.packages("gapminder")
+library(gapminder)
+
+data("gapminder")
+view(gapminder)
+
+# macierzowy wykres rozrzutu dla zmiennych ci�g�ych (kolumny 3-6)
+
+pairs(gapminder[,3:6])
+
+# macierz korelacji mi�dzy zmiennymi
+# cz�� zmiennych z za�o�enia nie mo�e spe�nia� wymogu normalno�ci (np. rok)
+# dlatego analiza nieparametryczna  - Spearman
+
+cor(gapminder[,3:6], method = "spearman")
+
+
+# najsilniejsza korelacja powy�ej - lifeExp z gdpPercap
+# wykres rozrzutu dla ww. zmiennych
+
+gapminder %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp)) +
+           geom_point()
+
+# jw., ale z odrzuceniem kraj�w o najwy�szym gdpPercap
+
+gapminder %>% 
+  filter(gdpPercap < 50000) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp)) +
+  geom_point()
+
+# jw., ale z zobrazowaniem zmiennej "continent"
+
+gapminder %>% 
+  filter(gdpPercap < 50000) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, col = continent)) +
+  geom_point()
+
+# jw., ale z zobrazowaniem tak�e zmiennej "pop" (liczebno�� populacji kraju)
+
+gapminder %>% 
+  filter(gdpPercap < 50000) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, col = continent, size = sqrt(pop))) +
+  geom_point(alpha = 0.3)
+         
+# dodanie linii trendu
+
+gapminder %>% 
+  filter(gdpPercap < 50000) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, col = continent, size = sqrt(pop))) +
+  geom_point(alpha = 0.3)+
+  geom_smooth()
+
+# dodanie modeli liniowych 
+
+gapminder %>% 
+  filter(gdpPercap < 50000) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, col = continent, size = sqrt(pop))) +
+  geom_point(alpha = 0.3)+
+  geom_smooth(method = "lm")
+
+# dodanie zmiany w czasie - zmienna "year"
+# oddzielne wykresy dla ka�dego kontynentu - polecenie "facet_wrap"
+
+gapminder %>% 
+  filter(gdpPercap < 50000) %>% 
+  ggplot(aes(x = gdpPercap, y = lifeExp, col = year, size = sqrt(pop))) +
+  geom_point(alpha = 0.3)+
+  geom_smooth(method = "lm", colour = "red")+
+  theme_bw()+
+  facet_wrap(~continent)
+
+# regresja liniowa y = ax + b - lifeExp z gdpPercap
+
+model1 <- lm(data = gapminder, lifeExp ~ gdpPercap)
+summary(model1)
+
+# r�wnanie y = 0.000765x + 53.9; R2 = 0.34
+
+# sprawdzenie modelu
+
+plot(model1)
+
+
+# regresja wieloraka y = a1x1 + a2x2 + ... 
+
+model2 <- lm(data = gapminder, lifeExp ~ gdpPercap + year + pop + continent)
+summary(model2)
+
+# r�wnanie y = a1x1 + a2x2 +... + b
+# dla Afryki y = 0.00029gdpPercap + 0.28year - 518
+# dla Ameryki y = 0.00029gdpPercap + 0.28year - 518 + 14.3
+# itd. z poprawkami dla ka�dego kontynentu
+# R2 = 0.72
+
+
+# sprawdzenie modelu
+plot(model2)
+
+
+# por�wnanie modeli 1 i 2 - anova
+anova(model1, model2)
+
+
+```
+
+
+# Lab 12
+
+## Randomizacja
+
+```{r}
+### randomizacja
+
+## metody: bootstrap i test permutacyjny
+
+## przykładowa ramka danych - wzrost i waga ludzi
+
+library(tidyverse)
+
+wzrost <- c(151, 174, 138, 186, 128, 136, 179, 163, 152, 
+            131, 215, 184, 159, 179, 198, 187, 190,
+            178, 164, 177)
+waga <- c(93, 81, 66, 81, 57, 37, 76, 92, 42, 78, 97, 
+          140, 46, 91, 114, 90, 67, 52, 58, 73)
+
+relacja <- data.frame(wzrost, waga)
+
+# zobrazowanie danych
+relacja %>% 
+  ggplot(aes(x = wzrost, y = waga))+
+  geom_point()+
+  geom_smooth(method = "lm")
+
+cor.test(x = relacja$wzrost, relacja$waga)
+
+#zapisanie wpółczynnika korelacji jako obiekt
+cor_baza <- round(cor(x = relacja$wzrost, relacja$waga),3)
+
+
+## randomizacja #1 - analiza bootstrap
+set.seed(666) # ustawienie seed do powtarzalności losowania
+
+N <- 1000 # ustawienie liczby iteracji
+
+out_boot <- numeric(N) # wektor, w którym będą zapisywane wyniki
+
+# analiza bootstrap
+# losowanie wierszy z bazy ze zwracaniem
+# wykorzystanie pętli for
+
+for (i in 1:N) {
+# losowanie wierszy z oryginalnej bazy
+# polecenie sample_n()
+  baza_boot <- sample_n(relacja, nrow(relacja), replace = TRUE)
+# obliczenie współczynnika korelacji z bazy wytworzonej przez losowanie
+  out_boot[i] <- cor(x = baza_boot$wzrost, y = baza_boot$waga)
+}
+
+
+# obliczenie p-value
+# p-value jako udział obliczonych współczynników <0
+
+p_val_boot <- round(sum(out_boot<=0)/N, 3)
+
+# rozkład gęstości obliczonych współczynników korelacji
+
+ggplot()+
+  geom_density(aes(out_boot), fill = "grey")+
+  theme_classic() +
+  # dodanie linii obrazującej współczynnik policzony
+  # z oryginalnych danych
+  geom_vline(xintercept = cor_baza, linetype = "dashed", color = "red")
+
+# średnia wartość współczynnika korelacji
+mean(out_boot)
+
+## randomizacja #2 - test permutacyjny
+# losowanie (wymieszanie) wartości jednej ze zmiennych
+# bez zwracania
+
+
+set.seed(666) # ustawienie seed do powtarzalności losowania
+
+N <- 1000 # ustawienie liczby iteracji
+
+out_perm <- numeric(N) 
+
+
+# pętla for
+
+for (i in 1:N) {
+  # wymieszanie wartości zmiennej zależnej - waga
+  # stworzenie wektora z wymieszanymi wartościami wagi
+  # polecenie sample()
+  sample_waga <- sample(relacja$waga, nrow(relacja), replace = FALSE)
+  
+  # policzenie współczynników korelacji z "wymieszanych" danych
+  # zapisanie do wektora
+  out_perm[i] <- cor(x = relacja$wzrost, y = sample_waga)
+}
+
+
+# obliczenie p-value z permutacji
+# jako udział wartości współczynnika z wymieszanych wartości
+# wyższych lub równych do współczynnika z oryginalnych danych
+p_val_perm <- round(sum(out_perm>=cor_baza)/N, 3)
+
+
+# wykres z rozkładem gęstości współczynników obliczonych
+# z wymieszanych danych
+# z zaznaczeniem współczynnika z oryginalnych danych
+
+ggplot()+
+  geom_density(aes(out_perm), fill = "grey")+
+  geom_vline(xintercept = cor_baza, linetype = "dashed", color = "blue")+
+  theme_classic()
+
+mean(out_perm)
+
+
+
+```
+
+
 
 # Wizualizacja danych geoprzestrzennych
 
