@@ -4425,7 +4425,8 @@ Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo,
 
 ## Wstawianie aktywnego kodu
 
-1. Aby wstawic aktywny kod, ktory ma pojawic sie w dokumencie uzyj bloku kodu. Wprobuj skort klawiszowy CTRL + ALT + I
+1.  Aby wstawic aktywny kod, ktory ma pojawic sie w dokumencie uzyj
+    bloku kodu. Wprobuj skort klawiszowy CTRL + ALT + I
 
 ```{r}
 
@@ -4439,7 +4440,11 @@ Donec nibh neque, varius et fermentum non, interdum in nisl. Nunc at congue leo,
 
 ```
 
-2. Wewnatrz `{r}` na poczatku bloku kodu mozna ustawic wiele parametrow wyswietlania kodu. Wydruk kodu moze byc pozbawiony komunikatow ostrzegawczych i dodatkowych wiadomosci poprzez manipulowanie arguemntami `messages` i `warnings`. Zobacz roznice np. podczas wywolywania pakietu `tidyverse`
+2.  Wewnatrz `{r}` na poczatku bloku kodu mozna ustawic wiele parametrow
+    wyswietlania kodu. Wydruk kodu moze byc pozbawiony komunikatow
+    ostrzegawczych i dodatkowych wiadomosci poprzez manipulowanie
+    arguemntami `messages` i `warnings`. Zobacz roznice np. podczas
+    wywolywania pakietu `tidyverse`
 
 ```{r}
 
@@ -4451,7 +4456,8 @@ library(tidyverse)
 
 ```
 
-3. Opcja `echo` pozwala schowac kod i pozostawic tylko jego efekt w dokumencie.
+3.  Opcja `echo` pozwala schowac kod i pozostawic tylko jego efekt w
+    dokumencie.
 
 ```{r}
 #``` {r echo = F}
@@ -4466,7 +4472,7 @@ iris %>% ggplot(aes(x = Petal.Length)) +
 
 ```
 
-4. Opcja `eval` okresla, czy dany kod jest ewaluowany w tym dokumencie.
+4.  Opcja `eval` okresla, czy dany kod jest ewaluowany w tym dokumencie.
 
 ```{r}
 # ``` {r eval = F}
@@ -4480,7 +4486,8 @@ iris %>% ggplot(aes(x = Petal.Length)) +
 
 ```
 
-5. Opcje z przedrostkiem `fig.` sluza do dodwania roznych elementow do elementow graficznych powstalych w danym bloku kodu.
+5.  Opcje z przedrostkiem `fig.` sluza do dodwania roznych elementow do
+    elementow graficznych powstalych w danym bloku kodu.
 
 ```{r}
 
@@ -4488,7 +4495,6 @@ iris %>% ggplot(aes(x = Petal.Length)) +
 
 
 ```
-
 
 # Lab 8
 
@@ -4513,8 +4519,8 @@ analizowanej zmiennej
 
 ## Analiza frewkencji - praktyka
 
-
-1. Wczytaj potrzebne pakiety i dane o pierzeniu dubelta *Gallinago media* pochodzace z pliku MoultGM.xlsx.
+1.  Wczytaj potrzebne pakiety i dane o pierzeniu dubelta *Gallinago
+    media* pochodzace z pliku MoultGM.xlsx.
 
 ```{r}
 library(tidyverse)
@@ -4526,23 +4532,24 @@ setwd('XXXX') # ustaw wlasne
 gm <- read_excel('MoultGM.xlsx')
 
 ```
-2. Sprawdz strukture danych
+
+2.  Sprawdz strukture danych
 
 ```{r}
 str(gm)
 
 ```
-Place: miejsce, BL- Bialorus, PL - Polska
-Year: rok
-Period: pentada, 1 - pierwsza pentada maja
-Sex: plec
-PC1: wskznik wielkosci ciala
-SMI: wskaznik kondycji ciala
-moult.cat: kategoria stanu pierzenia, NS - nie zaczete, A - aktywne, S - zatrzymane
-is.moult: binarna zmienna o obecnosci oznak pierzenia pior
-pfmgAll: procentowy udzal masy nowych pior w upierzeniu
 
-3. Sprawdz czy w obu miejscach tak samo czesto lapie sie samce i samice dubleta.
+Place: miejsce, BL- Bialorus, PL - Polska Year: rok Period: pentada, 1 -
+pierwsza pentada maja Sex: plec PC1: wskznik wielkosci ciala SMI:
+wskaznik kondycji ciala moult.cat: kategoria stanu pierzenia, NS - nie
+zaczete, A - aktywne, S - zatrzymane is.moult: binarna zmienna o
+obecnosci oznak pierzenia pior pfmgAll: procentowy udzal masy nowych
+pior w upierzeniu
+
+3.  Sprawdz czy w obu miejscach tak samo czesto lapie sie samce i samice
+    dubleta.
+
 ```{r}
 
 chisq.res <- chisq.test(gm$Place, gm$Sex) # przechowaj wyniki analizy Chi2 w obiekcie
@@ -4569,9 +4576,15 @@ chisq.res$residuals
 print(chisq.res)
 
 ```
-Frewkencja wystepowania obu plci roznila sie istotnie statystycznie miedzy dwoma lokalizacjami (test $𝛘^2$, $𝛘^2$ = 11.218, p = 0.001). Na podstawie porownania wartosci oczekiwanych i obserowanych mozna stwierdzic, ze w Polsce frekwencja obu plci byla bardziej wyrownana, gdzie w Bialorusi znaczaca przewage w liczebnosci mialy samce.
 
-4. Zwizualizuj wyniki
+Frewkencja wystepowania obu plci roznila sie istotnie statystycznie
+miedzy dwoma lokalizacjami (test $𝛘^2$ z poprawka Yatesa, $𝛘^2$ =
+11.218, p = 0.001). Na podstawie porownania wartosci oczekiwanych i
+obserowanych mozna stwierdzic, ze w Polsce frekwencja obu plci byla
+bardziej wyrownana, gdzie w Bialorusi znaczaca przewage w liczebnosci
+mialy samce.
+
+4.  Zwizualizuj wyniki
 
 ```{r}
 gm %>% 
@@ -4587,7 +4600,8 @@ gm %>%
 
 
 ```
-5. Sprawdz czy frewkencja obu plci jest taka sama w kazdej pentadzie.
+
+5.  Sprawdz czy frewkencja obu plci jest taka sama w kazdej pentadzie.
 
 ```{r}
 chi2.pent <- chisq.test(gm$Period, gm$Sex)
@@ -4598,7 +4612,8 @@ chi2.pent <- chisq.test(gm$Period, gm$Sex)
 chi2.pent$expected
 
 ```
-6. Wykonaj test z uwzglednieniem zbyt niskiej liczebnosci oczekiwanej
+
+6.  Wykonaj test z uwzglednieniem zbyt niskiej liczebnosci oczekiwanej
 
 ```{r}
 
@@ -4623,7 +4638,7 @@ fish.pent <- fisher.test(table(gm$Period, gm$Sex),
 
 ```
 
-7. Opisz i zwizualizuj wynik
+7.  Opisz i zwizualizuj wynik
 
 ```{r}
 print(chi2.pentMonteCarlo)
@@ -4659,8 +4674,180 @@ graphics::mosaicplot(tab1,
 
 
 ```
-Czestosc wystepowania obu plci roznila sie istotnie statystycze miedzy siedmioma pentadami (test $𝛘^2$, $𝛘^2$ = 38.425, p < 0.001). Roznice wystapily ze wzlgedu na duza liczebnosc samcow w pentadzie 2, oraz wieksza niz przecietna liczebnoscia samic w pentadach 5 i 6.
 
+Czestosc wystepowania obu plci roznila sie istotnie statystycze miedzy
+siedmioma pentadami (test $𝛘^2$, $𝛘^2$ = 38.425, p \< 0.001). Roznice
+wystapily ze wzlgedu na duza liczebnosc samcow w pentadzie 2, oraz
+wieksza niz przecietna liczebnoscia samic w pentadach 5 i 6, co mozna
+stwierdzic na podstawie uzyskanych wartosci resztowych.
+
+8.  Sprawdz, czy po wykluczeniu pentady 2, 5 i 6 nadal frewkencja
+    wystepowania obu plci rozni sie istotnie statystycznie miedzy
+    pentadami.
+
+```{r}
+
+gm.filtr <- gm %>% 
+  filter(Period != '2' & Period != '5' & Period != '6') # wyrzuc wybrane pentady
+
+unique(gm.filtr$Period) # sprawdz czy filtorwanie zadzialalo
+
+
+chi2.pent.filtr <- chisq.test(gm.filtr$Period, gm.filtr$Sex,
+                              simulate.p.value = T, B = 1000)
+
+
+print(chi2.pent.filtr) # sprawdz wyniki
+
+# wizualizuj
+
+gm.filtr %>% 
+  ggplot(aes(x = Period, fill = Sex)) +
+  geom_bar(position = 'fill')
+
+
+
+
+```
+
+Samce i samice lapaly sie tak samo czesto w pozostalych czterech
+pentadach (test $𝛘^2$, $𝛘^2$ =0.261, p = 0.97)
+
+> TIP: Poniewaz wartosc p jest symulowana, moze sie ona nieznacznie
+> roznic miedzy kolejnymi powtorzeniami testu. Im wiecej powotrzen
+> ustawionych w argumencie B, tym mniejsze roznice w wartosci p miedzy
+> powotrzeniami.
+
+## Cwiczenia
+
+### CW 1
+
+Sprawdz, czy samce i samice roznia czestoscia wystepowania pierzenia.
+
+<details>
+
+<summary>ODP 1</summary>
+
+```{r}
+
+gm %>% 
+  ggplot(aes(x = Sex, fill = is.moult)) +
+  geom_bar(position = 'fill')
+
+# powyzszy wykres nie dziala w pleni, slupki nie koloruja sie w zaleznosci od zmiennej is.moult.
+
+# wynika to ze wzgledu na to ze zmienna is.moult nie jest dyskretna.
+# nalezy zmienic jej klase, aby to naprawic
+
+
+gm$is.moult <- as.factor(gm$is.moult) # mozna tez zmienic na character
+
+# sprawdz wykres jeszcze raz
+
+gm %>% 
+  ggplot(aes(x = Sex, fill = is.moult)) +
+  geom_bar(position = 'fill')
+
+# teraz kolory sie pokazuja!
+
+# wyniki chi2
+
+chi2.is.moult <- chisq.test(gm$Sex, gm$is.moult)
+
+
+print(chi2.is.moult) # wyniki sa z poprawka Yatesa, ze wzgledu na niska liczebnosc oczekiwana Samic z pierzeniem
+
+chi2.is.moult$expected
+
+
+
+
+
+```
+
+Samce i samice tak samo czesto wykazuja oznaki pierzenia (test $𝛘^2$ z
+poprawka Yatesa, $𝛘^2$ =0.775, p = 0.379)
+
+</details>
+
+### CW 2
+
+Skoro wiemy, ze samce i samice tak samo czesto sie pierza, zobacz, czy
+wszystkie 3 kategorie pierzenia wystepuja rownie czesto u obu plci.
+
+<details>
+
+<summary> ODP 2</summary>
+
+```{r}
+
+gm %>% 
+  ggplot(aes(x = Sex, fill = moult.cat)) +
+  geom_bar(position = 'fill')
+
+
+chi2.moult.cat <- chisq.test(gm$Sex, gm$moult.cat)
+
+
+print(chi2.moult.cat)
+
+
+```
+
+Podobnie jak przy obecnosci pierzenia, obie plci tak samo czesto
+przechodza rozne etapy pierzenia (test $𝛘^2$ , $𝛘^2$ =2.769, p = 0.25).
+
+</details>
+
+### CW 3
+
+Poniewaz pierzenie postepuje w czasie, byc moze uda Ci sie zaobserwowac
+roznice w czestosci wystepowania roznych etapow pierzenia miedzy
+pentadami. Sprawdz tylko pentady 2, 4 i 6.
+
+<details>
+
+<summary>ODP 3</summary>
+
+```{r}
+
+gm.moult.progres <- gm %>% 
+  filter(Period %in% c("2", "4", "6")) # wskaz wybrane pentady
+
+
+# pokaz na wykresie
+
+gm.moult.progres %>% 
+  ggplot(aes(x = Period, fill = moult.cat)) +
+  geom_bar(position = 'fill')
+
+# uzyskaj wyniki
+chi2.moult.progres <- chisq.test(gm.moult.progres$Period, gm.moult.progres$moult.cat,
+                                 simulate.p.value = T)
+
+
+print(chi2.moult.progres)
+
+# stworz tabele wartosci obserwowanych
+
+tab.moult.progres <- chi2.moult.progres$observed
+
+# eksploruj wartosci resztowe
+
+mosaicplot(tab.moult.progres, shade = T)
+
+
+```
+
+Czestosc wystepowania roznych etapow pierzenia roznila sie miedzy 3
+wskazanymi pentadami (test $𝛘^2$ , $𝛘^2$ = 83.789, p \< 0.001). Analiza
+wartosci resztowych wskazuje, ze w czwartej pentadzie bylo
+ponadprzecietnie duzo ptakow z aktywnym pierzeniem (A) i ponizej
+przeprzecietnej ptakow, ktore nie rozpoczely pierzenia (NS). Natomiast w
+6 pentadzie bylo wiecej niz zwykle ptakow, ktore zatrzymaly pierzenie
+(S).
+
+</details>
 
 # Wizualizacja danych geoprzestrzennych
 
