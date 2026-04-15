@@ -2905,7 +2905,15 @@ pingw1 <- pingwiny %>%
 
 ### CW 2.3
 
-Dlaczego moj kod nie dziala? Czy mozesz go poprawic?
+Dlaczego mój kod nie działa? Czy możesz go poprawić?
+
+```{r}
+
+pingw2 <- pingwiny %>% 
+  group_by(Species, Island, Sex) %>% 
+  summarise(n())
+
+```
 
 <details>
 
@@ -2914,9 +2922,10 @@ Dlaczego moj kod nie dziala? Czy mozesz go poprawic?
 ```{r}
 
 pingw2 <- pingwiny %>% 
-  group_by(Species, Island, Sex) %>% 
+  group_by(species, island, sex) %>% 
   summarise(n())
 
+# double-check the spelling of the column names
 ```
 
 </details>
