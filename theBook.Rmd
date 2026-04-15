@@ -2123,7 +2123,7 @@ Metadane:
 |  3  | ścięte drzewo z powalonym pniem |
 |  4  | pniak po ścietym drzewie        |
 
- ![Drzewo uszkodzone przez bobra. Zdjęcie: Adrian
+![Drzewo uszkodzone przez bobra. Zdjęcie: Adrian
 Zwolicki](https://raw.githubusercontent.com/kurkachatka/Biostat-Excercise-Book/main/assets/BobryR_uszkodz.jpg){width="413"}
 
 ## Grupowanie i podsumowywanie danych
@@ -5124,7 +5124,7 @@ iris.SetVer %>%
 
 3.  Wykorzystaj ramke danych `msleep`. Porownaj mase mozgu miedzy
     zwierzetami bliskimi zagrozenia (nt) i najmniejszej troski (lc)
-    
+
 3.1 Sprawdz zalozenia.
 
 ```{r}
@@ -5146,10 +5146,9 @@ msleep.conserv %>%
 
 3.2 Wykonaj test nieparametryczny (Manna-Whitneya)
 
-
 ```{r}
 
-wilcox.test(data = msleep.conserv, brainwt ~ conservation)
+wilcox.test(data = msleep.conserv, brainwt ~ conservation) # nie przejmuj sie inna nazwa testu
 
 msleep.conserv %>% 
   ggplot(aes(x = conservation, y = brainwt)) +
@@ -5159,7 +5158,141 @@ msleep.conserv %>%
 
 ```
 
-Nie wykryto istotnych statystycznie roznic w przecietnej masie mozgu miedzy zwierzetami w kategroii zagrozenia LC a NT (test Manna-Whitneya, U = 17, p = 0.857)
+Nie wykryto istotnych statystycznie roznic w przecietnej masie mozgu
+miedzy zwierzetami w kategoriach zagrozenia LC i NT (test
+Manna-Whitneya, U = 17, p = 0.857)
+
+## Cwiczenia
+
+### CW 1
+
+Wykorzystaj dane epidemilogiczne pochodzace z badania na sarnach.
+([Vicente et al.
+2006](https://www.researchgate.net/publication/7432637_Wild_boar_and_red_deer_display_high_prevalences_of_tuberculosis-like_lesions_in_Spain))
+
+Dane sa w formacie .txt aby je wczytac uzyj ponizszego kodu:
+
+```{r}
+setwd('XXXX') # ustaw odpowiednio
+
+Deer <- read.table(file='Deer.txt', header= TRUE)
+
+# sprawdz strukture danych
+
+str(Deer)
+
+# wzroc uwage, ze plec (Sex) zostala zakodowana jako wartosc liczbowa 'integer'
+# W analizach najlepiej ustawic ja na zmienna dyskretna np. factor
+
+Deer$Sex <- as.factor(Deer$Sex)
+
+```
+
+
+### CW 1.1
+
+Sprawdz, czy wystepuja roznice w wielkosci ciala (zmienna `LCT` miedzy samicami i samicami sarny. Samce sa oznaczone jako 1, samice jako 2. Wyniki przedstaw na wykresie
+
+
+<details>
+
+<summary>ODP 1.1</summary>
+
+```{r}
+# sprawdz rozklad wielkosci ciala dla obu plci
+
+Deer %>% 
+  filter(!is.na(Sex)) %>% 
+  ggplot(aes(x = LCT)) +
+  geom_density(aes(fill = as.factor(Sex))) +
+  facet_wrap(~Sex)
+
+# rozklad nie odbiega znaczaco od rozkladu normalnego
+
+# Sprawdz jednorodnosc wariancji
+
+
+Deer.bezNA <- Deer %>% filter(!is.na(Sex)) # odfiltruj NA z plci
+
+var.test(data = Deer.bezNA, LCT~Sex)
+
+
+# wariancja nie jest jednorodna, w takim wypadku nalezy wykonac poprawke o niejednorodnosc wariancji (test Cochrana-Coxa)
+
+t.test(data = Deer.bezNA, LCT~Sex, var.equal = F)
+
+
+
+```
+Samce sarny byly istotnie statystycznie wieksze od samic tego gatunku (test Cochrana-Coxa, t' = 16.08, p < 0.001).
+
+```{r}
+
+Deer.bezNA %>% 
+  ggplot(aes(x = Sex, y = LCT)) +
+  geom_boxplot(aes(fill = Sex),width = 0.4,
+               outlier.shape = NA) + # pomija odstajace
+  geom_point(alpha = 0.05, position = position_jitter(width = 0.2)) + # dodawanie punktow moze pomoc zaprezentowac na wykresie liczebnosc proby, ktora w tym badaniu jest dosc obszerna
+  theme_classic()
+  
+
+
+
+```
+
+
+
+</details>
+
+
+### CW 1.2
+
+Sprawdz czy sarny, ktore mialy zmiany gruzlicze (zmienna `Tb`) charakteryzuja sie obnizona kondycja ciala (zmienna `KFI`). Wyniki przedstaw na wykresie.
+
+<details>
+<summary>ODP 1.2</summary>
+
+```{r}
+
+# sprawdz rozklad zmiennych 
+
+Deer %>% 
+  filter(!is.na(Tb)) %>% 
+  ggplot(aes(x = KFI)) +
+  geom_density(aes(fill = as.factor(Tb))) +
+  facet_wrap(~Tb)
+
+# jest on dosc mocno prawoskosny, co sprawia ze nie mozemy wykonac testu parametrycznego
+
+# wykonaj test nieparametryczny
+
+Deer.TbbezNA <- Deer %>% filter(!is.na(Tb))
+
+wilcox.test(data = Deer.TbbezNA, KFI ~ Tb)
+
+
+
+
+```
+Sarny ze zmianami gruzliczymi nie byly w slabszej kondycji w prowaniu do osobnikow bez zmian (test Manna-Whitneya, U = 30048, p = 0.35).
+
+
+```{r}
+
+Deer.TbbezNA %>% 
+  ggplot(aes(x = as.factor(Tb), # poniewaz zmienna nie zostala zakodowana jako dyksretna mozna to zrobic w tym miejscu
+             y = KFI)) +
+  geom_violin(fill = 'dodgerblue3') + # wykresy wiolinowe pozalaja na przedstawienie rozkladu zmiennej w danej grupie (taki histogram ze swoim lustrzanym odpiciem wzgledem osi x). Moze byc to szczegolnie przydante jezeli przedstawiwamy wyniki na danych, ktorych rozklad odbiega od normalnego.
+  geom_boxplot(fill = NA, color = 'white', width = 0.2, outlier.shape = NA, linewidth = 1) +
+  theme_classic()
+
+
+
+```
+
+
+
+</details>
 
 
 # Lab 10
@@ -5265,7 +5398,6 @@ df2 <-sikory %>%  #podsumowanie - statystyki opisowe (średnie zniesienie, odch.
 
 ```
 
-
 ```{r}
 
 library(tidyverse)
@@ -5344,7 +5476,6 @@ model_sikory_2 <- aov(data = sikory, N_jaj ~ Gatunek*Las)
 summary(model_sikory_2)
 
 ```
-
 
 # Lab 11
 
@@ -5495,8 +5626,6 @@ summary(lm_vir)
 
 ```
 
-
-
 ```{r}
 # budowa kilku osobnych modeli jednym poleceniem z pakietem "broom"
 library(tidyverse)
@@ -5618,7 +5747,6 @@ anova(model1, model2)
 
 ```
 
-
 # Lab 12
 
 ## Randomizacja
@@ -5735,8 +5863,6 @@ mean(out_perm)
 
 
 ```
-
-
 
 # Wizualizacja danych geoprzestrzennych
 
