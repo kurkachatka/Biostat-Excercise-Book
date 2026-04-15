@@ -3870,7 +3870,7 @@ najmniej dwoma pakietami, ktore uzywaja funkcji `select`. Aby uniknac
 wyswietlenia komunikatu o bledzie, musimy okreslic, z ktorego pakietu
 wywolujemy te funkcje.
 
-### CW 2.1
+### CW 2.2
 
 Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy
 dobry rok, w porownaniu z liczba osobnikow, ktore mialy zly rok?
@@ -3879,7 +3879,7 @@ dobry rok, w porownaniu z liczba osobnikow, ktore mialy zly rok?
 
 <details>
 
-<summary>ODP 2.1</summary>
+<summary>ODP 2.2</summary>
 
 ```{r}
 ## Porownaj liczbe osob, ktore mialy dobry rok, z liczba osob, ktore mialy zly rok:
@@ -3895,7 +3895,7 @@ plot_amount1.1
 
 </details>
 
-### CW 2.2
+### CW 2.3
 
 Jak sporzadzilbys wykres przedstawiajacy liczbe osobnikow, ktore mialy
 dobry rok, w porownaniu z osobnikami, ktore mialy zly rok, z tym ze tym
@@ -3905,7 +3905,7 @@ razem nalezaloby rowniez rozroznic poszczegolne gatunki pingwinow?
 
 <details>
 
-<summary>ODP 2.2</summary>
+<summary>ODP 2.3</summary>
 
 ```{r}
 ## Porownaj liczbe osobnikow, ktore mialy dobry rok, z liczba osobnikow, ktore mialy zly rok, dla kazdego gatunku:
