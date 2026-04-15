@@ -2123,8 +2123,8 @@ Metadane:
 |  3  | ścięte drzewo z powalonym pniem |
 |  4  | pniak po ścietym drzewie        |
 
-![Drzewo uszkodzone przez bobra. Zdjęcie: Adrian
-Zwolicki](images/uszkodz.jpg){width="413"}
+ ![Drzewo uszkodzone przez bobra. Zdjęcie: Adrian
+Zwolicki](https://raw.githubusercontent.com/kurkachatka/Biostat-Excercise-Book/main/assets/BobryR_uszkodz.jpg){width="413"}
 
 ## Grupowanie i podsumowywanie danych
 
