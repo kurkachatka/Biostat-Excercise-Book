@@ -15,6 +15,8 @@ editor_options:
 knitr::opts_chunk$set(eval = FALSE)
 ```
 
+Dodatkowe pliki do cwiczen znajdziesz na [repozytorium](#0).
+
 # Lab 1
 
 ## Instalacja R i RStudio
@@ -58,7 +60,9 @@ citation(package ='tidyverse')
 
 -   Zaznacz cale slowo: CTRL + SHIFT + STRZALKA
 
--   Zamien kod na komentarz (lub odwortnie) CTRL + SHIFT + C
+-   Zamien kod na komentarz (lub odwortnie): CTRL + SHIFT + C
+
+-   Wstaw blok kodu w pliku RMarkdown: CTRL + ALT + I
 
 ## Podstawy kodowania
 
@@ -5188,11 +5192,11 @@ Deer$Sex <- as.factor(Deer$Sex)
 
 ```
 
-
 ### CW 1.1
 
-Sprawdz, czy wystepuja roznice w wielkosci ciala (zmienna `LCT` miedzy samicami i samicami sarny. Samce sa oznaczone jako 1, samice jako 2. Wyniki przedstaw na wykresie
-
+Sprawdz, czy wystepuja roznice w wielkosci ciala (zmienna `LCT` miedzy
+samicami i samicami sarny. Samce sa oznaczone jako 1, samice jako 2.
+Wyniki przedstaw na wykresie
 
 <details>
 
@@ -5224,7 +5228,9 @@ t.test(data = Deer.bezNA, LCT~Sex, var.equal = F)
 
 
 ```
-Samce sarny byly istotnie statystycznie wieksze od samic tego gatunku (test Cochrana-Coxa, t' = 16.08, p < 0.001).
+
+Samce sarny byly istotnie statystycznie wieksze od samic tego gatunku
+(test Cochrana-Coxa, t' = 16.08, p \< 0.001).
 
 ```{r}
 
@@ -5240,16 +5246,16 @@ Deer.bezNA %>%
 
 ```
 
-
-
 </details>
-
 
 ### CW 1.2
 
-Sprawdz czy sarny, ktore mialy zmiany gruzlicze (zmienna `Tb`) charakteryzuja sie obnizona kondycja ciala (zmienna `KFI`). Wyniki przedstaw na wykresie.
+Sprawdz czy sarny, ktore mialy zmiany gruzlicze (zmienna `Tb`)
+charakteryzuja sie obnizona kondycja ciala (zmienna `KFI`). Wyniki
+przedstaw na wykresie.
 
 <details>
+
 <summary>ODP 1.2</summary>
 
 ```{r}
@@ -5274,8 +5280,9 @@ wilcox.test(data = Deer.TbbezNA, KFI ~ Tb)
 
 
 ```
-Sarny ze zmianami gruzliczymi nie byly w slabszej kondycji w prowaniu do osobnikow bez zmian (test Manna-Whitneya, U = 30048, p = 0.35).
 
+Sarny ze zmianami gruzliczymi nie byly w slabszej kondycji w prowaniu do
+osobnikow bez zmian (test Manna-Whitneya, U = 30048, p = 0.35).
 
 ```{r}
 
@@ -5290,10 +5297,7 @@ Deer.TbbezNA %>%
 
 ```
 
-
-
 </details>
-
 
 # Lab 10
 
